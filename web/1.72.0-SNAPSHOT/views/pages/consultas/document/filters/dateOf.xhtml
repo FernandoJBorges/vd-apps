@@ -1,0 +1,14 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+	<p:outputPanel styleClass="ui-g-2">
+		<p:outputLabel for="dateOf" value="#{i18n['document.label.date.of']}:" />
+		<p:selectOneMenu id="dateOf" value="#{defaultFilterMBean.filterVO.documentDateType}" disabled="#{defaultFilterMBean.documentDateType[1] == null}">
+			<f:selectItems	value="#{defaultFilterMBean.documentDateType}"
+							var="documentDateType"
+							itemValue="#{documentDateType}"
+							itemLabel="#{i18n[utils:getEnumQualifiedName(documentDateType)]}" />
+		</p:selectOneMenu>
+	</p:outputPanel>
+</ui:fragment>

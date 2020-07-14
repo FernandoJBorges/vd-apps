@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:p="http://primefaces.org/ui">
+	<div class="ui-g-5">
+		<p:outputLabel for="mailCCtext" value="#{i18n['establishment.notifyevent.cc']}:" />
+		<p:inputTextarea id="mailCCtext" 
+						rows="5" 
+						cols="88"
+						maxlength="256"
+						autoResize="false"
+						style="resize:none" 
+						disabled="#{disableMailTextarea}"
+						counter="remainingCountermailCC"
+						counterTemplate="{0} caracteres restantes." 
+						value="#{notifyEventMB.notification.mailCc}">
+						<f:attribute name="inputName" value="#{i18n['establishment.notifyevent.cc']}" />
+						<f:validator binding="#{mailValidator}" />
+		</p:inputTextarea>
+		<h:outputText id="remainingCountermailCC" />
+	</div>
+	<div class="ui-g-1">
+		<ngComp:ngHelp messageHelp="#{i18n['establishment.notifyevent.help.mailcc']}" style="margin-left: -13px;margin-top: 75px;" />
+	</div>
+</ui:composition>

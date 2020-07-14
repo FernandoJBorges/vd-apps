@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/crud"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component">
+	<!-- passa parâmetro para o template -->
+	
+	<style>
+		.iconUse{padding-top:10px;font-size:14px}
+	</style>
+
+	<h:inputHidden value="#{defaultMBean.reportType}"/>	
+	<div class="ui-fluid">
+		<div class="ui-g">
+			<div class="ui-g-2">
+				<p:outputLabel for="requestFilename" value="#{i18n['reportrequest.label.requestfilename']}:" />
+				<h:panelGroup>
+					<p:inputText id="requestFilename" 
+						value="#{accountingConfrontationReportMB.reportRequest.requestFilename}" 
+						maxlength="120" size="40"
+						validatorMessage="#{i18n['reportrequest.requestfilename.invalid.message']}" >
+						<f:validateRegex pattern="^[a-zA-Z_$0-9][a-zA-Z_$0-9]*$"/>
+					</p:inputText>
+				</h:panelGroup>
+			</div>
+			<div class="ui-g-10">
+				<ngComp:ngHelp messageHelp="#{i18n['reportrequest.requestfilename.help']}" style="margin-left:-12px;margin-top:18px" />
+			</div>
+			<div class="ui-g-2">
+				<p:outputLabel for="uploadPanel" value="#{i18n['report.ACCOUNTING_CONFRONTATION.upload.label']}:" />			
+				<h:panelGroup id="uploadPanel">
+					<h:panelGroup id="uploaded">
+							<h:panelGroup rendered="#{accountingConfrontationReportMB.uploadFile != null}">
+								<div>						
+								<h:outputText value="#{accountingConfrontationReportMB.uploadFilename}" style="margin-right:5px"/>
+								<p:commandLink 	ajax="true"
+												title="#{i18n['reportrequest.label.discard.file']}"
+												styleClass="fa fa-times outputLinkCommons outputLinkCommonsColors" 
+												update="ng-form:ngFormEdit:ngTabview:uploadPanel"
+												action="#{accountingConfrontationReportMB.discardUploadFile}" />
+								</div>
+							</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup id="upload">
+							<p:fileUpload
+								rendered="#{accountingConfrontationReportMB.uploadFile == null}"
+								process="@this"
+								label="#{i18n['uploadDocument.label.chooseFile']}"
+								fileUploadListener="#{accountingConfrontationReportMB.handleUploadFile}"
+								update="ng-form:ngFormEdit:ngTabview:uploadPanel"
+								multiple="false" mode="advanced"
+								showButtons="false" auto="true"
+								allowTypes="/(\.|\/)(zip)$/"
+								title="#{i18n['uploadDocument.label.selectUploadFile.toolTip']}"
+								messageTemplate="{name}"
+								invalidFileMessage="#{i18n['report.ACCOUNTING_CONFRONTATION.upload.invalidformat.message']}"
+								invalidSizeMessage="#{i18n['report.ACCOUNTING_CONFRONTATION.upload.invalidsize.message']}"
+								sizeLimit="5242880"
+								onstart="PF('btnSaveButton').disable()"
+								oncomplete="PF('btnSaveButton').enable()"/>						
+								<script type="text/javascript">
+										$(document).ready(function() {
+											$(':input[type=file]').attr('accept','.zip');
+										});
+								</script>
+								<li style="#{accountingConfrontationReportMB.uploadFile == null ?'':'display:none' }"
+									class="fa fa-info iconUse outputLinkCommons outputLinkCommonsColors"></li>
+								<h:outputLink onclick="PF('uploadInstructionPanel').show()" 
+											  value="javascript:void(0)" 
+											  rendered="#{accountingConfrontationReportMB.uploadFile == null}" 
+											  title="#{i18n['reportrequest.label.instructions.title']}" 
+											  styleClass="outputLinkCommons">
+											  <span class="observation">#{i18n['reportrequest.label.instructions']}</span>
+								</h:outputLink>
+					</h:panelGroup>
+					<br/>
+				</h:panelGroup>			
+			</div>
+		</div>
+	</div>
+	<ui:include src="uploadInstructionPanel.xhtml"/>
+</ui:composition>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/custom">
+	<!-- passa parÃ¢metro para o template -->
+	<ui:param name="defaultMBean" value="#{notifyEventMB}" />
+	<h:form id="ng-form-est-notifyvalue" prependId="false">
+		<p:outputPanel id="ng-create-edit-notifyvalue" rendered="#{defaultMBean.stateNotifyEventValue}" styleClass="ng-panel-class">
+			<ng:ngFormEdit id="ngFormSearch"
+				mbean="#{notifyEventMB}" 
+				actionSubmit="saveNotifyValues"
+				actionGoBack="goBackNofityValue"
+				titleView="#{i18n['establishment.notifyevent.title']}"
+				stateUpdate="#{notifyEventMB.notification.mailTo != null}"
+				update=":ng-form-est-notifyvalue :ng-form-est-notify :ng-create-edit-notify :messages">
+				<p:tabView id="ngTabNotifyevent" widgetVar="ngTabWidgetVar">
+					<p:tab id="tab-notifyevent" title="#{defaultMBean.titleTab}">
+						<div class="ui-fluid ui-g">
+							<div class="ui-g-12">
+								<div class="ui-g-12">
+									<p:outputLabel id="lb-contact" styleClass="ng-subtitle" value="#{i18n['establishment.notifyevent.subtitle.contact']}" />
+								</div>
+							     <ui:include src="fields/notifyEvents.xhtml" />
+							</div>
+							<div class="ui-g-12">
+								 <ui:param name="disableMailTextarea" value="#{notifyEventMB.disableMailTextarea()}" />
+							     <ui:include src="fields/mailTo.xhtml" />
+							     <ui:include src="fields/mailCc.xhtml" />
+							</div>
+							<div class="ui-g-12">
+								<div class="ui-g-12">
+									<p:outputLabel id="lb-layout" styleClass="ng-subtitle" value="#{i18n['establishment.notifyevent.subtitle.layout']}" />
+								</div>
+							     <ui:include src="fields/header.xhtml"></ui:include>
+							     <ui:include src="fields/footer.xhtml"></ui:include>
+							</div>
+							<div class="ui-g-12">
+							     <ui:include src="fields/htmlFormat.xhtml"></ui:include>
+							</div>
+						</div>
+					</p:tab>
+				</p:tabView>
+			</ng:ngFormEdit>
+		</p:outputPanel>
+	</h:form>
+</ui:composition>

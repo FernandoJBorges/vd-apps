@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+
+	<div class="ui-g-12 document-detail-column">
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['mdfe.label.modal']}:" /><br/>
+			<h:outputText value="#{i18n[utils:getEnumQualifiedName(detail.modal)]}" />
+		</div>
+
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['mdfe.label.modal.water.irin']}:" /><br/>
+			<h:outputText value="#{detail.irin}" />
+		</div>
+
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['mdfe.label.modal.water.origport']}:" /><br/>
+			<h:outputText value="#{detail.origPortCode}" />
+		</div>
+
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['mdfe.label.modal.water.destport']}:" /><br/>
+			<h:outputText value="#{detail.destPortCode}" />
+		</div>
+	</div>
+
+	<div class="ui-g-12 document-detail-column">
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['mdfe.label.modal.water.type']}:" /><br/>
+			<h:outputText value="#{detail.vesselType}" />
+		</div>
+
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['mdfe.label.modal.water.code']}:" /><br/>
+			<h:outputText value="#{detail.vesselId}" />
+		</div>
+
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['mdfe.label.modal.water.name']}:" /><br/>
+			<h:outputText value="#{detail.vesselName}" />
+		</div>
+
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['mdfe.label.modal.water.number']}:" /><br/>
+			<h:outputText value="#{detail.travelNumber}" />
+		</div>
+	</div>
+
+</ui:composition>

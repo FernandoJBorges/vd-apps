@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/crud">
+	<p:panelGrid style="width:100%;padding:0px;margin:0px">
+		<div class="ui-g-12">
+			<p:outputLabel for="personForm" value="#{i18n['addresse.label.gerenic-info-all']}" styleClass="ng-subtitle identification-tab-label" />
+		</div>
+		<p:outputPanel id="personForm" styleClass="ui-fluid">
+			<ui:include src="personType.xhtml" />
+			<ui:include src="foreignCnpjCpfAddresse.xhtml" />
+		</p:outputPanel>
+		<p:outputPanel styleClass="ui-g-8 ui-fluid">
+			<ui:include src="state.xhtml" />
+			<div class="ui-g-1"></div>
+			<ui:include src="addresseDialog.xhtml" />
+		</p:outputPanel>
+		<ui:include src="city.xhtml" />
+	</p:panelGrid>
+</ui:composition>

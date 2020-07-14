@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/blank"
+	xmlns:dialogEstab="http://java.sun.com/jsf/composite/dialog"
+	template="/common/templates/ngs/responsive.xhtml">
+	<ui:param name="defaultMBean" value="#{nfeAuditorOccurrenceReportMB}" />
+	<ui:define name="content">
+		<h:form id="ng-form" prependId="true">
+		<div class="ng-header-message">
+				<div aria-live="polite" class="ui-messages ui-widget" id="messages">
+						<div class="ui-messages-warn  ui-corner-all">
+						<a onclick="$(this).parent().slideUp();return false;" class="ui-messages-close" href="#">
+							<span class="ui-icon ui-icon-close"></span>
+						</a>
+						<span class="ui-messages-warn-icon"></span>
+							<ul>
+								<li>
+									<span class="ui-messages-warn-summary">
+									#{i18n['audiotor.laudo.help']}
+									</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+			</div>
+			<!-- BLOCLO DE PESQUISA -->
+			<p:outputPanel id="ng-search-list-block" styleClass="ng-panel-class">
+				<ng:ngViewBlank id="ngFormEdit"
+					btnActionSave="#{nfeAuditorOccurrenceReportMB.buildLoadReport}"
+					titleButton="Gerar"
+					titleView="#{i18n['audiotor.laudo.title.view']}"
+					update=":ng-form :messages">
+					<!-- taview e os campos do cadastro - os botoes voltar e salvar ja estao sendo inseridos pelo componente de forma abstrata-->
+							<p:panelGrid id="panelGridForm" columns="2" style="margin:10px" columnClasses="column1,column2">
+								
+								<p:outputLabel for="processing"	value="#{i18n['document.label.processing']}: *" />
+								<p:selectOneMenu id="processing" style="width:80px" value="#{defaultMBean.processing}">
+									<f:selectItems value="#{defaultMBean.lastMounts()}" />
+								</p:selectOneMenu>
+								
+								<p:outputLabel for="establishment" value="Estabelecimento: *" style="float: right;" />
+								<h:panelGroup>
+									<p:inputText id="establishment" value="#{defaultMBean.establishment.name}" readonly="true" style="min-width:150px" />
+									<p:commandButton icon="ui-icon-search" id="ng-btn-matrix-search" resetValues="true"
+										onclick="PF('zoomEstUser').show();"
+										global="false"
+										update=":zoomEstUser:zoomEstUserForm:zoomEstUsertbStabelecimento :zoomEstUser:zoomEstUserForm:zoomEstUserPanelGrid"
+										immediate="true">
+									</p:commandButton>
+								</h:panelGroup>
+								
+								<p:spacer></p:spacer>
+								<p:commandButton ajax="false" 
+											immediate="false"
+											update=":messages"
+											icon="fa fa-download" 
+											styleClass="ng-button"
+											onclick="PrimeFaces.monitorDownload(start, stop);" 
+											actionListener="#{defaultMBean.prepareDownload}"
+												value="Gerar Laudo">
+												<p:fileDownload value="#{defaultMBean.documentPDF}" />
+								</p:commandButton>
+							</p:panelGrid>
+				</ng:ngViewBlank>
+				<script type="text/javascript">
+					function start() {
+						 PF('statusDialog').show();
+					}
+					function stop() {
+					    PF('statusDialog').hide();
+					}
+				</script>
+			</p:outputPanel>
+		</h:form>
+		<!-- DIALOG ESTABELECIMENTOS -->
+		<dialogEstab:dialogEstablishment id="zoomEstUser"
+								enabledSelectionMode="false" 
+								renderBtnSelectAll="false"
+								defaultMBs="#{nfeAuditorOccurrenceReportMB}"
+								updateField=":zoomEstUser:zoomEstUserForm:zoomEstUsertbStabelecimento" 
+							/>
+	</ui:define>
+</ui:composition>

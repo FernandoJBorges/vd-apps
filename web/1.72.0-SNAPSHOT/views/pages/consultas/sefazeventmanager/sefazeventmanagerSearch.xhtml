@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:c="http://java.sun.com/jstl/core" 
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:ngTab="http://java.sun.com/jsf/composite/common/component/view/tabview"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	template="/common/templates/search/ngSearchTemplate.xhtml">
+	<ui:param name="defaultMBean" value="#{sefazEventMB}" />
+	<ui:param name="documentListMBean" value="#{defaultMBean.sefazEventListHelper}" />
+	<ui:param name="defaultFilterMBean" value="#{defaultMBean.sefazEventFilterMB}" />
+	<ui:define name="searchlistBlock">
+		<ngTab:ngViewSearch id="ng-search-comp" titleView="#{i18n['eventsefaz.label.title']}">
+			<f:facet name="last">
+				<h:outputStylesheet library="css" name="document.css" />
+				<h:outputStylesheet library="css" name="sefazevent.css" />
+			</f:facet>
+			<ngTab:ngTabView id="ng-tabview-search" additionalUpdate="ng-form:ng-toolbar:toolbarContainer">
+				<p:outputPanel class="ui-fluid document-filter-panel">
+					<p:outputPanel class="ui-g">
+						<ngTab:ngTabViewBasic id="ng-tabview-basic">
+							<ui:include src="documentFilters.xhtml" />
+						</ngTab:ngTabViewBasic>
+					</p:outputPanel>
+					<p:outputPanel class="ui-g">
+						<ngTab:ngTabViewAdvanced id="ng-tabview-advanced">
+							<ui:include src="documentFilterAdvanced.xhtml" />
+						</ngTab:ngTabViewAdvanced>
+					</p:outputPanel>
+				</p:outputPanel>
+			</ngTab:ngTabView>
+		</ngTab:ngViewSearch>
+		<ng:ngSelectedActions id="ng-selected-actions" showLegend="false" showActionsButton="false" />
+		<ngComp:fileDownloadStatus />
+		<ngComp:ngToolbar id="ng-toolbar" hasExport="true">
+ 			<ui:include src="actions.xhtml" />
+ 		</ngComp:ngToolbar>
+		<ng:ngDataTable id="ng-detail-dataTable" btnRenderSelection="true" customAction="true">
+			<ui:include src="table.xhtml" />
+		</ng:ngDataTable>
+	</ui:define>
+	<ui:define name="addDialogBlock">
+		<ui:include src="../document/events/sendmail/documentSendMail.xhtml">
+			<ui:param name="documentSendMailMB" value="#{defaultMBean.documentSendMailMB}" />
+		</ui:include>
+	</ui:define>
+</ui:composition>

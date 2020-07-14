@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ngDialog="http://java.sun.com/jsf/composite/common/component/dialog"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+			<!-- CRIA CARTA DE COREÇÃO ELETRONICA --> 
+			<h:form id="ng-invoice-manifest-cce" prependId="true">
+				<ngDialog:ngDialogConfirm 
+						width="533" 
+						id="dialogCreateCCE"
+						widgetVar="dialogCreateCCE"
+						titleBtnConfirm="#{i18n['btn_action_confirm']}"
+						titleBtnCancel="#{i18n['btn_action_cancel']}"
+						header="#{i18n['invoice.manifest.correction.letter.header']}" 
+						btnActionConfirm="#{invoiceCreateCCEMB.createSefazEventCCE()}"
+						updateGrid=":ng-form:ng-panel-crud">
+					<p:outputPanel  id="ng-invoice-manifest-panel" style="background:#fff;padding:10px;border-radius:10px">
+						<p:accordionPanel activeIndex="1" multiple="true">
+							 <p:tab title="Dados da NF-e">
+									<p:panelGrid columns="2" columnClasses="column1,column2">
+										<p:outputLabel value="#{i18n['invoice.manifest.correction.letter.serie']}" />
+											<h:panelGroup>
+												<h:outputText value="#{defaultMBean.invoiceDetailData.notaSerie}" />
+												<p:outputLabel value="#{i18n['invoice.manifest.correction.letter.num']}" style="margin:15px" />
+												<h:outputText value="#{defaultMBean.invoiceDetailData.notaNumero}"  />
+											</h:panelGroup>
+										<p:outputLabel value="#{i18n['invoice.manifest.correction.letter.emission']}" />
+											<h:outputText value="#{defaultMBean.invoiceDetailData.notaEmissao}" />
+										<p:outputLabel value="#{i18n['invoice.manifest.correction.letter.key']}" />
+											<h:outputText value="#{defaultMBean.invoiceDetailData.notaChave}" />
+										<p:outputLabel value="#{i18n['invoice.manifest.correction.letter.drawer']}" />
+											<h:panelGroup>
+												<h:outputText value="#{defaultMBean.invoiceDetailData.emitenteCnpj} - " />
+												<h:outputText value="#{defaultMBean.invoiceDetailData.emitenteNome}" />			
+											</h:panelGroup>
+										<p:outputLabel value="#{i18n['invoice.manifest.correction.letter.addresse']}" />
+											<h:panelGroup>
+												<h:outputText value="#{defaultMBean.invoiceDetailData.destinatarioCnpj} - " />
+												<h:outputText value="#{defaultMBean.invoiceDetailData.destinatarioNome}" />
+											</h:panelGroup>
+									</p:panelGrid>
+							</p:tab>
+							 <p:tab title="Dados da CC-e">
+								 <p:panelGrid columns="2" columnClasses="column1,column2">
+										<p:outputLabel value="#{i18n['invoice.manifest.typemanifest']}" />
+										<p:outputLabel value="#{i18n['invoice.manifest.correction.letter.typemanifest']}" />
+										<p:outputLabel value="#{i18n['invoice.manifest.datemanifest']}" />
+										<h:panelGroup>
+											<p:calendar id="processing" required="true" label="#{i18n['invoice.manifest.datemanifest']}:"
+														value="#{invoiceCreateCCEMB.sefazEventVO.emissionDate}"
+														locale="pt" 
+														showOn="button" 
+														pattern="#{defaultMBean.layouts.DATE.format}"
+														styleClass="dateTimeField" />
+											<p:outputLabel value="#{i18n['invoice.manifest.gmt']}:" style="margin:10px"/>
+											<p:outputLabel value="#{invoiceCreateCCEMB.sefazEventVO.sefazGMTData.sefazGmt}" />
+										</h:panelGroup>
+										<p:outputLabel value="#{i18n['invoice.manifest.correction.letter.correction']}" />
+										<h:panelGroup>
+											<h:inputTextarea rows="5" label="#{i18n['invoice.manifest.correction.letter.correction']}:"
+															cols="36"
+															autoResize="false" 
+															id="correction" 
+															style="resize:none"
+															maxlength="255"
+															required="true"
+															value="#{invoiceCreateCCEMB.sefazEventVO.correction}">
+															<f:validateLength minimum="15" />
+											</h:inputTextarea>
+											<ngComp:ngHelp messageHelp="#{i18n['invoice.manifest.correction.letter.help']}" style="margin-top:6px;"/>
+										</h:panelGroup>
+									</p:panelGrid>
+							</p:tab>
+						</p:accordionPanel>
+					</p:outputPanel>
+			</ngDialog:ngDialogConfirm>
+			</h:form>   
+</ui:composition>

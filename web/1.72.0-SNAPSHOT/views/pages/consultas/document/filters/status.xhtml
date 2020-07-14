@@ -1,0 +1,14 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+	<p:outputPanel styleClass="ui-g-2">
+		<p:outputLabel for="documentstatus" value="#{i18n['document.label.status']}:" />
+		<p:selectOneMenu id="documentstatus" value="#{defaultFilterMBean.filterVO.status}">
+			<f:selectItems var="status" 
+						value="#{defaultFilterMBean.statusTypes}" 
+						itemValue="#{status}"
+						itemLabel="#{i18n[utils:getEnumQualifiedName(status).concat('.').concat(docType)]}" />
+		</p:selectOneMenu>
+	</p:outputPanel>
+</ui:fragment>

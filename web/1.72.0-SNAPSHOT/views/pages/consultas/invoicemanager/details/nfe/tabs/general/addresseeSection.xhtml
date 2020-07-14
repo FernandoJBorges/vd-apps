@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div class="ui-g-12 document-detail-column">
+		<!-- Status -->
+		<div class="ui-g-4">
+			<p:outputLabel value="#{i18n['invoice.label.nome.razao']}:" /><br/>
+			<h:outputText value="#{addresse.name}" />
+		</div>
+
+		<!-- CNPJ -->
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['invoice.label.details.addressee.doc']}:" /><br/>
+			<h:outputText value="#{addresse.cnpj}" />
+		</div>
+
+		<!-- Inscrição Estadual -->
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['invoice.label.inscricao.estadual']}:" /><br/>
+			<h:outputText value="#{addresse.inscricaoEstadual}" />
+		</div>
+
+		<!-- Telefone -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['establishment.label.address.phone']}:" /><br/>
+			<h:outputText value="#{addresse.phone}" />
+		</div>
+	</div>
+
+	<div class="ui-g-12 document-detail-column">
+		<!-- Indicador IE -->
+		<div class="ui-g-4">
+			<p:outputLabel value="#{i18n['invoice.label.detail.ie.indicator']}:" /><br/>
+			<h:outputText converter="#{addresseIEIndicatorConverter}" value="#{addresse.indicadorIE}" />
+		</div>
+
+		<!-- UF -->
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['document.label.uf']}:" /><br/>
+			<h:outputText value="#{addresse.uf}" />
+		</div>
+
+		<!-- País -->
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['invoice.label.detail.drawer.country']}:" /><br/>
+			<h:outputText value="#{addresse.country}" />
+		</div>
+	</div>
+
+</ui:composition>

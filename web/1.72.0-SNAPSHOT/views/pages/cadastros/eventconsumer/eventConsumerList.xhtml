@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/crud/register"
+	xmlns:ngView="http://java.sun.com/jsf/composite/common/component/view/crud"
+	xmlns:pe="http://primefaces.org/ui/extensions" 
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:ngCommon="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:dialog="http://java.sun.com/jsf/composite/common/component/dialog"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	template="/common/templates/crud/ngCrudTemplate.xhtml">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{eventConsumerMBean}" />
+	<!-- bloco de pesquisa -->
+	<ui:define name="searchlistBlock">
+		<c:if test="#{defaultMBean.errorMsg != null}">
+			<ngComp:ngMessage message="#{defaultMBean.errorMsg}" messageType="warn"></ngComp:ngMessage>
+		</c:if>
+		<ngView:ngCrudSearch id="ng-search-comp" titleView="#{i18n['eventConsumer.label.title']}" disableAutoFocus="true">
+			<div class="ui-g ui-fluid">
+						<div class="ui-g-2">
+								<p:outputLabel for="eventTypeComp"
+									value="#{i18n['eventConsumer.label.eventType']}:" />
+								<p:selectCheckboxMenu id="eventTypeComp"
+										value="#{defaultMBean.params.selectedEvents}"
+										itemLabel="#{defaultMBean.params.searchEventDesc(events)}"
+										converter="#{eventTypeConverter}"
+										label="#{i18n['lbl_all']}"
+										filter="true" filterMatchMode="contains">
+									<f:selectItems value="#{defaultMBean.events}"
+											var="events"
+											itemValue="#{events}"
+											itemLabel="#{i18n[utils:getEnumQualifiedName(events)]}" />
+								</p:selectCheckboxMenu>
+						</div>
+						<div class="ui-g-2">
+							<p:outputLabel for="situation"
+								value="#{i18n['eventConsumer.label.situation']}:" />
+							<p:selectOneMenu id="situation"
+								value="#{defaultMBean.filters.situation}">
+								<f:selectItems value="#{defaultMBean.situationList}" />
+							</p:selectOneMenu>
+						</div>
+			</div>
+		</ngView:ngCrudSearch>
+		<ngCommon:ngSelectedActions id="ng-selected-actions" />
+		<ngView:ngDetailDataTable id="ng-detail-dataTable" btnRenderRemove="false" btnRenderEdit="false">
+		
+				<p:column headerText="#{i18n['label.title.exporter.actions']}" exportable="false" toggleable="false" style="width:30px">
+					<ngView:ngColumnActions btnDisabledRemove="#{!defaultMBean.isDeletableRow(row)}" /> 
+				</p:column>
+		
+				<p:column id="status" headerText="#{i18n['eventConsumer.label.situation']}" style="width:10px;text-align: center;white-space:normal !important;" exportable="false" toggleable="false">
+					<h:outputText value="" rendered="#{row.periodicity > 0}" class="fa fa-circle btn-color-green" title="#{i18n['eventConsumer.label.statusON']}"/>
+					<h:outputText value="" class="fa fa-circle btn-color-red" rendered="#{row.periodicity == 0}"  title="#{i18n['eventConsumer.label.statusOFF']}"/>
+				</p:column>
+				<p:column id="name" headerText="#{i18n['eventConsumer.label.consumer']}" sortBy="#{row.name}" style="width:150px">
+					<h:outputText value="#{row.name}" />
+				</p:column>
+				
+				<p:column id="periodicity"  headerText="#{i18n['eventConsumer.label.periodicity']}" style="width:100px">
+					<h:outputText value="#{row.periodicity}"/>
+				</p:column>
+				<p:column id="threads" headerText="#{i18n['eventConsumer.label.threads']}" style="width:70px">
+					<h:outputText value="#{row.simultaneousSize}"/>
+				</p:column>
+				<p:column id="numberOfRecords"  headerText="#{i18n['eventConsumer.label.numberOfRecords']}"  style="width:130px">
+					<h:outputText value="#{row.incrementSize}" />
+				</p:column>
+				<p:column id="eventTypes" styleClass="ng-truncate-column"  headerText="#{i18n['eventConsumer.label.eventTypes']}" style="max-width:115px">			
+					<h:outputText value="${row.events}" title="#{row.events}"  escape="false" style="white-space:pre;" styleClass="ng-truncate-output" />
+				</p:column>
+				<p:column id="standard"  headerText="#{i18n['eventConsumer.label.standard']}" style="width:56px">			
+					<h:outputText value="#{row.defaultConsumer}" converter="#{booleanToYesNoConverter}" />
+				</p:column>
+				<p:column id="lastUpdate"  headerText="#{i18n['eventConsumer.label.lastUpdate']}" style="width:125px">			
+					<h:outputText value="#{row.ngLastUpdate}">
+						<f:convertDateTime type="date" pattern="dd/MM/yyyy HH:mm"/>
+					</h:outputText>
+				</p:column>
+				<p:column id="lastExecution"  headerText="#{i18n['eventConsumer.label.lastExecution']}" style="width:115px">			
+					<h:outputText value="#{row.lastExecution}">
+						<f:convertDateTime type="date" pattern="dd/MM/yyyy HH:mm"/>
+					</h:outputText>
+				</p:column>
+				<p:column id="recordsLastExecution"  headerText="#{i18n['eventConsumer.label.recordsLastExecution']}" style="width:140px">					
+					<h:outputText value="#{row.lastEventsQtd}" />
+				</p:column>
+			</ngView:ngDetailDataTable>
+	</ui:define>
+	<!-- bloco de criacao edicao -->
+	<ui:define name="addUpdateBlock">
+	    <ngView:ngFormEdit id="ngFormEdit" titleView="#{i18n['eventConsumer.label.title']}" >
+			<p:tabView id="ngTabview">
+				<p:tab id="ngBasic" title="#{i18n.ngTabBasic}">
+					<p:panelGrid id="panelGridForm" columns="2" columnClasses="column1">
+				            <p:outputLabel for="name" value="#{i18n['eventConsumer.label.name']}:" />
+				            <p:inputText size="50" id="name" value="#{defaultMBean.entity.name}" required="true" maxlength="80" disabled="#{defaultMBean.entity.defaultConsumer}" />
+				            <p:outputLabel for="status" value="#{i18n['eventConsumer.label.status']}:" />
+				            <h:panelGroup>
+								<p:inputSwitch value="#{defaultMBean.isEnableConsumer}"
+										id="status" style="float:left"
+										onLabel=" #{i18n['eventConsumer.label.statusON']}"
+										offLabel=" #{i18n['eventConsumer.label.statusOFF']}"
+										disabled="#{defaultMBean.changeStatusDisabled}">
+									<p:ajax listener="#{defaultMBean.enableDisableConsumer}"
+										update="periodicity" />
+								</p:inputSwitch>
+							</h:panelGroup>
+				            <p:outputLabel for="periodicity" value="#{i18n['eventConsumer.label.periodicity']}:" />
+				             <h:panelGroup>
+				            	<p:inputText size="7" id="periodicity" value="#{defaultMBean.entity.periodicity}" required="true" maxlength="6" disabled="#{!defaultMBean.isEnableConsumer}" validatorMessage="Periodicidade: informar valor maior que 0 (zero)">
+				            		<f:convertNumber integerOnly="true" type="number" />
+				            		<f:validateLongRange minimum="1" maximum="999999" />
+				            	</p:inputText>
+				            	<ngComp:ngHelp messageHelp="#{i18n['eventConsumer.label.periodicity.placeholder']}" />
+				            </h:panelGroup>
+				            <p:outputLabel for="threads" value="#{i18n['eventConsumer.label.threads']}:" />
+				             <h:panelGroup>
+				            	<p:inputText size="7" id="threads" value="#{defaultMBean.entity.simultaneousSize}" required="true" maxlength="4" validatorMessage="Threads: informar valor maior que 0 (zero)">
+				            		<f:convertNumber integerOnly="true" type="number" />
+				            		<f:validateLongRange minimum="1" maximum="9999" />
+				            	</p:inputText>
+				            	<ngComp:ngHelp messageHelp="#{i18n['eventConsumer.label.threads.placeholder']}" />
+				            	</h:panelGroup>
+				            <p:outputLabel for="numberOfRecordsField" value="#{i18n['eventConsumer.label.numberOfRecordsField']}:" />
+				             <h:panelGroup>
+				            	<p:inputText size="7" id="numberOfRecordsField" value="#{defaultMBean.entity.incrementSize}" required="true"  maxlength="4" validatorMessage="Quantidade de Registros: informar valor maior que 0 (zero)">
+				            		<f:convertNumber integerOnly="true" type="number" />
+				            		<f:validateLongRange minimum="1" maximum="9999" />
+				            	</p:inputText>
+				            	<ngComp:ngHelp messageHelp="#{i18n['eventConsumer.label.numberOfRecordsField.placeholder']}" />
+				            </h:panelGroup>
+				            <p:outputLabel value="#{i18n['eventConsumer.label.priority']}:" />
+				            <p:outputLabel value="#{defaultMBean.entity.priority}" converter="threadPriorityConverter"  />
+				            <p:outputLabel value="#{i18n['eventConsumer.label.standard']}:" />
+				            <p:outputLabel value="#{defaultMBean.entity.defaultConsumer}" converter="#{booleanToYesNoConverter}" />
+				               <p:outputLabel for="eventType" value="#{defaultMBean.stateUpdate ? i18n['eventConsumer.label.eventsIncluded'] : i18n['eventConsumer.label.eventsAvailable']}:" rendered="#{!defaultMBean.isNull()}"/>
+				               <p:outputLabel for="nullType" value="#{i18n['eventConsumer.label.eventsAvailable']}:" rendered="#{defaultMBean.isNull()}"/>
+						        <p:selectManyMenu  id="eventType" 
+											       required="#{!defaultMBean.entity.defaultConsumer and defaultMBean.entity.periodicity > 0}"
+											       value="#{defaultMBean.selectEvents}"
+											       style="height: auto; width: auto;" 
+											       rendered="#{!defaultMBean.isNull()}">
+												        	<f:selectItems	var ="evType" 
+												        		 			itemValue="#{evType.key}" 
+												        					value="#{defaultMBean.listEvents}"
+												        					itemLabel="#{i18n[utils:getEnumQualifiedName(evType)]}" 
+												        					converter="#{eventTypeConverter}" 
+												        					itemDisabled="#{defaultMBean.entity.defaultConsumer}" 
+												        					/>
+						        </p:selectManyMenu>
+						        
+						        <p:selectManyMenu id="nullType" required="true" value="#{defaultMBean.selectEvents}" style="height: auto; width: auto;" disabled="true" rendered="#{defaultMBean.isNull()}" >
+									<f:selectItem itemLabel="Nenhum Evento Disponivel" itemValue="null"/>
+						        </p:selectManyMenu>
+					</p:panelGrid>
+					<p:keyFilter for="periodicity" mask="int"/>
+					<p:keyFilter for="threads" mask="int"/>
+					<p:keyFilter for="numberOfRecordsField" mask="int"/>
+					<p:focus for="#{defaultMBean.setFocus()}"/>
+					<p:focus context="#{defaultMBean.setFocus()}"/>
+				</p:tab>
+			</p:tabView>
+		</ngView:ngFormEdit>
+	</ui:define>
+	<ui:define name="addDialogBlock">
+		<!-- Popup de confirma clonagem de registro -->
+		<h:form id="ng-modify-pass" prependId="true">
+			<dialog:ngDialogWarn id="dlConfirmInactiveConsumer" 
+									header="#{i18n['popup.msg.warn']}"
+									widgetVar="dlConfirmInactiveConsumer" 
+									>
+									<p:outputLabel value="#{i18n['eventConsumer.msg.disableConsumer.warn']}" />	
+			</dialog:ngDialogWarn>
+		</h:form>
+	</ui:define>	
+	
+</ui:composition>

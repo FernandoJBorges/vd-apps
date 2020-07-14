@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html">
+		<div class="document-check ui-g-7">
+			<div class="document-check-panel">
+					<h:panelGrid columns="1">
+						<p:selectBooleanCheckbox id="showOnlyEntryStoppedMoreFiveMinutes"
+							value="#{defaultFilterMBean.filterVO.showOnlyEntryStoppedMoreFiveMinutes}"
+							itemLabel="#{i18n['entry.label.showOnlyEntryStoppedMoreFiveMinutes']}">
+							<p:ajax update=":ng-form:ng-search-comp:ng-tabview-search:ng-tabview-basic:documentstatus" resetValues="true" global="false" listener="#{defaultFilterMBean.resetValueStatus}" />
+							</p:selectBooleanCheckbox>
+						<p:selectBooleanCheckbox id="showOnlyEntryUnidentifiedDoc"
+							value="#{defaultFilterMBean.filterVO.showOnlyEntryUnidentifiedDoc}"
+							itemLabel="#{i18n['entry.label.showOnlyEntryUnidentifiedDocument']}">
+							<p:ajax update=":ng-form:ng-search-comp:ng-tabview-search:ng-tabview-basic:messageType" resetValues="true" global="false"
+									listener="#{defaultFilterMBean.resetValueMessageType}" />
+						</p:selectBooleanCheckbox>
+						<p:selectBooleanCheckbox id="showOnlyEntryUnidentifiedEstab"
+							value="#{defaultFilterMBean.filterVO.showOnlyEntryUnidentifiedEstab}"
+							itemLabel="#{i18n['entry.label.showOnlyEntryUnidentifiedEstablisment']}">
+									<p:ajax update=":ng-form:ng-search-comp:ng-tabview-search:ng-tabview-basic:cnpj" resetValues="true" global="false"
+									listener="#{defaultFilterMBean.resetValueCNPJ}" />
+							</p:selectBooleanCheckbox>
+						<p:selectBooleanCheckbox id="showOnlyEntryManuallyUpload"
+							value="#{defaultFilterMBean.filterVO.showOnlyEntryManuallyUpload}"
+							itemLabel="#{i18n['entry.label.showOnlyEntryManuallyUpload']}" />
+					</h:panelGrid>
+			</div>
+		</div>
+</ui:composition>

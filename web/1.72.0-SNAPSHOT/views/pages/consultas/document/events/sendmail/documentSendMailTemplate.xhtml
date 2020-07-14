@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:p="http://primefaces.org/ui">
+	<!-- seta o enum corrente -->
+	<ui:param name="documentRecipientType" value="#{sendToConfigurationVO.documentRecipientType}" />
+	<!-- seta o titulo -->
+	<ui:param name="titleValue" value="#{i18n[utils:getEnumQualifiedName(documentRecipientType)]}" />
+	<!-- seta o Maxlength no textarea -->
+	<ui:param name="textareaMaxlength" value="#{i18n[utils:getEnumQualifiedName(documentRecipientType).concat('.').concat('textareaMaxlength')]}" />
+	<!-- seta o title do checkbox -->
+	<ui:param name="checkboxTitle" value="#{i18n[utils:getEnumQualifiedName(documentRecipientType).concat('.').concat('checkboxTitle').concat(documentSendMailMB.labelDocType)]}" />
+	<!-- seta o tooltilp do help -->
+	<ui:param name="titleHelp" value="#{i18n[utils:getEnumQualifiedName(documentRecipientType).concat('.').concat('help.tooltip')]}" />
+	<!-- seta o render do help -->
+	<ui:param name="renderHelp" value="#{documentSendMailMB.renderSendToHelp(documentRecipientType)}" />
+	<!-- seta o valor no textarea -->
+	<ui:param name="textareaRender" value="#{documentSendMailMB.renderSendTo(documentRecipientType)}" />
+	<!-- seta o valor no textarea -->
+	<ui:param name="textareaDisabled" value="#{documentSendMailMB.getSendToEditable(documentRecipientType)}" />
+	<!-- seta o valor no textarea -->  
+	<ui:param name="textareaValue" value="#{sendToConfigurationVO.value}" />
+	<!-- seta o render do checkbox --> 
+	<ui:param name="checkRendered" value="#{not documentRecipientType.editable}" />
+	<!-- seta o disabled do checkbox --> 
+	<ui:param name="checkDisabled" value="#{not documentSendMailMB.enableSendTo(documentRecipientType)}" />
+	<!-- seta o render do label sem checkbox -->	
+	<ui:param name="checkLabelRendered" value="#{documentRecipientType.editable}" />
+	
+	<!-- seta o valor no checkbox -->
+	<ui:param name="checkboxValue" value="#{sendToConfigurationVO.valueCheck}" />
+	<!-- seta o label do campo {textarea} usado na mesagem de validação e a mensagem {i18n} de validacao de email -->
+	<ui:param name="inputNameMailValidator" value="#{i18n[utils:getEnumQualifiedName(documentRecipientType).concat('.inputNameMailValidator')]}" />
+	<ui:param name="i18nMailValidator" value="#{i18n[utils:getEnumQualifiedName(documentRecipientType).concat('.i18nMailValidator')]}" />
+	
+	<div class="ui-g-12 ui-g-nopad">
+		<p:outputLabel id="title" value="#{titleValue}" styleClass="ng-subtitle ng-float-left" />
+		<p:outputPanel rendered="#{renderHelp}">
+			<ngComp:ngHelp messageHelp="#{titleHelp}" style="float:left;margin-top:10px;margin-left:-12px" />
+		</p:outputPanel>
+	</div>
+	<div class="ui-g-12 container-textarea">
+		<!-- checkbox -->
+		<div class="ui-g-12">
+			<p:selectBooleanCheckbox id="checkbox" value="#{checkboxValue}" styleClass="ng-float-left ng-font-weight-bold checkboxTitle" 
+ 				rendered="#{checkRendered}" disabled="#{checkDisabled}" itemLabel="#{checkboxTitle.concat(textareaRender?':':'.')}"/>
+ 			<p:outputLabel id="checkbox-label" value="#{checkboxTitle.concat(textareaRender?':':'.')}" styleClass="ng-float-left ng-font-weight-bold checkboxTitle" rendered="#{checkLabelRendered}" />
+		</div>
+		<div class="ui-g-12 textarea-div">
+			<p:inputTextarea id="text-area" 
+							rows="2"
+							counter="counter"
+							autoResize="true"
+							value="#{textareaValue}" 
+							label="#{inputNameMailValidator}:"
+							rendered="#{textareaRender}"
+							readonly="#{textareaDisabled}"
+							disabled="#{checkDisabled and textareaDisabled}"
+							maxlength="#{textareaMaxlength}" 
+							counterTemplate="#{i18n['label.input.text.counter.remaining']}">
+							<f:attribute name="inputName" value="#{inputNameMailValidator}" />
+							<f:attribute name="i18n" value="#{i18nMailValidator}" />
+							<f:validator binding="#{mailValidator}" />
+			</p:inputTextarea><br />
+			<p:outputLabel id="counter" rendered="#{!textareaDisabled}" styleClass="ng-font-weight-bold counter-text-area" />			
+		</div>		
+	</div>
+</ui:composition>

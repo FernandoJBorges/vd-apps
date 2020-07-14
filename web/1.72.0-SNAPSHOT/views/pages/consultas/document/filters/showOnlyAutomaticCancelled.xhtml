@@ -1,0 +1,13 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<p:selectBooleanCheckbox id="showOnlyAutomaticCancelled"
+							itemLabel="#{itemLabel}"
+							rendered="#{defaultFilterMBean.renderedCheckReceived()}"
+							value="#{defaultFilterMBean.filterVO.showOnlyAutomaticCancelled}">
+							<p:ajax process="@this" global="false"
+									listener="#{defaultFilterMBean.actionShowOnlyAutomaticCancelled()}" 
+									update=":ng-form:ng-search-comp:ng-tabview-search:ng-tabview-basic:documentstatus"
+									/>
+	</p:selectBooleanCheckbox>
+</ui:fragment>

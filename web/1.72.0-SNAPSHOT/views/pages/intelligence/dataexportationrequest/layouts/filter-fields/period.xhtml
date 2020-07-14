@@ -1,0 +1,25 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+	<div class="ui-g-2">
+		<p:outputLabel for="initial-#{field.fieldId}" value="#{fieldInitialDateLabel}:" />
+		<p:calendar id="initial-#{field.fieldId}"
+			value="#{field.value.from}" locale="pt" 
+			showOn="button" pattern="#{defaultMBean.layouts.DATE.format}"
+			maxdate="#{fieldInitialDateMaxDate}"
+			a:autofocus="true"
+			maxdateid="ng-form:ngFormEdit:ngTabview:final-#{field.fieldId}">			
+			<f:validator binding="#{nonFutureDateTimeValidator}" />
+			<f:validator binding="#{periodFinalDateTimeValidator}" />
+		</p:calendar>
+	</div>
+	<div class="ui-g-2">
+		<p:outputLabel for="final-#{field.fieldId}" value="#{fieldFinalDateLabel}:" />
+		<p:calendar id="final-#{field.fieldId}"
+			value="#{field.value.to}" locale="pt"
+			showOn="button" pattern="#{defaultMBean.layouts.DATE.format}">
+		</p:calendar>
+	</div>
+</ui:fragment>

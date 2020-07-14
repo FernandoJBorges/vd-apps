@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/crud"
+	xmlns:ngCommon="http://java.sun.com/jsf/composite/common/component/view/search"
+	template="/common/templates/crud/ngCrudTemplate.xhtml">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{technicalManagerMB}" />
+	<!-- bloco de pesquisa -->
+	<ui:define name="searchlistBlock">
+		<style type="text/css">
+.btn-new {
+	display: none 
+}
+</style>
+		<ng:ngCrudSearch id="ng-search-comp"
+			titleView="#{i18n['technicalManager.label.title']}"
+			renderedButtonCreate="false">
+			<ui:include src="technicalManagerSearchFilters.xhtml" />
+		</ng:ngCrudSearch>
+
+		<ngCommon:ngSelectedActions id="ng-selected-actions"
+			showActionsButton="false" />
+
+		<ng:ngDetailDataTable id="ng-detail-dataTable" btnRenderRemove="false"
+			btnRenderEdit="false">
+			<ui:include src="technicalManagerSearchTable.xhtml" />
+		</ng:ngDetailDataTable>
+
+	</ui:define>
+
+	<!-- bloco de criação e edição -->
+	<ui:define name="addUpdateBlock">
+		<ui:include src="technicalManagerForm.xhtml" />
+	</ui:define>
+
+	<!-- BLOCO NOTITY, QUEUE, RULES E DIALOGS-->
+	<ui:define name="addDialogBlock">
+	</ui:define>
+
+</ui:composition>

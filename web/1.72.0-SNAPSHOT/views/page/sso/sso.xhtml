@@ -1,0 +1,49 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:composition template="/common/templates/blank/blank.xhtml">
+        <ui:define name="content">
+            <h:outputStylesheet name="sso.css" library="css" />
+            <p:outputPanel styleClass="ng-sso">
+                <c:if test="${param.portalUser != null}">
+                    <div class="fa fa-exclamation-triangle" />
+                    <label>#{i18n['msg.sso.info.mustAccessPortalNG']}</label>
+                </c:if>
+                <c:if test="${param.communicationFailure != null}">
+                    <div class="fa fa-exclamation-triangle" />
+                    <label>#{i18n['msg.sso.error.communicationFailure']}</label>
+                </c:if>
+                <c:if test="${param.userNotFound != null}">
+                    <div class="fa fa-exclamation-triangle" />
+                    <label>#{i18n['msg.sso.error.userNotFound']}</label>
+                </c:if>
+                <c:if test="${param.noPermissionToAccessProduct != null}">
+                    <div class="fa fa-exclamation-triangle" />
+                    <label>#{i18n['msg.sso.error.noPermissionToAccessProduct']}</label>
+                </c:if>
+                <c:if test="${param.tenantNotFound != null}">
+                    <div class="fa fa-exclamation-triangle" />
+                    <label>#{i18n['msg.sso.info.mustAccessPortalNG']}</label>
+                </c:if>
+                 <c:if test="${param.invalidSession != null}">
+                    <div class="fa fa-exclamation-triangle" />
+                    <label>#{i18n['msg.multilogout.invalidatedbylogin']}</label>
+                </c:if>
+                <c:if test="${param.disabledUser != null}">
+                    <div class="fa fa-exclamation-triangle" />
+                    <label>#{i18n['msg.sso.error.disabledUser']}</label>
+                </c:if>                
+                <br />
+                <h:form>
+                    <p:commandButton value="#{i18n['msg.sso.button.returnToPortal']}" 
+	               		styleClass="ng-ui-button" 
+	               		action="#{singleSignOnMB.redirectToPortalNG}" 
+	              		ajax="false" />
+                </h:form>
+            </p:outputPanel>
+        </ui:define>
+    </ui:composition>
+</html>

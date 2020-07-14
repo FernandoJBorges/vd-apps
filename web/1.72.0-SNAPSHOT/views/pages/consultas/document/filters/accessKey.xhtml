@@ -1,0 +1,37 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component">
+	<div class="ui-g-12 ui-g-nopad">
+		<div class="ui-g-6 ui-g-nopad">
+			<div class="ui-g-11 ui-g-nopad">
+				<p:outputLabel for="accessKeyIni" value="#{i18n['document.label.accesskey']}:" />
+				<p:inputMask id="accessKeyIni" 
+								autoClear="false"
+								value="#{defaultFilterMBean.filterVO.initialAccessKey}"
+								mask="#{defaultMBean.layouts.ACCESSKEY.searchMask}"
+								validatorMessage="#{i18n['document.msg.error.accessKeyNotNumberAdv']}">
+								<f:validator binding="#{accessKeyValidator}" />
+				</p:inputMask>
+			</div>
+			<div class="ui-g-1 ui-g-nopad ng-label-to">
+				<h:outputLabel value="a"></h:outputLabel>
+			</div>
+		</div>
+		<div class="ui-g-5 ui-g-nopad">
+			<p:spacer />
+			<p:inputMask id="accessKeyEnd" 
+							autoClear="false"
+							value="#{defaultFilterMBean.filterVO.finalAccessKey}"
+							mask="#{defaultMBean.layouts.ACCESSKEY.searchMask}"
+							validatorMessage="#{i18n['document.msg.error.accessKeyNotNumberAdv']}">
+							<f:validator binding="#{accessKeyValidator}" />
+			</p:inputMask>
+		</div>
+		<div class="ui-g-1 ui-g-nopad ng-help-range-key">
+			<ng:ngHelp	messageHelp="#{i18n['invoice.help.advFilter.rangeKey']}" style="margin-top:15px;" />
+		</div>
+	</div>
+</ui:fragment>

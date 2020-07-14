@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+			<p:menuitem id="manifestAction"
+						value="#{i18n['invoice.label.action.manifest']}"
+						icon="icon-flag"
+						action="#{invoiceCreateManifestMB.prepareCreateManifest('SELECTION')}"
+						update=":ng-form :ng-panel-crud-dialog :ng-form:ng-panel-crud :messages"
+						styleClass="ng-context-menu-item"
+						rendered="#{defaultMBean.functionalityHelper.isManifestRendered()}"
+						disabled="#{defaultMBean.filters.actionRegistrationManifest}"
+						immediate="true" resetValues="true">
+			</p:menuitem>
+            <p:menuitem id="dowloadSefazAction"
+                        value="#{i18n['invoice.label.action.dowloadSefaz']}"
+                        icon="icon-cloud-download"
+                        disabled="#{defaultMBean.downloadSefazMB.isButtonDisabled(defaultMBean.lazyModelSelection, defaultMBean.cacheNfeSummary)}"
+                        styleClass="ng-context-menu-item"
+                        rendered="#{defaultMBean.functionalityHelper.isDownloadSefazRendered()}"
+                        immediate="true"
+                        global="false"
+                        onclick="PF('dialogDownloadSefaz').show()">
+            </p:menuitem>
+			<p:menuitem id="reprocessAction"
+						value="#{i18n['document.label.action.reprocess.selection']}"
+						icon="icon-reprocessNFE"
+						action="#{defaultMBean.nfeReprocessMB.reprocessDocuments()}"
+						update=":messages"
+						disabled="#{defaultMBean.filters.actionReprocess}" 
+						styleClass="ng-context-menu-item" 
+						rendered="#{defaultMBean.functionalityHelper.isReprocessRendered()}"
+						immediate="true">
+			</p:menuitem>
+			<p:menuitem id="dowloadXmlAction"
+						value="#{i18n['document.label.action.downloads']}"
+						icon="icon-download-alt"
+						action="#{defaultMBean.prepareZipDownload()}"
+						ajax="false"
+						onclick="updateMessages()"
+						styleClass="ng-linkEvent ng-link-invoice-erp"
+						disabled="#{defaultMBean.filters.actionDownloadDocument}"
+						rendered="#{defaultMBean.functionalityHelper.hasPermitionForDownloadXML()}"
+						immediate="true">
+			</p:menuitem>
+			<p:menuitem id="sendEmailAction"
+						value="#{i18n['document.label.action.emails']}"
+						icon="icon-sendToEmail" 
+						action="#{invoiceMB.getDocumentSendMailMB().loadSendEmail()}"
+						styleClass="ng-linkEvent ng-link-invoice-erp"
+						disabled="#{defaultMBean.filters.actionSendMail}"
+						rendered="#{defaultMBean.functionalityHelper.isSendMailRendered()}"
+						update=":ng-form :ng-panel-crud-dialog :ng-form:ng-panel-crud :messages"
+						immediate="true" >
+				<p:resetInput target=":view-send-email:panel-send-email" />
+			</p:menuitem>
+			<p:menuitem id="generateDanfeLoteAction" 
+						value="#{i18n['invoice.label.action.danfeslot']}"
+						icon="icon-generateDanfeInBatch"
+						action="#{defaultMBean.actionEvent('dialogDanfesLot')}"
+						styleClass="ng-context-menu-item"
+						disabled="#{defaultMBean.filters.actionResendDanfeErp}" 
+						rendered="#{defaultMBean.functionalityHelper.isPrintDanfeRendered()}"
+						immediate="true" >
+			</p:menuitem>
+			<p:menuitem id="resendErpAction"
+						value="#{i18n['document.label.action.doctoerp']}"
+						icon="icon-sendERP"
+						action="#{defaultMBean.actionEvent('dialogResendDocsToERP')}"
+						update=":messages :resend-to-erp:dialogResendDocsToERP:ng-panel-status-approved"
+						disabled="#{defaultMBean.filters.actionResendInvoiceErp}"
+						rendered="#{defaultMBean.functionalityHelper.hasPermitionForSendDocToERP()}"
+						immediate="true" >
+			</p:menuitem>
+			<p:menuitem id="resendDAToERPAction"
+						value="#{i18n['invoice.label.action.danfeserp']}"
+						icon="icon-resendDanfeToERP"
+						action="#{defaultMBean.resendDAToERP}"
+						update=":messages"
+						disabled="#{defaultMBean.filters.actionResendDanfeErp}"
+						rendered="#{defaultMBean.functionalityHelper.isSendDanfeToERPRendered()}"
+						immediate="true" >
+			</p:menuitem>
+			<p:menuitem id="resendEdiAction"
+						value="#{i18n['document.label.action.resendEDI']}"
+						icon="icon-sendEDI"
+						action="#{defaultMBean.getSendDocumentToEDIMB().openSendToEDI()}"
+						update=":ng-form :ng-panel-crud-dialog :ng-form:ng-panel-crud :messages"
+						disabled="#{defaultMBean.filters.actionSendToEDI}"
+						rendered="#{defaultMBean.functionalityHelper.isSendToEDIRendered()}"
+						styleClass="ng-context-menu-item" immediate="true">
+			</p:menuitem>	
+			<p:menuitem id="createContingencyAction"
+						immediate="true" 
+						resetValues="true"
+						icon="icon-fire-extinguisher"
+						styleClass="ng-context-menu-item"
+						value="#{i18n['document.label.action.contingency']}"
+						rendered="#{defaultMBean.functionalityHelper.isContingencyRendered()}"
+						action="#{defaultMBean.nfeContingencyMB.prepareSendContingency()}"
+						disabled="#{defaultMBean.nfeContingencyMB.isContingencyDisabled()}"
+						update=":ng-form :ng-panel-crud-dialog :ng-form:ng-panel-crud :messages"
+						>
+			</p:menuitem>
+			<p:menuitem id="createCCeAction"
+						icon="fa fa-pencil-square-o"
+						value="#{i18n['document.label.action.cce']}"
+						action="#{defaultMBean.getCreateCCEMB().prepareEvent()}"
+						update=":ng-form :ng-panel-crud-dialog :ng-form:ng-panel-crud :messages"
+						styleClass="ng-context-menu-item"
+						rendered="#{defaultMBean.functionalityHelper.isRegisterCCeRendered()}"
+						disabled="#{defaultMBean.filters.actionCreateCCE}"
+						immediate="true"
+						resetValues="true">
+			</p:menuitem>
+			<p:menuitem id="sendDocAuditorAction"
+						value="#{i18n['invoice.label.action.resendToNTK']}"
+						update=":messages"
+						icon="icon-approveDocument"
+						action="#{defaultMBean.createEventSendDocNTK}"
+						styleClass="ng-context-menu-item"
+						disabled="#{defaultMBean.filters.actionResendToNTKDocument}" 
+						rendered="#{defaultMBean.functionalityHelper.isAuditRendered()}"
+						immediate="true" >
+			</p:menuitem>
+</ui:composition>

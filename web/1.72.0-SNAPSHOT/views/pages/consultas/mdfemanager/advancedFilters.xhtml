@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+	<!-- passa parâmetro para o template -->
+	<!-- bloco de pesquisa -->
+
+	<div class="ui-g-6 document-panel-filter-left">
+		<div class="ui-g-12 document-column-adv-12">
+			<ui:include src="../document/filters/accessKey.xhtml"></ui:include>
+		</div>
+		
+		<div class="ui-g-12 ">
+			<p:outputPanel styleClass="update-component">
+				<p:outputPanel styleClass="document-check-panel" rendered="#{defaultFilterMBean.renderedCheckEmitted()}">
+					<h:panelGrid columns="1">
+						<ui:include
+							src="../document/filters/showOnlyStoppedDocuments.xhtml">
+							<ui:param name="itemLabel"
+								value="#{i18n['mdfe.label.show.only.stopped']}" />
+						</ui:include>
+					</h:panelGrid>
+				</p:outputPanel>
+			</p:outputPanel>
+		</div>
+		
+		<div class="ui-fluid">
+			<ui:include src="../document/filters/fileUploaded.xhtml"></ui:include>
+		</div>
+	</div>
+
+	<div class="ui-g-6 document-panel-filter-right">
+		<div class="ui-g-12 ">
+			<div class="ui-g-3">
+				<p:outputPanel styleClass="update-component">
+					<p:outputLabel for="emissiontype"
+						value="#{i18n['invoice.label.emissiontype']}:" />
+					<p:selectOneMenu id="emissiontype"
+						value="#{defaultFilterMBean.filterVO.emissionType}">
+						<f:selectItems value="#{defaultFilterMBean.emissionTypes}"
+							var="emission" itemValue="#{emission}"
+							itemLabel="#{i18n[utils:getEnumQualifiedName(emission).concat('.legend').concat('.MDFE')]}" />
+					</p:selectOneMenu>
+				</p:outputPanel>
+			</div>
+
+			<div class="ui-g-3">
+				<p:outputPanel styleClass="update-component">
+					<p:outputLabel for="modal" value="#{i18n['document.label.modal']}:" />
+					<p:selectOneMenu id="modal"
+						value="#{defaultFilterMBean.filterVO.modal}">
+						<f:selectItems value="#{defaultFilterMBean.reportModalType}"
+							var="modal" itemValue="#{modal}"
+							itemLabel="#{i18n[utils:getEnumQualifiedName(modal)]}" />
+					</p:selectOneMenu>
+				</p:outputPanel>
+			</div>
+
+			<div class="ui-g-4">
+				<p:outputPanel styleClass="update-component">
+					<p:outputLabel for="associatedDFEType"
+						value="#{i18n['mdfe.label.associatedDFEType']}:" />
+					<p:selectOneMenu id="associatedDFEType"
+						value="#{defaultFilterMBean.filterVO.associatedDFEType}">
+						<f:selectItems value="#{defaultFilterMBean.associatedDFEType}"
+							var="associatedDFEType" itemValue="#{associatedDFEType}"
+							itemLabel="#{associatedDFEType.desc}" />
+					</p:selectOneMenu>
+				</p:outputPanel>
+			</div>
+
+			<div class="ui-g-1 ui-g-nopad ng-help-range-key">
+				<ng:ngHelp
+					messageHelp="#{i18n['mdfe.help.advFilter.associatedDFEType']}"
+					style="margin-top:23px;" />
+			</div>
+		</div>
+
+		<div class="ui-g-12 ">
+			<div class="ui-g-6">
+				<p:outputPanel styleClass="update-component">
+					<p:outputPanel>
+						<ui:include src="../document/filters/originMsg.xhtml"></ui:include>
+					</p:outputPanel>
+				</p:outputPanel>
+			</div>
+			<div class="ui-g-4">
+				<p:outputPanel styleClass="update-component">
+					<p:outputLabel for="associatedSerial"
+						value="#{i18n['mdfe.label.serialnumber.associated']}:" />
+					<p:inputNumber id="associatedSerial" maxValue="999999999"
+						minValue="0"
+						value="#{defaultFilterMBean.filterVO.associatedSerial}"
+						decimalPlaces="0" thousandSeparator="">
+						<p:ajax global="false" />
+					</p:inputNumber>
+				</p:outputPanel>
+			</div>
+			<div class="ui-g-1 ui-g-nopad ng-help-range-key">
+				<ng:ngHelp
+					messageHelp="#{i18n['mdfe.help.advFilter.associatedSerial']}"
+					style="margin-top:23px;" />
+			</div>
+		</div>
+		<div class="ui-g-12">
+			<p:outputPanel styleClass="update-component">
+				<ui:include src="../document/filters/lot.xhtml">
+					<ui:param name="classlotinitcontainer" value="ui-g-6" />
+				</ui:include>
+			</p:outputPanel>
+			<p:outputPanel styleClass="update-component">
+				<ui:include src="../document/filters/cnpj.xhtml">
+					<ui:param name="classgrid" value="ui-g-6" />
+					<ui:param name="renderedCNPJs" value="#{defaultFilterMBean.renderedCheckReceived()}" />
+					<ui:param name="outputLabel" value="#{i18n['mdfe.label.cnpj.terceiro']}" />
+					<ui:param name="idLabelForField" value="cnpjTerceiro" />
+					<ui:param name="cnpjID" value="#{defaultFilterMBean.filterVO.thirdpartyID}" />
+					<ui:param name="maxlength" value="#{maxlengthCNPJAndCPF}" />
+					<ui:param name="maskValue" value="#{maskValueCNPJAndCPF}" />
+					<ui:param name="validator" value="#{cnpjFilterValidator}" />
+					<ui:param name="labelForHelp" value="#{labelTextHelpFindMDFeReceiver}" />
+				</ui:include>
+			</p:outputPanel>
+			<div class="ui-g-4">
+				<p:outputPanel styleClass="update-component">
+					<p:outputLabel for="associatedNumber"
+						value="#{i18n['mdfe.label.docnumber.associated']}:" />
+					<p:inputNumber id="associatedNumber" maxValue="999999999"
+						minValue="0"
+						value="#{defaultFilterMBean.filterVO.associatedNumber}"
+						decimalPlaces="0" thousandSeparator="">
+						<p:ajax global="false" />
+					</p:inputNumber>
+				</p:outputPanel>
+			</div>
+
+			<div class="ui-g-1 ui-g-nopad ng-help-range-key">
+				<ng:ngHelp
+					messageHelp="#{i18n['mdfe.help.advFilter.associatedNumber']}"
+					style="margin-top:23px;" />
+			</div>
+		</div>
+	</div>
+</ui:composition>

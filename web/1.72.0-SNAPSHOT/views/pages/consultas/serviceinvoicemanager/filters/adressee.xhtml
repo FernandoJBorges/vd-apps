@@ -1,0 +1,15 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+	<p:outputPanel styleClass="ui-g-2">
+		<p:outputLabel for="cnpjcpfadressee" value="#{i18n['nfse.label.taker']}:" />
+		<p:inputMask id="cnpjcpfadressee" 
+					value="#{defaultFilterMBean.filterVO.addresseID}"
+					label="#{i18n['nfse.label.taker']}"
+					mask="#{defaultMBean.layouts.CNPJ.searchMask}"
+					autoClear="false">
+			<f:validator binding="#{cnpjAndCPFAndForeignFilterValidator}" />
+		</p:inputMask>
+	</p:outputPanel>
+</ui:fragment>

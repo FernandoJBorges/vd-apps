@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:p="http://primefaces.org/ui">
+	<div class="ui-g-3">
+		<p:outputLabel value="#{i18n['establishment.notifyevent.event']}" />
+		<p:selectOneMenu id="notifyevent" value="#{defaultMBean.notifyUID}">
+			<p:ajax update=":ng-create-edit-notifyvalue :ng-form-est-notify" listener="#{defaultMBean.changeNotifyEvent}" global="false" />
+			<f:selectItems value="#{defaultMBean.notifications[defaultMBean.notificationProjection.docTypeEnum]}" 
+						   var="notify" 
+						   itemLabel="#{notify.name}" 
+						   itemValue="#{notify.notifyUID}" 
+							/>
+		</p:selectOneMenu>
+	</div>
+	<div class="ui-g-1">
+		<ngComp:ngHelp messageHelp="#{defaultMBean.notificationProjection.description}" style="margin-left: -13px;margin-top: 15px;" />
+	</div>
+</ui:composition>

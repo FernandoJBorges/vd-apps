@@ -1,0 +1,6 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+		<p:outputLabel for="originMsg" value="#{i18n['invoice.label.originMsg']}:" />
+		<p:inputText id="originMsg" value="#{defaultFilterMBean.filterVO.originMsg}" maxlength="60" />
+</ui:fragment>

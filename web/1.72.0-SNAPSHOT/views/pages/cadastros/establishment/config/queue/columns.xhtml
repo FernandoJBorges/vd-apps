@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<p:column headerText="#{i18n['establishment.queue.queue']}" styleClass="column-queue">
+			<h:outputText value="#{row.queue}" />
+			<ngComp:ngHelp messageHelp="#{row.queueDescription}" escape="true" style="margin-left:2px;" />
+	</p:column>
+	<p:column  id="columnType" headerText="#{i18n['document.label.processtype']}" styleClass="column-type">
+			<h:outputText id="type" value="#{row.queueUID}">
+				<f:converter converterId="queueProcessTypeConverter" />
+ 				<f:attribute name="docType" value="#{row.docType}" />
+			</h:outputText>
+	</p:column>
+	<p:column headerText="#{i18n['establishment.queue.name']}" styleClass="ng-truncate-column column-queue-name">
+			<h:outputText value="#{row.queueName}"  styleClass="ng-truncate-output" title="#{row.queueName}" />
+	</p:column>
+	<p:column headerText="#{i18n['establishment.queue.layout']}" styleClass="ng-truncate-column column-layout">
+			<h:outputText value="#{row.layout}" styleClass="ng-truncate-output" title="#{row.layout}" >
+				<f:converter  binding="#{nfeLayoutTypeConverter}"/>
+			</h:outputText>
+	</p:column>
+	<p:column headerText="#{i18n['establishment.queue.xls']}" styleClass="column-download">
+		<p:commandButton	ajax="false" 
+							id="ng-download-xls"
+							icon="fa fa-download"
+							disabled="#{empty row.xslName}" 
+							onclick="PrimeFaces.monitorDownload(start, stop);" 
+							actionListener="#{defaultMBean.prepareDownloadXSL(row.xslName)}"  
+							title="#{i18n['establishment.queue.msg.downloadxls']} #{row.xslName}" 
+							>
+					<p:fileDownload value="#{defaultMBean.queueVO.downloadFilesXLS}" />
+		</p:commandButton>
+	</p:column>
+	<p:column headerText="#{i18n['establishment.queue.tcl']}" styleClass="column-download">
+		<p:commandButton	ajax="false" 
+							id="ng-download-tcl"
+							icon="fa fa-download"
+							disabled="#{empty row.tclName}" 
+							onclick="PrimeFaces.monitorDownload(start, stop);" 
+							actionListener="#{defaultMBean.prepareDownloadTCL(row.tclName)}"  
+							title="#{i18n['establishment.queue.msg.downloadtcl']} #{row.tclName}" 
+								>
+						<p:fileDownload value="#{defaultMBean.queueVO.downloadFilesTCL}"  mode="simple" skinSimple="true" />
+		</p:commandButton>
+	</p:column>
+	<p:column id="columnEdit" styleClass="column-actions">
+			<p:commandLink id="edit" action="#{defaultMBean.loadQueueValue}" disabled="#{establishmentMB.entity.dadQueue}" update=":messages">
+					<span title="#{i18n['tooltip.commandLink.edit']}" class="icon-pencil ng-icon" />
+					<f:setPropertyActionListener value="#{row}" target="#{defaultMBean.projectionVO}" /> 
+			</p:commandLink>
+	</p:column>	
+	<p:column id="columnRemove" styleClass="column-actions">
+			<p:commandLink id="remove" 
+							disabled="#{establishmentMB.entity.dadQueue or row.queueName == null}" 
+							onclick="PF('confirmDeletequeueValueVar').show();"
+							update=":messages">
+							<span title="#{i18n['tooltip.commandLink.delete']}" class="icon-trash ng-icon" />
+							<f:setPropertyActionListener value="#{row}" target="#{defaultMBean.projectionVO}" /> 
+			</p:commandLink>
+	</p:column>	
+</ui:composition>

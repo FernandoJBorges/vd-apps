@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:dialogFiscal="http://java.sun.com/jsf/composite/dialog"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+
+	<p:remoteCommand name="loadTabData" action="#{defaultMBean.loadTabData(defaultMBean.generalDataTab)}"
+		update="@(.ng-nfe-buttons) @(.document-detail-column) @(.document-detail-accordion-panel)" />
+
+	<p:outputPanel styleClass="ui-g ng-nfe-buttons">
+	
+		<dialogFiscal:dialogResendErp defaultMBean="#{defaultMBean}" id="resend-to-erp"/>
+
+		<!-- Espaço em branco -->
+		<p:outputPanel styleClass="ui-g-6"></p:outputPanel>
+
+		<p:outputPanel styleClass="ui-g-6">
+			<!-- Reenviear DACTE ao ERP -->
+			<p:commandButton id="btn-da-erp"
+				icon=" icon-resendDanfeToERP ng-button"
+				styleClass="ng-ui-button ng-float-right"
+				action="#{defaultMBean.resendDAToERP}"
+				value="#{i18n['cte.label.action.resendDACTE']}"
+				disabled="#{!defaultMBean.isPrintEnabled()}"  
+				rendered="#{defaultMBean.functionalityHelper.isSendDacteToERPRendered()}"
+			/>
+
+			<!-- Reenviar ao ERP -->
+			<p:commandButton id="btn-resend-erp"
+				immediate="true" 
+				update=":messages"
+				icon="icon-sendERP ng-button"
+				styleClass="ng-ui-button ng-float-right"
+				action="#{defaultMBean.actionEvent('dialogResendDocsToERP')}"
+				value="#{i18n['cte.label.details.buttons.resend.to.erp']}"
+				rendered="#{defaultMBean.functionalityHelper.hasPermitionForSendDocToERP()}" 
+				disabled="#{defaultMBean.isDisableBtnResendERP()}" />
+			
+			
+			<!-- GERAR DACTE -->
+			<p:commandButton id="btn-generate-da"
+					ajax="false"
+					icon="icon-print ng-button"
+					styleClass="ng-ui-button ng-float-right"
+					action="#{defaultMBean.actionEventGenerateDacte()}"
+					value="#{i18n['enum.category.dacte']}"
+					disabled="#{!defaultMBean.isPrintEnabled()}"
+					rendered="#{defaultMBean.hasPrintPermission()}"
+					update=":messages">
+			</p:commandButton>
+		</p:outputPanel>
+	</p:outputPanel>
+
+	<p:outputPanel styleClass="ui-g-12 document-detail-column">
+		<!-- Chave de Acesso -->
+		<p:outputPanel styleClass="ui-g-3">
+			<p:outputLabel value="#{i18n['document.label.accessKey']}:" />
+			<p:outputPanel>
+				<h:outputText id="detailsGeneralDataAccessKey" value="#{defaultMBean.detailData.generalData.accessKey}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Número do CT-e -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['document.label.documentnumber']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.number}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Serie do CT-e -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['document.label.serie']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.serialNumber}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Data de Emissão -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['cte.label.emissionDate']}"/>
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.emissionDate}"/>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Versão do CT-e -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['cte.label.xml.version']}" />
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.version}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Modal -->
+		<ui:include src="modalTypeField.xhtml">			
+			<ui:param name="modalType" value="#{defaultMBean.detailData.generalData.modalType}" />
+		</ui:include>
+	</p:outputPanel>
+
+	<p:outputPanel styleClass="ui-g-12 document-detail-column">
+		<!-- Tipo do Serviço -->
+		<p:outputPanel styleClass="ui-g-3">
+			<h:outputLabel value="#{i18n['cte.label.serviceType']}" />
+			<p:outputPanel>
+				<h:outputText value="#{i18n[utils:getEnumQualifiedNameWithDefaultValue(defaultMBean.detailData.generalData.serviceType, 'Enum.empty')]}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Finalidade -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['cte.label.finality']}" />
+			<p:outputPanel>
+				<h:outputText value="#{i18n[utils:getEnumQualifiedNameWithDefaultValue(defaultMBean.detailData.generalData.finality, 'Enum.empty')]}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Início da Prestação -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['cte.label.billingInit']}" />
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.billingInit}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Fim da Prestação -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['cte.label.billingEnd']}" />
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.billingEnd}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Valor Total do Sserviço -->
+		<p:outputPanel styleClass="ui-g-3">
+			<h:outputLabel value="#{i18n['cte.label.totalValue']}" />
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.totalValue}" />
+			</p:outputPanel>
+		</p:outputPanel>
+	</p:outputPanel>
+
+	<div class="ui-g-12 document-details-buttons-header-place">
+		<!-- Barra de botões para expandir/retrair o accordion -->
+		<ui:include src="../../../../../document/details/sections/acordionPanelHeader.xhtml" />
+	</div>
+
+	<div class="ui-g-12 document-detail-accordion-panel-place">
+		<p:accordionPanel id="accordionPanel" multiple="true" widgetVar="accordionPanel" activeIndex="0" class="document-detail-accordion-panel">
+			<p:tab title="#{i18n['cte.label.process.data.information']}">
+				<ui:include src="../../../../../document/details/sections/processDataSection.xhtml">
+					<ui:param name="processData" value="#{defaultMBean.detailData.generalData.processData}"></ui:param>
+				</ui:include>
+			</p:tab>
+			<p:tab title="#{i18n['cte.label.drawer']}">
+				<ui:include src="drawerSection.xhtml">
+					<ui:param name="drawer" value="#{defaultMBean.detailData.generalData.drawer}"></ui:param>
+				</ui:include>
+			</p:tab>
+			<p:tab title="#{i18n['cte.label.tomador']}">
+				<ui:include src="takerSection.xhtml">
+					<ui:param name="taker" value="#{defaultMBean.detailData.generalData.taker}"></ui:param>
+				</ui:include>
+			</p:tab>
+			<p:tab title="#{i18n['cte.label.remetente']}" rendered="#{defaultMBean.isRendererGeneralDataRemetenteSection()}">
+				<ui:include src="../../../../../document/details/sections/estabMinInfoWithUFSection.xhtml">
+					<ui:param name="estab" value="#{defaultMBean.detailData.generalData.sender}"></ui:param>
+				</ui:include>
+			</p:tab>
+			<p:tab title="#{i18n['cte.label.destinatario']}" rendered="#{defaultMBean.isRendererGeneralDataDestinatarioSection()}">
+				<ui:include src="../../../../../document/details/sections/estabMinInfoWithUFSection.xhtml">
+					<ui:param name="estab" value="#{defaultMBean.detailData.generalData.addressee}"></ui:param>
+				</ui:include>
+			</p:tab>
+			<p:tab title="#{i18n['cte.label.expedidor']}" rendered="#{defaultMBean.isRendererGeneralDataExpedidorSection()}">
+				<ui:include src="../../../../../document/details/sections/estabMinInfoWithUFSection.xhtml">
+					<ui:param name="estab" value="#{defaultMBean.detailData.generalData.dispatcher}"></ui:param>
+				</ui:include>
+			</p:tab>
+			<p:tab title="#{i18n['cte.label.recebedor']}" rendered="#{defaultMBean.isRendererGeneralDataRecebedorSection()}">
+				<ui:include src="../../../../../document/details/sections/estabMinInfoWithUFSection.xhtml">
+					<ui:param name="estab" value="#{defaultMBean.detailData.generalData.receiver}"></ui:param>
+				</ui:include>
+			</p:tab>
+			<p:tab title="#{i18n['cte.label.totals']}">
+				<ui:include src="totalsSection.xhtml">
+					<ui:param name="totals" value="#{defaultMBean.detailData.generalData.totals}"></ui:param>
+				</ui:include>
+			</p:tab>
+			<p:tab title="#{i18n['cte.label.cargo']}" rendered="#{defaultMBean.isRendererGeneralDataCargoSection()}">
+				<ui:include src="cargoSection.xhtml">
+					<ui:param name="cargo" value="#{defaultMBean.detailData.generalData.cargo}"></ui:param>
+				</ui:include>
+			</p:tab>
+			<p:tab title="#{i18n['cte.label.cargo.documents']}" rendered="#{defaultMBean.isRenderedGeneralDataCargoDocuments()}">
+				<ui:include src="cargoDocumentsSection.xhtml">
+					<ui:param name="cargoDocuments" value="#{defaultMBean.detailData.generalData.cargoDocuments}"></ui:param>
+				</ui:include>
+			</p:tab>
+			<p:tab title="#{i18n['cte.label.modal.information']}" rendered="#{defaultMBean.detailData.generalData.modal != null}">
+				<c:if test="#{defaultMBean.detailData.generalData.modal != null}">
+					<ui:include src="modalSection#{defaultMBean.getModalSectionName()}.xhtml">
+						<ui:param name="modalVO" value="#{defaultMBean.detailData.generalData.modal}" />
+					</ui:include>
+				</c:if>			
+			</p:tab>
+			<p:tab title="#{i18n['cte.label.complement']}" rendered="#{defaultMBean.isRenderedCompementSection()}">
+				<ui:include src="complementSection.xhtml">
+					<ui:param name="complement" value="#{defaultMBean.detailData.generalData.complement}" />
+				</ui:include>
+			</p:tab>
+			<p:tab title="#{i18n['cte.label.additional.informations']}">
+				<ui:include src="additionalInformationSection.xhtml">
+					<ui:param name="additionalInformation" value="#{defaultMBean.detailData.generalData.additionalInformation}" />
+				</ui:include>
+			</p:tab>
+		</p:accordionPanel>
+	</div>
+
+	<h:outputScript library="js" name="ondemand-loaddata.js"></h:outputScript>
+
+</ui:composition>

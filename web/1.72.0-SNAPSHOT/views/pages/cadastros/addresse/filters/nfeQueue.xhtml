@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<p:outputPanel class="ui-g-12">
+		<div class="ui-g-6">
+			<div class="ui-g-11 ui-g-nopad">
+				<p:outputLabel for="ediQueueNFE" value="#{i18n['addresse.label.nfeQueue']}:" style="white-space: nowrap"/>
+			</div>
+			<p:outputPanel styleClass="ui-g-11 ui-g-nopad">
+				<p:inputText id="ediQueueNFE" value="#{defaultMBean.filterVO.ediQueueNFE}" maxlength="120" style="min-width: 190px"/>
+			</p:outputPanel>
+			<div class="ui-g-1 ui-g-nopad">
+				<ngComp:ngHelp messageHelp="#{i18n['addresse.title.edi-nfeQueue.helper']}" class="addresse-helper" />
+			</div>
+		</div>
+	</p:outputPanel>
+</ui:composition>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/table">
+	<div class="ui-g-12 document-detail-column">
+		<!-- adicionar um render para o cancelamento -->
+		<p:outputPanel rendered="#{renderedList}">
+			<div class="ui-g-6 document-detail-column">
+				<p:outputLabel value="#{i18n['eventsefaz.request.extension.label.items']}:" />
+				<ng:ngSimpleDataTable value="#{defaultMBean.detailData.generalData.event.requestExtensionVOs}" emptyMessage="Nenhum item encontrado">
+					<p:column headerText="#{i18n['eventsefaz.request.extension.label.number.item']}">
+						<h:outputText value="#{row.numItem}" />
+					</p:column>
+					<p:column headerText="#{i18n['eventsefaz.request.extension.label.total.item']}">
+						<h:outputText value="#{row.qtdeItem}" />
+					</p:column>
+				</ng:ngSimpleDataTable>
+			</div>
+		</p:outputPanel>
+		<div class="ui-g-6 document-detail-column">
+			<!-- Numero do protocolo -->
+			<div class="ui-g-4">
+				<p:outputLabel
+					value="#{i18n['eventsefaz.label.details.protocol.number.nfe']}:" />
+				<h:outputText
+					value="#{defaultMBean.detailData.generalData.event.getNProt()}" />
+			</div>
+		</div>
+	</div>
+</ui:composition>

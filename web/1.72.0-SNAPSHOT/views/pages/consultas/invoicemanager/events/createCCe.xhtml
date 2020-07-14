@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:comp="http://java.sun.com/jsf/composite/component"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:param name="createEventMBean" value="#{defaultMBean.getCreateCCEMB()}" />
+	<p:outputPanel id="ng-invoice-cce-panel" rendered="#{createEventMBean.isStateCreateEvent()}">
+		<comp:createEventSefazComponent id="createCCeComponent" title="#{i18n['document.create.cce.title.nfe']}" 
+								establishment="#{createEventMBean.eventVO.document.addresse}" 
+								establishmentLabel="#{i18n['document.create.event.cce.label.addresse']}:"
+								termsUse="#{i18n['document.create.cce.condition.user.description']}:"
+								titleView="#{i18n['document.create.event.cce.title']}"
+								dataTitle="#{i18n['invoice.manifest.cce.data.title']}"
+								createEventMBean="#{createEventMBean}">
+								<div class="ui-g-12 justification-textarea-div">
+									<p:outputLabel value="#{i18n['document.create.event.cce.correction']}" for="correctionMessage" />
+									<p:inputTextarea id="correctionMessage"
+													value="#{createEventMBean.eventVO.sefazEventVO.correction}"
+													counterTemplate="#{i18n['label.input.text.counter.remaining']}"
+													counter="remainingCounter" 
+													autoResize="true" 
+													maxlength="1000"
+													required="true" 
+													cols="88" 
+													rows="5">
+													<f:validateLength minimum="15" />
+									</p:inputTextarea>
+									<p:focus id="focusID" for="correctionMessage" /><br />
+									<p:outputLabel id="remainingCounter" />
+								</div>
+		</comp:createEventSefazComponent>
+	</p:outputPanel>
+</ui:composition>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<div class="ui-g-12 document-detail-column">	
+		<ui:include src="modalTypeField.xhtml">
+			<ui:param name="modalType" value="#{modalVO.modalType}" />
+		</ui:include>		
+		<div class="ui-g-3">
+			<p:outputLabel value="#{defaultMBean.resolveLabelRNTRCOrTAF()}" /><br/>
+			<h:outputText value="#{modalVO.number}" />
+		</div>			
+	</div>
+</ui:composition>

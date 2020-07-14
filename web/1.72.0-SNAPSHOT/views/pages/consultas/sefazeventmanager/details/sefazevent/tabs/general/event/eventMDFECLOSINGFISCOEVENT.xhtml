@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<div class="ui-g-12 document-detail-column">
+		<div class="ui-g-4">
+			<p:outputLabel value="#{i18n['eventsefaz.mdfe.label.date.final']}:" />
+			<h:outputText id="closedDate" value="#{defaultMBean.detailData.generalData.event.eventClosedDate}" converter="eventMDFEClosingDateConverter" />
+		</div>
+		<div class="ui-g-4">
+			<p:outputLabel value="#{i18n['eventsefaz.mdfe.label.code']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.eventCity}" />
+		</div>
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['eventsefaz.mdfe.label.uf']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.eventUF}" />
+		</div>
+	</div>
+</ui:composition>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:dialogFiscal="http://java.sun.com/jsf/composite/dialog"
+	>
+
+	<h:outputScript library="js" name="nfeDetails.js" target="body"></h:outputScript>
+
+	<p:remoteCommand name="loadTabData" action="#{defaultMBean.loadTabData(defaultMBean.generalDataTab)}"
+		update="@(.document-detail-column) @(.ng-nfe-buttons) accordionPanel"/>
+	
+	<p:outputPanel styleClass="ui-g-12 ng-nfe-buttons">
+		
+		<!-- Espaço em branco -->
+		<p:outputPanel styleClass="ui-g-6"></p:outputPanel>
+
+		<p:outputPanel styleClass="ui-g-6">
+			<!-- Reenviar DANFE ao ERP -->
+			<p:commandButton id="btn-da-erp"
+				icon="icon-resendDanfeToERP ng-button"
+				styleClass="ng-ui-button ng-float-right"
+				value="#{i18n['nfce.label.action.danfetoerp']}"
+				disabled="#{defaultMBean.actionSendDanfeToSefaz.isDisabled(utils:singletonList(defaultMBean.getOrLoadLocalDocument()))}"
+				update=":messages"
+				rendered="#{defaultMBean.actionSendDanfeToSefaz.isRendered(defaultMBean.getOrLoadLocalDocument().getFlowTypeEnum())}"
+				action="#{defaultMBean.actionEvent('resendSefaz')}"
+			/>
+
+			<!-- Reenviar ao ERP -->
+			<p:commandButton id="btn-resend-erp"
+				icon="icon-sendERP ng-button"
+				styleClass="ng-ui-button ng-float-right"
+				value="#{i18n['invoice.label.details.buttons.resend.to.erp']}"
+				disabled="#{defaultMBean.getActionSendToErp().isDisabled(utils:singletonList(defaultMBean.getOrLoadLocalDocument()))}"
+				update=":messages"
+				rendered="#{defaultMBean.actionSendToErp.isRendered(defaultMBean.getOrLoadLocalDocument().getFlowTypeEnum())}"
+				action="#{defaultMBean.actionEvent('sendDocToERP')}"
+			/>
+
+			<!-- Gerar DANFE -->
+			<p:commandButton id="btn-generate-da"
+					ajax="false"
+					icon="icon-print ng-button"
+					styleClass="ng-ui-button ng-float-right"
+					value="#{i18n['nfce.label.danfe']}"
+					disabled="#{defaultMBean.actionDownloadDanfe.isDisabled(utils:singletonList(defaultMBean.getOrLoadLocalDocument()))}"
+					rendered="#{defaultMBean.actionDownloadDanfe.isRendered(defaultMBean.getOrLoadLocalDocument().getFlowTypeEnum())}"
+					action="#{defaultMBean.actionEvent('downloadDA')}"
+					update=":messages">
+			</p:commandButton>
+		</p:outputPanel>
+	</p:outputPanel>
+
+	<p:outputPanel styleClass="ui-g-12 document-detail-column">
+		<!-- Chave de Acesso -->
+		<p:outputPanel styleClass="ui-g-3">
+			<p:outputLabel value="#{i18n['document.label.accessKey']}:" />
+			<p:outputPanel>
+				<h:outputText id="detailsGeneralDataAccessKey" value="#{defaultMBean.detailData.generalData.accessKey}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Versão da Nota Fiscal -->
+		<p:outputPanel styleClass="ui-g-1">
+			<h:outputLabel value="#{i18n['invoice.label.xml.version']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.version}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Número da Nota Fiscal -->
+		<p:outputPanel styleClass="ui-g-1">
+			<h:outputLabel value="#{i18n['document.label.documentnumber']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.number}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Serie da Nota Fiscal -->
+		<p:outputPanel styleClass="ui-g-1">
+			<h:outputLabel value="#{i18n['document.label.serie']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.serialNumber}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Modelo da Nota Fiscal -->
+		<p:outputPanel styleClass="ui-g-1">
+			<h:outputLabel value="#{i18n['invoice.label.model']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.model}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Data de Emissão -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfce.label.emissiondate']}"/>
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.emissionDate}"/>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Tipo da Operação -->
+		<p:outputPanel styleClass="ui-g-1">
+			<h:outputLabel value="#{i18n['invoice.label.operation.type']}"/>
+			<p:outputPanel>
+				<h:outputText converter="operationTypeConverter" value="#{defaultMBean.detailData.generalData.operationType}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Valor total da Nota Fiscal -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['invoice.label.total.value']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.totalValue}" />
+			</p:outputPanel>
+		</p:outputPanel>
+	</p:outputPanel>
+
+	<div class="ui-g-12 document-details-buttons-header-place">
+		<!-- Barra de botões para expandir/retrair o accordion -->
+		<ui:include src="../../../document/details/sections/acordionPanelHeader.xhtml" />
+	</div>
+
+	<div class="ui-g-12 document-detail-accordion-panel-place">
+		<p:accordionPanel id="accordionPanel" multiple="true" widgetVar="accordionPanel" activeIndex="0" class="document-detail-accordion-panel">
+			<p:tab title="#{i18n['invoice.label.process.data.information']}">
+				<ui:include src="../../../document/details/sections/processDataSection.xhtml">
+					<ui:param name="digestValueLabel" value="nfce.label.digest.value" />
+					<ui:param name="processData" value="#{defaultMBean.detailData.generalData.processData}"></ui:param>
+				</ui:include>
+			</p:tab>
+			<p:tab title="#{i18n['document.label.drawer']}">
+				<ui:include src="../../../invoicemanager/details/nfe/tabs/general/drawerSection.xhtml">
+					<ui:param name="drawer" value="#{defaultMBean.detailData.generalData.drawer}"></ui:param>
+				</ui:include>
+			</p:tab>
+			<p:tab title="#{i18n['invoice.label.addresse']}" rendered="#{!defaultMBean.detailData.generalData.addresse.cnpj.isEmpty()}">
+				<ui:include src="general/addresseSection.xhtml">
+					<ui:param name="addresse" value="#{defaultMBean.detailData.generalData.addresse}"></ui:param>
+				</ui:include>
+			</p:tab>
+			<p:tab title="#{i18n['nfce.label.details.thirdparty']}" rendered="#{!defaultMBean.detailData.generalData.thirdPartyData.isEmpty()}">
+				<ui:include src="general/thirdPartySection.xhtml">
+					<ui:param name="items" value="#{defaultMBean.detailData.generalData.thirdPartyData}"></ui:param>
+				</ui:include>
+			</p:tab>
+			<p:tab title="#{i18n['invoice.label.detail.products']}">
+				<ui:include src="../../../invoicemanager/details/nfe/tabs/general/productsSection.xhtml">
+					<ui:param name="items" value="#{defaultMBean.detailData.generalData.items}"></ui:param>
+				</ui:include>
+			</p:tab>
+			<p:tab title="#{i18n['invoice.label.detail.total']}">
+				<ui:include src="../../../invoicemanager/details/nfe/tabs/general/totalsSection.xhtml">
+					<ui:param name="totals" value="#{defaultMBean.detailData.generalData.totals}"></ui:param>
+				</ui:include>
+			</p:tab>
+			<p:tab title="#{i18n['invoice.label.detail.transportation']}">
+				<ui:include src="../../../invoicemanager/details/nfe/tabs/general/transportationSection.xhtml">
+					<ui:param name="transportation" value="#{defaultMBean.detailData.generalData.transportation}"></ui:param>
+				</ui:include>
+			</p:tab>
+			<p:tab title="#{i18n['invoice.label.detail.additional.informations']}">
+				<ui:include src="../../../invoicemanager/details/nfe/tabs/general/additionalInformationSection.xhtml">
+					<ui:param name="additionalInformation" value="#{defaultMBean.detailData.generalData.additionalInformation}"></ui:param>
+				</ui:include>
+			</p:tab>
+		</p:accordionPanel>
+	</div>
+
+	<h:outputScript library="js" name="ondemand-loaddata.js"></h:outputScript>
+
+</ui:composition>

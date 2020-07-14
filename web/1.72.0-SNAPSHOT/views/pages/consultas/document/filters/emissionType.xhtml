@@ -1,0 +1,13 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+	<p:outputLabel for="emissiontype" value="#{i18n['invoice.label.emissiontype']}:" />
+	<p:selectOneMenu id="emissiontype" value="#{defaultFilterMBean.filterVO.emissionType}">
+					<f:selectItems value="#{defaultFilterMBean.emissionTypes}"
+									var="emission" 
+									itemValue="#{emission}" 
+									itemLabel="#{emission.desc}" 
+									/>
+	</p:selectOneMenu>
+</ui:fragment>

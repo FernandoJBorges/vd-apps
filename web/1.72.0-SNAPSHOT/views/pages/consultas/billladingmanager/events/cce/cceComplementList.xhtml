@@ -1,0 +1,85 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ngDialog="http://java.sun.com/jsf/composite/common/component/dialog"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/table"
+	xmlns:p="http://primefaces.org/ui">
+	<h:outputStylesheet library="css" name="componentes/ngSimpleDataTable.css" />
+	<p:outputPanel rendered="#{!createEventMBean.formCreateCCeRendered and not empty createEventMBean.cceInfoChangedVOs}">
+		<p:outputPanel styleClass="ui-g-12">
+			<p:dataTable id="listCCe" var="row" value="#{createEventMBean.cceInfoChangedVOs}"  editable="true"  styleClass="ng-dataTable-style" reflow="true" resizableColumns="true">
+	            <p:ajax event="rowEdit" update=":messages"  oncomplete="handleSubmitScrollTo(xhr, status, args)" />
+				<p:column id="columnGroup" headerText="#{i18n['document.create.event.cce.list.colunm.group']}" style="width:200px">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText id="rowgroup" value="#{row.changedGroup}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="changedGroup" value="#{row.changedGroup}" maxlength="20" required="true" label="#{i18n['document.create.event.cce.list.colunm.group']}"/>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column id="columnField" headerText="#{i18n['document.create.event.cce.list.colunm.field']}" style="width:200px">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText id="rowfield" value="#{row.changedField}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="changedField" value="#{row.changedField}" required="true"  maxlength="20" label="#{i18n['document.create.event.cce.list.colunm.field']}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column id="columnNumber" headerText="#{i18n['document.create.event.cce.list.colunm.number']}" style="width:60px">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText id="rownumber" value="#{row.changedItemNumber}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputNumber id="changedItemNumber" value="#{row.changedItemNumber}" decimalPlaces="0"  thousandSeparator="" maxValue="99" minValue="0" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column id="columnValue" headerText="#{i18n['document.create.event.cce.list.colunm.value']}">
+						<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText id="rowvalue" value="#{row.changedValue}" />
+						</f:facet>
+						<f:facet name="input">
+						<p:inputTextarea id="changedValue" 
+									rows="5" 
+									cols="88" 
+									autoResize="false"
+									value="#{row.changedValue}"
+									maxlength="500"
+									style="resize:none;float:left" required="true" size="10" label="#{i18n['document.create.event.cce.list.colunm.value']}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column id="columnEditor" style="width:32px">
+					<p:rowEditor id="rowEditor" />
+				</p:column>
+				<p:column  id="columnDelete" style="width:32px">
+					<p:commandLink id="linkDelete" action="#{createEventMBean.removeCCeComplement(row)}"
+						update=":createCCeComponent:ng-invoice-cce:ngFormCreate:cceComplementList">
+						<i class="fa fa-times-circle"></i>
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</p:outputPanel>
+	</p:outputPanel>
+	<p:outputPanel rendered="#{!createEventMBean.formCreateCCeRendered and empty createEventMBean.cceInfoChangedVOs}">
+		<p:outputPanel styleClass="ui-g-12">
+			<p:outputPanel id="ng-panel-simple-datatable-empty-message"
+				styleClass="simple-datatable-empty-list clearfix">
+				<span class="icon-area"> <i class="icon-search" /> <i
+					class="icon-warning-sign" />
+				</span>
+				<span class="message-area"> <p:outputLabel
+						id="ng-panel-simple-datatable-empty-message-label-default"
+						value="#{i18n['document.create.event.cce.list.empty']}" />
+				</span>
+			</p:outputPanel>
+		</p:outputPanel>
+	</p:outputPanel>
+</ui:composition>

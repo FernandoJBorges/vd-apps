@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/table">
+	<p:outputLabel value="#{i18n['eventsefaz.cte.deliveryreceipt.nProtCE.label']}:" />
+	<ui:param name="deliveryReceipt" value="#{defaultMBean.detailData.generalData.event.deliveryReceiptCancel}" />
+	<div class="ui-g-12 document-detail-column">
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['eventsefaz.cte.deliveryreceipt.nProt.label']}:" />
+			<h:outputText value="#{deliveryReceipt.NProt}" />
+		</div>
+		<div class="ui-g-4">
+			<p:outputLabel value="#{i18n['eventsefaz.cte.deliveryreceipt.nProtCE.label']}:" />
+			<h:outputText value="#{deliveryReceipt.NProtCE}" />
+		</div>
+	</div>
+</ui:composition>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+			<p:menuitem id="reprocessAction"
+						value="#{i18n['document.label.action.reprocess.selection']}"
+						icon="icon-reprocessNFE"
+						action="#{defaultMBean.actionEvent('reprocess')}"
+						update=":messages"
+						styleClass="ng-context-menu-item" 
+						immediate="true"
+						disabled="#{defaultMBean.actionReprocess.isDisabled(defaultMBean.lazyModelSelection)}">
+			</p:menuitem>
+			<p:menuitem id="dowloadXmlAction"
+						value="#{i18n['btn_action_download']}"
+						icon="icon-download-alt"
+						ajax="false"
+						onclick="updateMessages()"
+						action="#{defaultMBean.actionEvent('downloadZIP')}"
+						styleClass="ng-linkEvent ng-link-invoice-erp"
+						immediate="true"
+						disabled="#{defaultMBean.actionDownloadZip.isDisabled(defaultMBean.lazyModelSelection)}">
+			</p:menuitem>
+</ui:composition>

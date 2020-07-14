@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:dialogFiscal="http://java.sun.com/jsf/composite/dialog"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/table">
+	<p:remoteCommand name="loadTabData" action="#{defaultMBean.loadTabData(defaultMBean.generalDataTab)}" update="@(.document-detail-column) @(.ng-nfe-buttons) accordionPanel"/>
+	<!-- botoes de acoes -->
+	<ui:include src="buttonSection.xhtml" />
+	<!-- cabecalho do detalhe documento -->
+	<ui:include src="headerSection.xhtml" />
+	<div class="ui-g-12 document-details-buttons-header-place">
+		<!-- Barra de botões para expandir/retrair o accordion -->
+		<ui:include src="../../../../../document/details/sections/acordionPanelHeader.xhtml" />
+	</div>
+	<div class="ui-g-12 document-detail-accordion-panel-place">
+		<p:accordionPanel id="accordionPanel" multiple="true" widgetVar="accordionPanel" activeIndex="0" class="document-detail-accordion-panel">
+			<p:tab title="#{i18n['eventsefaz.label.process.data.information']}">
+				<ui:include src="processDataSection.xhtml" />
+			</p:tab>
+			<p:tab title="#{i18n['eventsefaz.label.drawer']}">
+				<ui:include src="drawerSection.xhtml" />
+			</p:tab>
+			<p:tab title="#{i18n['eventsefaz.label.additional.informations']}" rendered="#{defaultMBean.detailData.generalData.event != null}">
+				<ui:include src="event/event#{defaultMBean.getAdditionalInformationSectionName()}.xhtml" />
+			</p:tab>
+		</p:accordionPanel>
+	</div>
+	<h:outputScript library="js" name="ondemand-loaddata.js"></h:outputScript>
+</ui:composition>

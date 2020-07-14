@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+	<p:column id="columnDrawerName"
+			headerText="#{i18n['document.label.drawer']}" priority="4"
+			styleClass="ng-truncate-column document-drawer-column"
+			sortBy="#{row.drawer.name}">
+			<h:outputText id="drawerName" value="#{row.drawer.name}" title="#{row.drawer.establishmentID}" styleClass="ng-truncate-output" />
+	</p:column>
+</ui:composition>

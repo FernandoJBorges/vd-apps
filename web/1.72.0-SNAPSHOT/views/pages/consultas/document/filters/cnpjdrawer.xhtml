@@ -1,0 +1,18 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:p="http://primefaces.org/ui">
+	<p:outputPanel styleClass="ui-g-2">
+		<p:outputLabel for="cnpj" value="#{i18n['document.label.cnpj.emitente']}:" />
+		<p:inputMask id="cnpj"
+					value="#{defaultFilterMBean.filterVO.drawerID}"
+					tabIndex="1" 
+					label="#{i18n['document.label.cnpj.emitente']}"
+					mask="#{defaultMBean.layouts.CNPJ.searchMask}" 
+					autoClear="false">
+					<f:validator binding="#{cnpjFilterValidator}" />
+		</p:inputMask>
+	</p:outputPanel>
+</ui:fragment>

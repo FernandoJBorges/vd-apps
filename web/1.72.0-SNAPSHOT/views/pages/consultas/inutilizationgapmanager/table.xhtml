@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+	<ui:param name="defaultMBean" value="#{inutilizationGapMB}" />
+	<ui:param name="documentListMBean" value="#{inutilizationGapListMB}" />
+	<ui:param name="icon" value=".icon" />
+	<ui:param name="tooltip" value=".tooltip" />
+	<p:column id="columnSerialNumber"
+		headerText="#{i18n['inutilization.label.serie']}"
+		sortBy="#{row.serialNumber}"
+		styleClass="inutilizationgap-serial-column">
+		<h:outputText id="serialNumber" value="#{row.serialNumber}" />
+	</p:column>
+	<p:column id="columnDocNumber"
+		headerText="#{i18n['inutilizationgap.label.docnumber']}"
+		sortBy="#{row.docNumber}" styleClass="inutilizationgap-number-column">
+		<h:outputText id="docNumber" value="#{row.docNumber}" />
+	</p:column>
+	<p:column id="columnStatusDescription"
+		styleClass="ng-truncate-column inutilizationgap-status-column"
+		headerText="#{i18n['inutilization.label.status']}" priority="4">
+		<h:outputText id="statusDescription" value="#{row.statusDescription}"
+			title="#{row.statusDescription}" styleClass="ng-truncate-output" />
+	</p:column>
+	<p:column id="columnEstablishmentName"
+		headerText="#{i18n['inutilization.label.establishment']}"
+		styleClass="ng-truncate-column inutilizationgap-establishment-column"
+		sortBy="#{row.establishmentName}" priority="4">
+		<h:outputText id="establishmentName" value="#{row.establishmentName}"
+			title="#{row.establishmentID}" styleClass="ng-truncate-output" />
+	</p:column>
+</ui:composition>

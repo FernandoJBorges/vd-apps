@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component"
+	xmlns:ngTable="http://java.sun.com/jsf/composite/common/component/view/table">
+	
+	<!-- Valida se encontrou 1 ou mais documentos. Se encontrou somente 1 redireciona para a pagina de detalhes -->
+	<f:event type="preRenderView" listener="#{defaultMBean.validateAndRedirect()}" />
+	<p:outputPanel styleClass="ui-tabs-panels document-detail-index-panel">
+		<p:outputPanel styleClass="document-title-message" rendered="#{not empty defaultMBean.documentsAux}">
+			<h:outputText value="#{i18n['document.details.messge']}" />
+		</p:outputPanel>
+			<ngTable:ngSimpleDataTable 
+					id="ng-data-table" 
+					iconClass="icon-warning-sign" 
+					value="#{defaultMBean.documentsAux}"
+					emptyMessage="#{defaultMBean.emptyMessage}">
+						<p:column headerText="#{i18n['document.label.processtype']}">
+							<h:outputText value="#{i18n[utils:getEnumQualifiedName(row.flowType).concat('.process')]}"/>
+						</p:column>
+						<p:column headerText="#{i18n['document.details.owner.label']}">
+							<h:outputText value="#{row.ownerName}"/>
+						</p:column>
+						<p:column styleClass="ng-column-action" exportable="false" toggleable="false">
+							<h:outputLink value="#{request.contextPath}#{defaultMBean.getDocumentLink(row)}"
+								title="#{i18n['tooltip.commandLink.view.details.doc']}"
+								styleClass="ng-float-right">
+								<span class="icon-viewDetails ng-icon" title="#{i18n['tooltip.commandLink.view.details.doc']}" />
+							</h:outputLink>
+						</p:column>
+			</ngTable:ngSimpleDataTable>
+	</p:outputPanel>
+</ui:composition>

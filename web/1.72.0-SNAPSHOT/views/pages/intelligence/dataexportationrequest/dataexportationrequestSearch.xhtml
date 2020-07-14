@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:ngCrud="http://java.sun.com/jsf/composite/common/component/view/crud"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:dialog="http://java.sun.com/jsf/composite/common/component/dialog"
+	xmlns:dialogEstab="http://java.sun.com/jsf/composite/dialog"
+	xmlns:ngTable="http://java.sun.com/jsf/composite/common/component/view/table"
+	template="/common/templates/crud/ngCrudTemplate.xhtml">
+	
+	<ui:param name="defaultMBean" value="#{dataExportationRequestMB}" />
+	<ui:define name="searchlistBlock">	
+		<h:outputStylesheet library="css" name="dataexportation.css" />
+	
+		<ngCrud:ngCrudSearch id="ng-search-comp" titleView="#{i18n['dataexportation.label.title']}">
+			<div class="ui-g ui-g-nopad lb-resume-message">
+				<ngComp:ngContextMessages id="ng-context-messages" message="#{defaultMBean.initialInfoMessage}" />
+			</div>
+			<ui:include src="dataexportationrequestFilters.xhtml" />
+		</ngCrud:ngCrudSearch>
+		
+		<ng:ngSelectedActions id="ng-selected-actions" showActionsButton="false" />
+		
+		<ngComp:ngToolbar id="ng-toolbar">
+			<p:menuitem id="reprocessAction"
+						value="#{i18n['dataexportation.label.action.reprocess']}"
+						icon="icon-reprocessNFE"
+						action="#{defaultMBean.reprocess()}"
+						update=":messages :ng-form"
+						disabled="#{defaultMBean.isReprocessDisabled()}" 
+						styleClass="ng-context-menu-item" 
+						rendered="true"
+						immediate="true" />
+		</ngComp:ngToolbar>
+		
+		<ng:ngDataTable id="ng-detail-dataTable" btnRenderSelection="true">
+			<ui:include src="dataexportationrequestTable.xhtml" />
+		</ng:ngDataTable>
+		
+		<dialog:ngDialogWarn id="data-exportation-occurrences"
+				widgetVar="data-exportation-occurrences-view"
+				header="#{defaultMBean.occurrenceTitle}"
+				width="800">
+			
+			<ngTable:ngSimpleDataTable id="data-exportation-occurrences-table" value="#{defaultMBean.dataExportationOccurrences}" rows="10" paginator="true"
+					emptyMessage="#{i18n['dataexportation.msg.occurrences.notfound']}">
+				<p:column headerText="#{i18n['invoice.label.details.occurence']}" styleClass="data-exportation-occurrences-column-type">
+					<h:outputText value="#{i18n[utils:getEnumQualifiedName(row.occurrenceType)]}" />
+				</p:column>
+				 <p:column headerText="Data" styleClass="data-exportation-occurrences-column-date">
+					<h:outputText value="#{row.occurrenceDate}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" locale="pt_BR"/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="#{i18n['invoice.label.details.occurence.situation']}">
+					<h:outputText value="#{defaultMBean.getOccurrenceStatusDescription(row)}" />
+				</p:column> 
+			</ngTable:ngSimpleDataTable>			
+		</dialog:ngDialogWarn>
+		
+		<dialog:ngDialogWarn id="data-exportation-download"
+				widgetVar="data-exportation-download-view"
+				header="#{defaultMBean.downloadTitle}"
+				width="750">
+			
+			<ngTable:ngSimpleDataTable id="data-exportation-download-table" value="#{defaultMBean.dataExportationDeliveries}" rows="10" 
+				paginator="true" emptyMessage="#{i18n['dataexportation.msg.download.notfound']}">
+				<p:column headerText="#{i18n['dataexportation.label.download.filename']}">
+					<h:outputText value="#{defaultMBean.getDeliveryFileName(row, (rowIndex +1))}" />
+				</p:column>
+				<p:column id="download-file-colunm" exportable="false" toggleable="false" styleClass="data-exportation-action-colunm">
+			        <p:commandLink id="btn-download-file"
+			        	title="#{i18n['dataexportation.label.download']}" 
+			        	action="#{defaultMBean.downloadResult(row, (rowIndex +1))}"
+			        	styleClass="ng-icon icon-download-alt"
+			            immediate="true"
+			            ajax="false" />
+			    </p:column>
+			</ngTable:ngSimpleDataTable>
+		</dialog:ngDialogWarn>
+		<script type="text/javascript">
+			/*HOTFIX for download using Friendly URL*/
+			$(document).ready(function() {
+				$("#ng-form").attr("action", "#{defaultMBean.ngFormAction}");
+			});	
+		</script>
+	</ui:define>
+ 	<ui:define name="addUpdateBlock">
+		<ui:include src="dataexportationrequestEdit.xhtml" />
+	</ui:define>
+	<ui:define name="addDialogBlock">
+		<dialogEstab:dialogEstablishment id="zoomEstUser" 
+				enabledSelectionMode="true" renderBtnSelectAll="false" rows="8"
+				defaultMBs="#{defaultMBean.dataExportationMB.establishmentSelectorMB}" 
+				updateField=":zoomEstUser:zoomEstUserForm:zoomEstUsertbStabelecimento messages @(.data-exportation-establishment-filter)"/>
+	</ui:define>
+</ui:composition>

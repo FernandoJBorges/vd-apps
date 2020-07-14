@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<p:outputPanel styleClass="ui-g-8 ui-fluid">
+		<p:outputPanel styleClass="ui-g-2">
+			<p:outputLabel for="cnpj" class="ui-outputlabel ui-widget" value="#{i18n['establishment.label.personType.cnpj']}:" 
+				style="display: block" rendered="#{defaultMBean.addressePersonVO.personType == 1}"/>
+			<p:inputMask id="cnpj" value="#{defaultMBean.entity.establishmentID}" disabled="#{defaultMBean.stateUpdate}" required="true" mask="#{defaultMBean.layouts.CNPJ.format}" 
+				equiredMessage="#{i18n['addresse.msg.error.invalidCNPJ']}" rendered="#{defaultMBean.addressePersonVO.personType == 1}">
+					<f:converter converterId="maskConverter" />
+					<f:attribute name="isCreateAddresse" value="true" />
+					<f:attribute name="ownerUid" value="#{defaultMBean.entity.owner.establishmentUID}" />
+					<f:validator binding="#{cnpjValidator}" />
+			</p:inputMask>
+			<p:outputLabel for="cpf" class="ui-outputlabel ui-widget" value="#{i18n['establishment.label.personType.cpf']}:" rendered="#{defaultMBean.addressePersonVO.personType == 0}" />
+			<p:inputMask id="cpf" disabled="#{defaultMBean.stateUpdate}" required="true" value="#{defaultMBean.entity.establishmentID}" size="32" mask="#{defaultMBean.layouts.CPF.format}" requiredMessage="#{i18n['addresse.msg.error.invalidCPF']}" rendered="#{defaultMBean.addressePersonVO.personType == 0}">
+				<f:converter converterId="maskConverter" />
+				<f:validator binding="#{cpfValidator}" />
+			</p:inputMask>
+			
+			<p:outputLabel for="foreignId" class="ui-outputlabel ui-widget" value="#{i18n['addresse.label.personType.foreignId']}:" rendered="#{defaultMBean.addressePersonVO.personType == 2}" />
+			<p:inputText id="foreignId" disabled="#{defaultMBean.stateUpdate}" required="true" size="32" value="#{defaultMBean.entity.establishmentID}" rendered="#{defaultMBean.addressePersonVO.personType == 2}" requiredMessage="#{i18n['addresse.msg.error.invalidId']}" maxlength="20">
+				<f:validateLength minimum="6" maximum="20" />
+			</p:inputText>
+		</p:outputPanel>
+		<div class="ui-g-1"></div>
+		<p:outputPanel styleClass="ui-g-4">
+			<p:outputLabel for="name" class="ui-outputlabel ui-widget"
+			 	value="#{defaultMBean.addressePersonVO.personType == 0 ? i18n['establishment.label.name.phisical'] : i18n['establishment.label.name']}:" />
+			<p:inputText id="name" value="#{defaultMBean.entity.name}" required="true" 
+				requiredMessage="#{defaultMBean.addressePersonVO.personType == 0 ? i18n['addresse.msg.error.invalidName'] : i18n['addresse.msg.error.invalidCompanyName']}"/>
+		</p:outputPanel>
+	</p:outputPanel>
+</ui:composition>

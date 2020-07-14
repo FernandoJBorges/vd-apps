@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component">
+
+	<p:panel header="Instruções" widgetVar="uploadInstructionPanel" style="margin-bottom:20px" closable="true" visible="false">
+		O confronto contábil permite ao cliente realizar a validação de notas a partir de um arquivo texto. Para utilizar, gere um arquivo conforme o leiaute abaixo, compacte em formato ZIP e faça o upload nessa tela. No final do processamento será disponibilizado um arquivo no mesmo leiaute com o resultado dessa validação.  
+ 		<br/>
+ 		<br/>
+		O arquivo deve conter as informações abaixo, separadas por pipeline.
+		<br/>
+		<ul> 
+			<li>01: Fixo C100</li> 
+			<li>02: Em branco. Caso tenha valor o sistema vai desconsiderar.</li> 
+			<li>03: Em branco. Caso tenha valor o sistema vai desconsiderar.</li> 
+			<li>04: Em branco. Caso tenha valor o sistema vai desconsiderar.</li> 
+			<li>05: Modelo da nota. NeoGrid vai considerar somente o modelo 55 - NF-e.</li> 
+			<li>06: Em branco. Caso tenha valor o sistema vai desconsiderar.</li> 
+			<li>07: Série do documento fiscal</li>
+			<li>08: Número do documento fiscal</li>
+			<li>09: Chave da Nota Fiscal Eletrônica</li>
+			<li>10: Em branco. Caso tenha valor o sistema vai desconsiderar.</li> 
+			<li>11: Em branco. Caso tenha valor o sistema vai desconsiderar.</li> 
+			<li>12: Valor total do documento fiscal</li>
+			<li>13: Em branco. Caso tenha valor o sistema vai desconsiderar.</li> 
+			<li>14: Em branco. Caso tenha valor o sistema vai desconsiderar.</li> 
+			<li>15: Em branco. Caso tenha valor o sistema vai desconsiderar.</li>  
+			<li>16: Valor total das mercadorias e serviços</li>
+			<li>17: Em branco. Caso tenha valor o sistema vai desconsiderar.</li> 
+			<li>18: Em branco. Caso tenha valor o sistema vai desconsiderar.</li> 
+			<li>19: Em branco. Caso tenha valor o sistema vai desconsiderar.</li> 
+			<li>20: Em branco. Caso tenha valor o sistema vai desconsiderar.</li> 
+			<li>21: Valor da base de cálculo do ICMS</li>
+			<li>22: Valor do ICMS</li>
+			<li>23: Em branco. Caso tenha valor o sistema vai desconsiderar.</li>
+			<li>24: Em branco. Caso tenha valor o sistema vai desconsiderar.</li>
+			<li>25: Valor total do IPI</li>
+			<li>26: Valor total do PIS</li>
+			<li>27: Valor total do COFINS</li>
+			<li>28: Em branco. Caso tenha valor o sistema vai desconsiderar.</li>
+			<li>29: Em branco. Caso tenha valor o sistema vai desconsiderar.</li>
+		</ul>
+		<br/>
+		Exemplo de leiaute:
+		<br/><br/>
+		|C100|0|1|3147F|55|00|1|033089|33151206012414000460550020000024281001129871|19062008|19062008|156,00|0|0,00|0,00|156,00|9|0,00|0,00|0,00|0,00|0,00|0,00|0,00|0,00|0,00|0,00|0,00|0,00|
+	</p:panel>
+</ui:composition>

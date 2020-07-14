@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<div class="ui-g-12 document-detail-column">
+		<!-- tomador -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['eventsefaz.epec.cte.label.taker']}:" />
+			<h:outputText value="#{i18n[utils:getEnumQualifiedName(defaultMBean.detailData.generalData.event.cteTakerEnum)]}" />
+		</div>
+		<!-- cnpj -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['eventsefaz.epec.cte.label.cnpjtaker']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.epecTomaCnpj}" />
+		</div>
+		<!-- Inscrição Estadual -->
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['eventsefaz.epec.cte.label.taker.insc']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.epecTomaIE}" />
+		</div>
+		<!-- uf -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['eventsefaz.epec.cte.label.uftaker']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.epecTomaUf}" />
+		</div>
+		<!-- uf inicial-->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['eventsefaz.epec.cte.label.uf.begin']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.epecUfIni}" />
+		</div>
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['eventsefaz.epec.cte.label.modal']}:" />
+			<h:outputText value="#{i18n[utils:getEnumQualifiedName(defaultMBean.detailData.generalData.event.modalEnum)]}" />
+		</div>
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['eventsefaz.epec.cte.label.icms']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.epecValorIcms}" />
+		</div>
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['eventsefaz.epec.cte.label.service']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.epecValorPrest}" />
+		</div>
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['eventsefaz.epec.cte.label.truckload']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.epecValorCarga}" />
+		</div>
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['eventsefaz.epec.cte.label.uf.final']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.epecUfFim}" />
+		</div>
+	</div>
+	<div class="ui-g-12 document-detail-column">
+		<!-- Justificativa -->
+		<div class="ui-g-12 document-additional-information">
+			<p:outputLabel value="#{i18n['eventsefaz.label.details.justification']}:" />
+			<h:inputTextarea rows="7" readonly="true" value="#{defaultMBean.detailData.generalData.event.eventJustification}" />
+		</div>
+	</div>
+</ui:composition>
+
+

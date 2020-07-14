@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+	<p:outputPanel styleClass="ui-g-6" style="padding-top:0px">
+		<p:outputLabel for="messageType" value="#{i18n['tracking.label.document.type']}:" />
+		<p:selectCheckboxMenu id="messageType"
+						filter="true"
+						widgetVar="operationVar"
+						filterMatchMode="contains" 
+						label="#{defaultFilterMBean.label}"
+						disabled="#{defaultFilterMBean.filterVO.showOnlyEntryUnidentifiedDoc}"
+						value="#{defaultFilterMBean.filterVO.messageType}">
+						<f:selectItems value="#{defaultFilterMBean.messageTypes}" var="entryType" itemValue="#{entryType}" itemLabel="#{i18n[utils:getEnumQualifiedName(entryType)]}" />
+						<p:ajax listener="#{defaultFilterMBean.fillMessageTypeLabel()}" global="false" />
+						<p:ajax event="toggleSelect" listener="#{defaultFilterMBean.fillMessageTypeLabel()}" global="false" />
+		</p:selectCheckboxMenu>
+	</p:outputPanel>
+</ui:composition>

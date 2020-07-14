@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:p="http://primefaces.org/ui">
+	<div class="ui-g-5">
+		<p:outputLabel for="headerform" value="#{i18n['establishment.notifyevent.header']}:" />
+		<p:inputTextarea id="headerform" 
+						rows="5" 
+						cols="88"
+						value="#{notifyEventMB.notification.header}"
+						counter="remainingCounterheader" 
+						maxlength="1000"
+						counterTemplate="{0} caracteres restantes." 
+						autoResize="false"
+						style="resize:none">
+						<f:converter converterId="notifyEventMessageHeaderDefault"></f:converter>
+						<f:attribute name="type" value="#{notifyEventMB.notification.type}" />
+		</p:inputTextarea>
+		<h:outputText id="remainingCounterheader" />
+	</div>
+	<div class="ui-g-1">
+		<ngComp:ngHelp messageHelp="#{notifyEventMB.messageHelpHeader}" style="margin-left: -13px;margin-top: 75px;" />
+	</div>
+</ui:composition>

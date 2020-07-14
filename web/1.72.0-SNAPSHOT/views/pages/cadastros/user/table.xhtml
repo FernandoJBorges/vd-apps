@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+	<p:column id="usrEnabled" headerText="#{i18n['addresse.label.statusDescription']}" styleClass="ng-truncate-column status-column">
+		<span title="#{i18n[row.enabled ? 'eventConsumer.label.active' : 'eventConsumer.label.inactive']}" class="#{row.enabled ? 'enabled' : ''} icon-user" ></span>
+	</p:column>
+	<p:column id="columnLogin" headerText="#{i18n['usr.label.login']}" sortBy="#{row.login}" styleClass="ng-truncate-column login-column" >
+		<h:outputText id="login" value="#{row.login}" title="#{row.login}" styleClass="ng-truncate-output" />
+	</p:column>
+	<p:column id="columnName" headerText="#{i18n['usr.label.nome']}" sortBy="#{row.name}" styleClass="ng-truncate-column name-column">
+		<h:outputText id="name" value="#{row.name}" title="#{row.name}" styleClass="ng-truncate-output" />
+	</p:column>
+	<p:column id="columnLastName" headerText="#{i18n['usr.label.lastName']}" sortBy="#{row.lastName}" styleClass="ng-truncate-column name-column">
+		<h:outputText id="lastName" value="#{row.lastName}"  title="#{row.lastName}" styleClass="ng-truncate-output" />
+	</p:column>
+	<p:column id="columnEmail" headerText="#{i18n['usr.label.email']}" sortBy="#{row.email}" styleClass="ng-truncate-column mail-column">
+		<h:outputText id="email" value="#{row.email}" title="#{row.email}" styleClass="ng-truncate-output" />
+	</p:column>
+	<p:column id="columnRoleUsr" headerText="#{i18n['usr.label.title.dialog']}" sortBy="#{row.role.name}" styleClass="ng-truncate-column role-column">
+		<h:outputText id="roleUsr" value="#{row.role.name}" title="#{row.role.name}" styleClass="ng-truncate-output" />
+	</p:column>
+	<p:column id="columnEdit" styleClass="ng-column-action" exportable="false" toggleable="false">
+		<p:commandLink id="editAddresse"
+					action="#{defaultMBean.editAction}"
+					disabled="#{!usrEditMBean.hasPermissionToEdit(row)}"
+					global="false"
+					update=":ng-form :ng-panel-crud-dialog :ng-form:ng-panel-crud :messages"
+					immediate="true">
+					<span title="#{i18n['role.label.edit']}" class="icon-edit ng-icon"/>
+					<f:setPropertyActionListener target="#{defaultMBean.entity}" value="#{row}" />
+			</p:commandLink>
+	</p:column>	
+	<p:column id="columnActive" styleClass="ng-column-action" exportable="false" toggleable="false">
+		<p:commandLink id="active" immediate="true" onclick="PF('confirmEnableUser').show();" disabled="#{!usrEnableMBean.hasPermissionToEnableUser(row)}" >
+			<span title="#{i18n['usr.tooltip.enable']}" class="icon-active ng-icon"/>
+			<f:setPropertyActionListener target="#{defaultMBean.entity}" value="#{row}" />	
+		</p:commandLink>
+	</p:column>	
+	<p:column id="columnDeactive" styleClass="ng-column-action" exportable="false" toggleable="false">
+		<p:commandLink id="deactive" immediate="true" onclick="PF('confirmDisableUser').show();" disabled="#{!usrDisableMB.hasPermissionToDisableUser(row)}" >
+			<span title="#{i18n['usr.tooltip.disable']}" class="icon-deactive ng-icon"/>
+			<f:setPropertyActionListener target="#{defaultMBean.entity}" value="#{row}" />
+		</p:commandLink>
+	</p:column>	
+	<p:column id="columnPassword" styleClass="ng-column-action" exportable="false" toggleable="false">
+		<p:commandLink id="password" 
+					immediate="true" 
+					actionListener="#{usrEditMB.openDialogPassord(row)}"
+					disabled="#{!row.enabled}">
+			<span title="#{i18n['role.label.edit']}" class="icon-password ng-icon"/>
+			<f:setPropertyActionListener target="#{defaultMBean.entity}" value="#{row}" />
+		</p:commandLink>
+	</p:column>	
+	<p:column id="columnDelete" styleClass="ng-column-action" exportable="false" toggleable="false">	
+		<p:commandLink id="delete" 
+					onclick="PF('dlConfirmDeleteBean').show();"
+					disabled="#{usrDeleteMB.disabled(row)}" 
+					rendered="#{defaultMBean.hasPermission('REMOVE')}" 
+					global="false"
+					immediate="true">
+					<span title="#{i18n['tooltip.commandLink.delete']}" class="icon-trash ng-icon" />
+					<f:setPropertyActionListener target="#{defaultMBean.entity}" value="#{row}" />	
+		</p:commandLink>
+	</p:column>
+</ui:composition>

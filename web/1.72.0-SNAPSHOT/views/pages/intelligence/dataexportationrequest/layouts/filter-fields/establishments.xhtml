@@ -1,0 +1,17 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<div class="ui-g-4">
+		<p:outputLabel for="#{field.fieldId}" value="#{i18n['dataexportation.layout.filters.label.'.concat(field.fieldId)]}:" />
+		<p:inputText id="#{field.fieldId}" styleClass="data-exportation-establishment-filter" readonly="true"
+			value="#{establishmentSelectorMB.selectedEstablishmentsGlobalLabel}" />
+		<span class="data-exportation-filter-establishment-search">
+			<p:commandButton icon="ui-icon-search" id="btn-establishment-search" resetValues="true"
+				onclick="PF('zoomEstUser').show();"
+				global="false"
+				update=":zoomEstUser:zoomEstUserForm:zoomEstUsertbStabelecimento :zoomEstUser:zoomEstUserForm:zoomEstUserPanelGrid"
+				immediate="true">
+			</p:commandButton>
+		</span>
+	</div>
+</ui:fragment>

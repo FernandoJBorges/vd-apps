@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+	
+	<ui:param name="icon" value=".icon" />
+	<ui:param name="tooltip" value=".tooltip.MDFE" />
+	<ui:include src="../document/columns/emissionType.xhtml" />
+	<ui:include src="../document/columns/serialNumber.xhtml" />
+	<ui:include src="../document/columns/documentNumber.xhtml" />
+	<ui:include src="../document/columns/issueDate.xhtml" />
+	<ui:include src="../document/columns/processingDate.xhtml" />
+	<ui:include src="../document/columns/statusDescription.xhtml" />
+	<p:column id="columnchargeUF"
+			headerText="#{i18n['document.label.chargeUF']}"
+			style="width:120px"
+			priority="3">
+			<h:outputText id="chargeUF" value="#{row.chargeUF}" />
+	</p:column>
+	<p:column id="columnDischargeUF"
+			headerText="#{i18n['document.label.dischargeUF']}"
+			style="width:130px"
+			priority="3">
+			<h:outputText id="dischargeUF" value="#{row.dischargeUF}" />
+	</p:column>
+	<p:column id="modalColumn"
+			headerText="#{i18n['document.label.modal']}"
+			style="width:50px"
+			priority="3">
+			<h:outputText id="modal" value="#{i18n[utils:getEnumQualifiedName(row.reportModalType)]}" />
+	</p:column>
+	<ui:include src="../document/columns/drawer.xhtml" />		
+	<p:column id="columnThirdyPart"
+			styleClass="ng-truncate-column document-thirdy-part-column"
+			rendered="#{!defaultMBean.getMdfeFilterMB().isToShowColumnThirdy()}"
+			headerText="#{i18n['mdfe.label.terceiro']}"
+			sortBy="#{row.owner.person.name}"
+			priority="3">
+			<h:outputText id="thirdyPart" 
+			value="#{row.owner.name}" 
+			title="#{row.owner.id}"
+			styleClass="ng-truncate-output"/>
+	</p:column>
+	<p:column id="columnDetails" 
+			styleClass="ng-column-action"
+			exportable="false" 
+			toggleable="false">
+			<p:commandLink id="docDetails"
+						update="@(.ng-containner-dialog)"
+						action="#{defaultMBean.actionEvent('openDocumentDetail', row)}"
+						global="false">
+						<f:setPropertyActionListener target="#{defaultMBean.entity}" value="#{row}" />
+						<span title="#{i18n['tooltip.commandLink.view.details.doc']}" class="icon-viewDetails ng-icon"></span>
+			</p:commandLink>
+	</p:column>	
+	<p:column id="columnDAMDFE" 
+			styleClass="ng-column-action"
+			exportable="false" 
+			toggleable="false"
+			rendered="#{defaultMBean.downloadDAMDFE.isRendered(defaultMBean.getMdfeFilterMB().getDocumentFlowType())}">
+			<p:commandLink id="auxiliaryDocument"
+					rendered="true"
+					action="#{defaultMBean.actionEvent('downloadDA', row)}"
+					global="false" 
+					ajax="false"
+					disabled="#{defaultMBean.downloadDAMDFE.isDisabled(utils:singletonList(row))}"
+					immediate="true">
+					<span title="#{i18n['mdfe.label.gerardamdfe']}" class="icon-print ng-icon"></span>
+					<f:setPropertyActionListener target="#{defaultMBean.entity}" value="#{row}" />
+			</p:commandLink>
+	</p:column>	
+	<p:column id="columnXML" 
+			styleClass="ng-column-action"
+			exportable="false" 
+			toggleable="false"
+			rendered="#{defaultMBean.downloadXML.isRendered(defaultMBean.getMdfeFilterMB().getDocumentFlowType())}"
+			>
+			<p:commandLink id="XML"
+					action="#{defaultMBean.actionEvent('dowloadXML', row)}"
+					ajax="false"
+					onclick="updateMessages()"
+					update=":messages :ng-form:ng-detail-dataTable:ng-data-table :ng-form :ng-panel-crud-dialog"
+					immediate="true">
+					<span title="#{i18n['document.tooltip.download.xml']}" class="icon-download-file ng-icon"></span>					
+			</p:commandLink>
+	</p:column>	
+</ui:composition>

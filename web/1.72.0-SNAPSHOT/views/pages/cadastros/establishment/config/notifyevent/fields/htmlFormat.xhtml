@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:p="http://primefaces.org/ui">
+	<div class="ui-g-2">
+		<p:outputLabel for="htmlFormat" value="#{i18n['establishment.notifyevent.html']}:" style="margin-right:10px" />
+		<p:selectBooleanCheckbox id="htmlFormat" value="#{notifyEventMB.notification.htmlFormat}" />
+		<ngComp:ngHelp messageHelp="#{i18n['establishment.notifyevent.help.html']}" style="margin-left: 2px" />
+	</div>
+</ui:composition>

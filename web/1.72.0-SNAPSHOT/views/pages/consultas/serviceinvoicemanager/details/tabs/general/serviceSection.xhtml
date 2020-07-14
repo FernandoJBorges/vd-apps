@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div class="ui-g-12 document-detail-column">
+	
+		<!-- Nome/Razão Social -->
+		<div class="ui-g-4">
+			<p:outputLabel value="#{i18n['nfse.label.details.service.section.name']}:" /><br/>
+			<h:outputText value="#{service.razaoSocial}" />
+		</div>
+
+		<!-- CNPJ -->
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['nfse.label.details.service.section.cnpj']}:" /><br/>
+			<h:outputText value="#{service.cnpj}" />
+		</div>
+
+		<!-- Inscrição Municipal -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['nfse.label.details.service.section.insc']}:" /><br/>
+			<h:outputText value="#{service.inscricaoMunicipal}" />
+		</div>
+
+		<!-- Telefone -->
+		<div class="ui-g-1">
+			<p:outputLabel value="#{i18n['nfse.label.details.service.section.phone']}:" /><br/>
+			<h:outputText value="#{service.telephone}" />
+		</div>
+		
+		<!-- Município -->
+		<div class="ui-g-1">
+			<p:outputLabel value="#{i18n['nfse.label.details.service.section.city']}:" /><br/>
+			<h:outputText value="#{service.city}" />
+		</div>
+	</div>
+	
+</ui:composition>

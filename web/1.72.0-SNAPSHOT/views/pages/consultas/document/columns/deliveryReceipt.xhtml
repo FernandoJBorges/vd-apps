@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<p:column 
+		id="columnDeliveryReceipt" 
+		styleClass="ng-column-tma" 
+		exportable="false" 
+		toggleable="false" 
+		rendered="#{defaultFilterMBean.isDeliveryReceiptColumnRendered()}">
+		<f:facet name="header">
+			<h:outputText
+				value="#{i18n['document.label.column.header.deliveryReceipt']}"
+				title="#{i18n['document.label.column.header.title.deliveryReceipt']}"
+				styleClass="ng-cursor-pointer" />
+		</f:facet>
+			<p:commandLink id="deliveryreceipt" 
+						global="false"
+						title="#{documentListMBean.getDeliveryReceiptIconOrTooltip(row.documentUID, tooltip)}"
+						action="#{defaultMBean.getCTeDeliveryReceiptDetailMB().prepareDeliveryReceipt(row)}"
+						update=":messages :ng-panel-crud-dialog :ng-form:ng-panel-crud"
+						styleClass="#{documentListMBean.getDeliveryReceiptIconOrTooltip(row.documentUID, icon)} ng-tma-font-size">
+			</p:commandLink>
+	</p:column>
+</ui:composition>

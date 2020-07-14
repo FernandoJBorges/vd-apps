@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:dialogEstab="http://java.sun.com/jsf/composite/dialogEstablishment"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:ngCommon="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/crud"	
+	xmlns:ngTab="http://java.sun.com/jsf/composite/common/component/view/tabview"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{reportRequestMB}" />
+	<ng:ngFormEdit id="ngFormEdit"
+		btnSaveLabel="#{i18n['btn_action_save']}"
+		titleView="#{i18n['reportrequest.label.title']}">
+		
+		<ngTab:ngSingleTabView id="ngTabview">
+        		<p:focus context="panelGridForm"/>
+        					
+				<p:panelGrid id="panelGridForm" columns="1" columnClasses="column2" rendered="#{defaultMBean.reportType == null}">
+					<h:panelGroup>
+						<p:outputLabel for="reporttype" value="#{i18n['reportrequest.label.reporttype']}:" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<p:selectOneMenu id="reporttype" 						 
+							style="width:150px;"
+							valueChangeListener="#{defaultMBean.selectReport}"						
+							required="true">
+							<p:ajax process="reporttype" update=":messages, ngSingleTabView" partialSubmit="true" /> 
+							<f:selectItem itemLabel="#{i18n['lbl_empty']}" itemValue="#{null}"
+								noSelectionOption="true" />
+							<f:selectItems value="#{defaultMBean.getReportTypes()}" var="type"
+								itemValue="#{type}" itemLabel="#{type.description}" />
+						</p:selectOneMenu>
+					</h:panelGroup>
+				</p:panelGrid>
+				<c:if test="#{defaultMBean.reportType != null}">
+					<ui:include
+						src="../reports/#{defaultMBean.reportType}/#{defaultMBean.reportType}.xhtml" />
+				</c:if>
+        </ngTab:ngSingleTabView>	   		
+	</ng:ngFormEdit>
+</ui:composition>

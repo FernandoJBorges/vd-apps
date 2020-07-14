@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:dialog="http://java.sun.com/jsf/composite/common/component/dialog"
+	xmlns:p="http://primefaces.org/ui">
+	<h:form id="form-lot-close-dialog">
+		<dialog:ngDialogConfirm 
+			id="dialogCloseLot"
+			width="435"
+			updateGrid=":ng-form:ng-detail-dataTable:ng-panel-datatable"
+			header="#{i18n['popup.msg.info']}"
+			widgetVar="dialogCloseLot"
+			messageGlobal="true"
+			titleBtnCancel="#{i18n['btn_action_no']}"
+			titleBtnConfirm="#{i18n['btn_action_yes']}"
+			btnActionConfirm="#{lotCloseMB.closeLotManually}">
+			<p:outputLabel id="infoCloseLot" value="#{i18n['lotmanager.label.action.closelot.message.info']}" />
+		</dialog:ngDialogConfirm>
+	</h:form>
+</ui:composition>

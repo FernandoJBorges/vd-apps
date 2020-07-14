@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:dialog="http://java.sun.com/jsf/composite/common/component/dialog"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/custom">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{notifyEventMB}" />
+	<!-- bloco de criacao edicao -->
+	<p:importEnum type="com.neogrid.sped.enums.DocType"/>
+<h:form id="ng-form-est-notify" prependId="false">
+	<p:outputPanel id="ng-create-edit-notify" rendered="#{defaultMBean.stateNotifyEvent}" styleClass="ng-panel-class"> 
+	<h:outputStylesheet library="css" name="notifyevent.css" />
+		<ng:ngFormSearch id="ngFormSearchNotifyEventEstab" update=":ng-form-est-notify :ng-create-edit-notify"
+						idView="ngFormSearchNotifyEventEstab"
+						titleView="#{i18n['establishment.notifyevent.title']}">
+				<ui:include src="../common/header.xhtml">
+				   <ui:param name="messageValidadeDad" value="#{i18n['establishment.notifyevent.warn.dad']}" />
+				   <ui:param name="messageValidadeDadRendered" value="#{establishmentMB.entity.dadNotify}" />
+				</ui:include>
+				<p:tabView id="ngTabviewNotifyDocType" widgetVar="tavViewEstabNotifyEvent">
+					<!-- TAB GENERIC -->
+						<p:tab id="tab-generic-notify" title="#{i18n['establishment.notifyevent.generic']}">
+								<p:dataTable 
+											id="ng-data-table-generic-notify" 
+											var="row" 
+											reflow="true" 
+											resizableColumns="true"
+											value="#{defaultMBean.notifications[DocType.GENERIC]}">
+											<ui:include src="columns.xhtml" />
+								</p:dataTable>
+						</p:tab>
+						<!-- TAB NFE -->
+						<p:tab id="tab-nfe-notify" title="#{i18n['docType.label.NFE']}" disabled="#{!defaultMBean.soluctionsEnabled[DocType.NFE]}">
+								<p:dataTable id="ng-data-table-nfe-notify" 
+											var="row" 
+											reflow="true" 
+											resizableColumns="true"
+											value="#{defaultMBean.notifications[DocType.NFE]}">
+											<ui:include src="columns.xhtml" />
+								</p:dataTable>
+						</p:tab>
+						<!-- TAB CTE -->
+						<p:tab id="tab-cte-notify" title="#{i18n['docType.label.CTE']}" disabled="#{!defaultMBean.soluctionsEnabled[DocType.CTE]}">
+							<p:dataTable id="ng-data-table-cte-notify" 
+											var="row" 
+											reflow="true" 
+											resizableColumns="true"
+											value="#{defaultMBean.notifications[DocType.CTE]}" >
+											<ui:include src="columns.xhtml" />
+							</p:dataTable>
+						</p:tab>
+						<!-- TAB MDFE -->
+						<p:tab id="tab-mdfe-notify" title="#{i18n['docType.label.MDFE']}" disabled="#{!defaultMBean.soluctionsEnabled[DocType.MDFE]}">
+							<p:dataTable id="ng-data-table-mdfe-notify" 
+											var="row" 
+											reflow="true" 
+											resizableColumns="true"
+											value="#{defaultMBean.notifications[DocType.MDFE]}" 
+											>
+											<ui:include src="columns.xhtml" />
+							</p:dataTable>
+						</p:tab>
+						<!-- TAB NFCE -->
+						<p:tab id="tab-nfce-notify" title="#{i18n['docType.label.NFCE']}" disabled="#{!defaultMBean.soluctionsEnabled[DocType.NFCE]}">
+							<p:dataTable id="ng-data-table-nfce-notify" 
+											var="row" 
+											resizableColumns="true"
+											reflow="true" 
+											value="#{defaultMBean.notifications[DocType.NFCE]}">
+												<ui:include src="columns.xhtml" />
+							</p:dataTable>
+						</p:tab>
+			</p:tabView>
+			<!-- DIALOG CONFIR REMOVE NOTIFYVALUES -->
+			<dialog:ngDialogMessageGlobal id="ng-dialog-confir-delete" 
+									header="#{i18n['popup.msg.warn']}" 
+									widgetVar="confirmDeleteNotifyEventValue" 
+									width="300"  
+									updateGrid=":ngFormSearchNotifyEventEstab:ngTabviewNotifyDocType"
+									titleBtn="#{i18n['btn_action_yes']}" 
+									titleBtnCancel="#{i18n['btn_action_no']}"
+			 						btnActionConfirm="#{notifyEventMB.deleteNotification}"
+			 						>
+			 						<p:outputLabel value="#{i18n['msg.info.remove.questions']}" />
+			</dialog:ngDialogMessageGlobal>
+		</ng:ngFormSearch>
+	</p:outputPanel>
+</h:form>
+</ui:composition>

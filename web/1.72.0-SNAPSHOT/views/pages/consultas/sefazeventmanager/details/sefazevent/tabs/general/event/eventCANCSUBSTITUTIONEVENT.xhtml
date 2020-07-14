@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:p="http://primefaces.org/ui">
+	
+	<div class="ui-g-12 document-detail-column">
+		<div class="ui-g-5">
+			<p:outputLabel value="#{i18n['eventsefaz.label.details.replaced.document']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.replacedDocumentAccessKey}" />
+		</div>
+
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['eventsefaz.label.details.event.author']}:" />
+			<h:outputText value="#{i18n[utils:getEnumQualifiedName(defaultMBean.detailData.generalData.event.authorType)]}" />
+		</div>
+		
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['eventsefaz.label.details.event.author.state']}:" />
+			<h:outputText value="#{i18n['cOrgao.'.concat(defaultMBean.detailData.generalData.event.authorState)]}" />
+		</div>
+	</div>
+	<ui:include src="include/justification.xhtml" />
+</ui:composition>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+		<p:column headerText="#{i18n['addresse.label.cnpj-cpf-id']}" styleClass="addresse-column-header ng-truncate-column" >
+			<h:outputText id="addresse-column-header" value="#{row.establishmentID}" styleClass="ng-truncate-output" >
+				<f:converter converterId="CnpjCpfConverter" />
+				<f:attribute name="stateEx" value="#{row.state}" />
+			</h:outputText> 
+		</p:column>
+		
+		<p:column headerText="#{i18n['establishment.label.name']}" styleClass="estab-name-column-header ng-truncate-column column-name-header" >
+			<h:outputText id="estab-name-column-header" value="#{row.name}" title="#{row.name}" styleClass="ng-truncate-output" />
+		</p:column>
+		
+		<p:column headerText="#{i18n['establishment.label.uf']}" styleClass="estab-uf-column-header ng-truncate-column">
+			<h:outputText id="estab-uf-column-header" value="#{row.state}" styleClass="ng-truncate-output" />
+		</p:column>
+		
+		<p:column headerText="#{i18n['addresse.list.column.email.addresse-nfe']}" styleClass="email-column-header ng-truncate-column" >
+			<h:outputText id="email-nfe-column-header" value="#{row.email}" 
+					title="#{row.email}"
+					styleClass="ng-truncate-output" />
+		</p:column>
+		
+		<p:column headerText="#{i18n['addresse.list.column.email.carrier-nfe']}" styleClass="email-column-header ng-truncate-column" >
+			<h:outputText id="email-carrier-column-header" value="#{row.carrierMail}"
+					title="#{row.carrierMail}"
+					styleClass="ng-truncate-output" />
+		</p:column>
+		
+		<p:column headerText="#{i18n['addresse.list.column.email.cte']}" styleClass="email-column-header ng-truncate-column" >
+			<h:outputText id="email-cte-column-header" value="#{row.emailCte}"
+					title="#{row.emailCte}"
+					styleClass="ng-truncate-output" />
+		</p:column>
+		
+		<p:column headerText="#{i18n['addresse.list.column.email.nfce']}" styleClass="email-column-header ng-truncate-column" >
+			<h:outputText id="email-nfce-column-header" value="#{row.emailNfce}"
+					title="#{row.emailNfce}"
+					styleClass="ng-truncate-output" />
+		</p:column>
+		
+		<p:column headerText="#{i18n['addresse.label.establishment']}" styleClass="owner-name-column-header ng-truncate-column" >
+			<h:outputText id="owner-name-column-header" value="#{row.owner.name}" title="#{row.owner.establishmentID}" styleClass="ng-truncate-output" />
+		</p:column>
+		
+		<p:column id="columnEdit" styleClass="ng-column-action addresse-action-column-header" toggleable="false" >
+			<p:commandLink id="editAddresse"
+					action="#{defaultMBean.editAction}"
+					rendered="#{usrEditMBean.hasPermissionToEdit(row)}"
+					global="false"
+					update=":ng-form :ng-panel-crud-dialog :ng-form:ng-panel-crud :messages"
+					immediate="true">
+					<span title="#{i18n['tooltip.commandLink.edit']}" class="icon-pencil ng-icon" />
+					<f:setPropertyActionListener target="#{defaultMBean.entity}" value="#{row}" />
+			</p:commandLink>
+		</p:column>
+		
+		<p:column id="columnRemove" styleClass="ng-column-action addresse-action-column-header" toggleable="false" >
+			<p:commandLink id="removeAddresse"
+					rendered="#{defaultMBean.hasPermission('REMOVE')}"
+					onclick="PF('dlConfirmDeleteBean').show();"
+					global="false"
+					immediate="true">
+					<span title="#{i18n['tooltip.commandLink.delete']}" class="icon-trash ng-icon" />
+					<f:setPropertyActionListener target="#{defaultMBean.entity}" value="#{row}" />
+			</p:commandLink>
+		</p:column>
+</ui:composition>

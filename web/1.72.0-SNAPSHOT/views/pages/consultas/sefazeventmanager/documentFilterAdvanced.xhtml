@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+	<p:outputPanel styleClass="document-column ui-g-12 advanced-filter">
+		<p:outputPanel
+			rendered="#{defaultFilterMBean.filterVO.eventSefazReceivedForType != null}">
+			<div class="document-check-panel ui-g-7">
+				<p:panelGrid columns="2">
+					<ui:include src="../document/filters/showOnlyXmlNotValidated.xhtml">
+						<ui:param name="itemLabel" value="#{i18n['eventsefaz.label.xml.not.valided']}" />
+					</ui:include>
+				</p:panelGrid>
+			</div>
+			<p:outputPanel class="desc-cnpj ui-g-2">
+				<ui:param name="cnpjcpfadresseeLabel" value="CNPJ/CPF #{i18n[utils:getEnumQualifiedName(defaultFilterMBean.filterVO.eventSefazReceivedForType).concat('.').concat(defaultFilterMBean.filterVO.operation)]}" />
+				<p:outputLabel for="cnpjcpfadressee" value="#{cnpjcpfadresseeLabel}" />
+				<p:inputMask id="cnpjcpfadressee"
+							value="#{defaultFilterMBean.filterVO.addresseID}"
+							label="#{cnpjcpfadresseeLabel}" maxlength="14"
+							mask="#{defaultMBean.layouts.CNPJ.searchMask}" 
+							tabIndex="1"
+							autoClear="false">
+							<f:validator binding="#{cnpjAndCPFAndForeignFilterValidator}" />
+				</p:inputMask>
+			</p:outputPanel>
+		</p:outputPanel>
+		<div class="ui-g-3">
+			<ui:include src="../document/filters/originMsg.xhtml"></ui:include>
+		</div>
+	</p:outputPanel>
+</ui:composition>

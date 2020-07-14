@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+
+	<ui:include src="../../../../../document/details/sections/estabMinInfoWithUFSection.xhtml">
+		<ui:param name="estab" value="#{taker}"></ui:param>
+	</ui:include>
+
+	<p:outputPanel class="ui-g-12 document-detail-column" rendered="#{taker.toma != null}">
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['cte.label.taker.cargo.relation']}" /><br/>
+			<h:outputText value="#{i18n[utils:getEnumQualifiedNameWithDefaultValue(taker.toma, 'Enum.empty')]}" />
+		</div>
+	</p:outputPanel>
+
+</ui:composition>

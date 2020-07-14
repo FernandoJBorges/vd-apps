@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:dialog="http://java.sun.com/jsf/composite/dialog"
+	xmlns:ngTab="http://java.sun.com/jsf/composite/common/component/view/tabview"
+	template="../../document/details/documentDetails.xhtml">
+	<ui:param name="defaultMBean" value="#{MDFeDetailsMB}" />
+	<ui:define name="documentDetail">
+		<ui:param name="tabViewOnDemand" value="#{defaultMBean.tabview}" />
+		<h:outputStylesheet name="highlight.css" library="css" />
+		<h:outputScript library="common" name="js/highlight/highlight.min.js" />
+		<h:outputScript library="common" name="js/beautify/vkbeautify.0.99.00.beta.js" />
+		<dialog:dialogResendErp defaultMBean="#{defaultMBean}" id="resend-to-erp"/>
+		<ngTab:ngTabViewOnDemand id="ng-tabview-search" additionalUpdate=":messages">
+			<p:tab id="ng-tab-basic" title="#{i18n['invoice.label.general.info']}">
+				<ui:include src="tabs/generalDataTab.xhtml" />
+			</p:tab>
+			<p:tab id="ng-tab-xml" title="#{i18n['nfelayouttype.xml']}" rendered="#{defaultMBean.actionDownloadXml.isRendered(defaultMBean.getOrLoadLocalDocument().getFlowTypeEnum())}">
+				<ui:include src="../../document/details/tabs/xmlMessageTab.xhtml">
+					<ui:param name="disabledDownloadXML" value="#{defaultMBean.actionDownloadXml.isDisabled(utils:singletonList(defaultMBean.getOrLoadLocalDocument()))}" />
+				</ui:include>
+			</p:tab>
+			<p:tab id="ng-tab-related-events" title="#{i18n['invoice.label.details.related.events']}" rendered="#{defaultMBean.isRelatedEventsTabRendered()}">
+				<ui:include src="../../document/details/tabs/relatedEventsTab.xhtml" />
+			</p:tab>
+			<p:tab id="ng-tab-document-occurrences" title="#{i18n['invoice.label.details.occurences']}" rendered="#{defaultMBean.isOccurrencesTabRendered()}">
+				<ui:include src="../../document/details/tabs/documentOccurrencesTab.xhtml" />
+			</p:tab>
+			<p:tab id="ng-tab-lot-data" title="#{i18n['invoice.label.details.lot.data']}" rendered="#{defaultMBean.isLotTabRendered()}">
+				<ui:include src="../../document/details/tabs/lotTab.xhtml" />
+			</p:tab>
+		</ngTab:ngTabViewOnDemand>
+	</ui:define>
+</ui:composition>

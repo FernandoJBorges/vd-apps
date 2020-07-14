@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+	<p:outputPanel styleClass="ui-g-4 flow-type">
+		<p:outputLabel for="flowType"
+			value="#{i18n['sefaz.message.flowtype']}:" />
+		<p:selectOneMenu id="flowType"
+			value="#{defaultFilterMBean.filterVO.flowType}">
+			<f:selectItem itemLabel="#{i18n['lbl_all']}" />
+			<f:selectItems value="#{defaultFilterMBean.flowType}" var="flowType"
+				itemValue="#{flowType}"
+				itemLabel="#{i18n[utils:getEnumQualifiedName(flowType)]}" />
+		</p:selectOneMenu>
+	</p:outputPanel>
+</ui:composition>

@@ -1,0 +1,14 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+	<p:outputPanel styleClass="ui-g-3 ui-g-nopad">
+		<p:outputLabel for="serie" value="#{i18n['document.label.serie']}:" />
+		<p:inputText id="serie"
+					value="#{defaultFilterMBean.filterVO.serial}"
+					maxlength="5"
+					label="#{i18n['document.label.serie']}">
+			<f:validator binding="#{alphanumericValidator}" />
+		</p:inputText>
+	</p:outputPanel>
+</ui:fragment>

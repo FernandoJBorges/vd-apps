@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+	<div class="ui-g-12 document-column-adv">
+		<div class="ui-g-6 document-column-adv-6 document-check">
+			<p:outputPanel styleClass="update-component document-check-panel">
+				<h:panelGrid columns="1">
+					<ui:include src="../document/filters/showOnlyStoppedDocuments.xhtml">
+						<ui:param name="itemLabel" value="#{i18n['invoice.label.invoicestop']}" />
+					</ui:include>
+				</h:panelGrid>
+			</p:outputPanel>
+		</div>
+	</div>
+</ui:composition>

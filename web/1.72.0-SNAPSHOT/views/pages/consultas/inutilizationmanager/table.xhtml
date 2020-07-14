@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+	<ui:param name="defaultMBean" value="#{inutilizationMB}" />
+	<ui:param name="documentListMBean" value="#{inutilizationListMB}" />
+	<ui:param name="icon" value=".icon" />
+	<ui:param name="tooltip" value=".tooltip" />
+	<p:column id="columnSerialNumber"
+		headerText="#{i18n['inutilization.label.serie']}"
+		sortBy="#{row.serialNumber}" styleClass="inutilization-serial-column">
+		<h:outputText id="serialNumber" value="#{row.serialNumber}" />
+	</p:column>
+	<p:column id="columnInitialNumber"
+		headerText="#{i18n['inutilization.label.initialnumber']}"
+		sortBy="#{row.initialNumber}" styleClass="inutilization-number-column">
+		<h:outputText id="initialNumber" value="#{row.initialNumber}" />
+	</p:column>
+	<p:column id="columnFinalNumber"
+		headerText="#{i18n['inutilization.label.finalnumber']}"
+		sortBy="#{row.finalNumber}" styleClass="inutilization-number-column">
+		<h:outputText id="finalNumber" value="#{row.finalNumber}" />
+	</p:column>
+	<p:column id="columnRequestDate" sortBy="#{row.requestDate}"
+		styleClass="inutilization-request-date-column"
+		headerText="#{i18n['inutilization.label.requestdate']}">
+		<h:outputText id="requestDate" value="#{row.requestDate}">
+			<f:convertDateTime type="date"
+				pattern="#{defaultMBean.layouts.DATE_SHORT.format}" />
+		</h:outputText>
+	</p:column>
+	<p:column id="columnResponseDate"
+		headerText="#{i18n['inutilization.label.responsedate']}"
+		styleClass="inutilization-response-date-column"
+		sortBy="#{row.responseDate}">
+		<h:outputText id="responseDate" value="#{row.responseDate}">
+			<f:convertDateTime type="date"
+				pattern="#{defaultMBean.layouts.DATE.format}" />
+		</h:outputText>
+	</p:column>
+	<p:column id="columnStatusDescription"
+		styleClass="ng-truncate-column inutilization-status-column"
+		headerText="#{i18n['inutilization.label.status']}" priority="4">
+		<h:outputText id="statusDescription" value="#{row.statusDescription}"
+			title="#{row.statusDescription}" styleClass="ng-truncate-output" />
+	</p:column>
+	<p:column id="columnEstablishmentName"
+		headerText="#{i18n['inutilization.label.establishment']}"
+		styleClass="ng-truncate-column inutilization-establishment-column"
+		sortBy="#{row.businessUnit.person.name}" priority="4">
+		<h:outputText id="establishmentName" value="#{row.businessUnit.person.name}"
+			title="#{row.businessUnit.person.personIN.value}"
+			styleClass="ng-truncate-output" />
+	</p:column>
+	<p:column id="columnProtocol"
+		headerText="#{i18n['inutilization.label.protocol']}"
+		styleClass="inutilization-protocol-column">
+		<h:outputText id="statusProtocolNumber"
+			value="#{row.statusProtocolNumber}" />
+	</p:column>
+	<p:column id="columnManualProtocol"
+		headerText="#{i18n['inutilization.label.manualprotocol']}"
+		styleClass="ng-truncate-column inutilization-manual-protocol-column">
+		<h:outputText id="manualProtRegisterLogin"
+			value="#{row.manualProtRegisterLogin}"
+			title="#{row.manualProtRegisterLogin}" />
+	</p:column>
+	<p:column id="columnXML" styleClass="ng-column-action"
+		exportable="false" toggleable="false">
+		<p:commandLink id="XML" ajax="false" immediate="true"
+			action="#{defaultMBean.prepareDocumentDownload(row)}"
+			onclick="updateMessages()"
+			update=":messages :ng-form:ng-detail-dataTable:ng-data-table :ng-form :ng-panel-crud-dialog">
+			<span title="#{i18n['document.tooltip.download.xml']}"
+				class="icon-download-file ng-icon"></span>
+		</p:commandLink>
+	</p:column>
+</ui:composition>

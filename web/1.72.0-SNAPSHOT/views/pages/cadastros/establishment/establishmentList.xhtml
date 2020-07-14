@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/crud"
+	xmlns:ngCommon="http://java.sun.com/jsf/composite/common/component/view/search"
+	template="/common/templates/crud/ngCrudTemplate.xhtml">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{establishmentMB}" />
+		<h:outputScript library="common" name="js/primefaces/selectCheckboxMenu.js" />
+		<!-- BLOCO DE FILTRO/LISTAGEM -->
+		<ui:define name="searchlistBlock">
+			<ng:ngCrudSearch id="ng-search-comp" titleView="#{i18n['establishment.label.title']}">
+					<ui:include src="establishmentFilters.xhtml" />
+			</ng:ngCrudSearch>
+			<ngCommon:ngSelectedActions id="ng-selected-actions" />
+			<ng:ngDetailDataTable id="ng-detail-dataTable" btnRenderRemove="false" btnRenderEdit="false">
+						<ui:include src="establishmentDetailDataTable.xhtml" />
+			</ng:ngDetailDataTable>
+		</ui:define>
+		<!-- BLOCO CRIACAO/EDICAO -->
+		<ui:define name="addUpdateBlock">
+			<ng:ngFormEditConfirm 	id="ngFormEdit"	
+									titleView="#{i18n['establishment.label.titleEdit']}"	
+									dialogHeader="#{i18n['popup.msg.warn']}">
+									<ui:include src="establishmentForm.xhtml" />
+			</ng:ngFormEditConfirm>
+		</ui:define>
+		<!-- BLOCO NOTITY,QUEUE, RULES E DIALOGS-->
+		<ui:define name="addDialogBlock">
+			<ui:include src="establishmentDialogs.xhtml" />
+			<!-- LIST NOTITYEVENT -->
+			<ui:include src="config/notifyevent/notifyeventList.xhtml" />
+			<!-- EDIT NOTITYEVENTVALUE -->
+			<ui:include src="config/notifyevent/edit.xhtml" />
+			<!-- LIST QUEUE -->
+			<ui:include src="config/queue/queueList.xhtml" />
+			<!-- EDIT QUEUEVALUE  -->
+			<ui:include src="config/queue/edit.xhtml" />
+			<!-- LIST RULES -->
+			<ui:include src="rules/rulesList.xhtml" />
+		</ui:define>
+</ui:composition>

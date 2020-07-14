@@ -1,0 +1,19 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+	<p:outputPanel styleClass="ui-g-2">
+		<p:outputLabel for="nfetype" value="#{i18n['document.label.processtype']}:" />
+		<p:selectOneMenu id="nfetype" value="#{defaultFilterMBean.filterVO.processType}" disabled="#{defaultFilterMBean.isDisabledProcessTypes()}">
+			<f:selectItems value="#{defaultFilterMBean.processType}"
+						var="processType" 
+						itemValue="#{processType}"
+						itemLabel="#{i18n[utils:getEnumQualifiedName(processType).concat('.processType')]}" />
+						<p:ajax listener="#{defaultFilterMBean.changeProcessType}"
+								event="change" 
+								global="false"
+								update="documentstatus @(.received-for-panel) @(.update-component)" />
+		</p:selectOneMenu>
+	</p:outputPanel>
+</ui:fragment>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<p:menuitem id="registerProtocolAction"
+		value="#{i18n['inutilization.label.action.protocol.register']}"
+		icon="fa fa-flag"
+		action="#{defaultMBean.inutilizationProtocolMB.prepareRegisterProtocol()}"
+		rendered="#{defaultMBean.functionalityHelper.hasPermitionForRegisterProtocol()}"
+		disabled="#{defaultMBean.functionalityHelper.isDisabledRegisterProtocol()}"
+		update=":ng-form :ng-panel-crud-dialog :ng-form:ng-panel-crud :messages"
+		immediate="true">
+	</p:menuitem>
+	<p:menuitem id="dowloadXmlAction"
+		value="#{i18n['inutilization.label.action.download']}"
+		icon="icon-download-alt" action="#{defaultMBean.prepareZipDownload()}"
+		ajax="false" styleClass="ng-linkEvent ng-link-invoice-erp"
+		rendered="#{defaultMBean.functionalityHelper.hasPermitionForDownloadXML()}"
+		disabled="#{defaultMBean.functionalityHelper.isDisabledDownloadXML()}"
+		immediate="true">
+	</p:menuitem>
+	<p:menuitem id="resendErpAction"
+		value="#{i18n['inutilization.label.action.doctoerp']}"
+		icon="icon-sendERP" action="#{defaultMBean.resendFilesERP}"
+		rendered="#{defaultMBean.functionalityHelper.hasPermitionForSendDocToERP()}"
+		disabled="#{defaultMBean.functionalityHelper.isDisabledSendDocToERP()}"
+		update=":messages" immediate="true">
+	</p:menuitem>
+</ui:composition>

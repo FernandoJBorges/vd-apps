@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{detailedInvoiceReportMB}" />
+	
+	<!-- bloco de pesquisa -->
+	
+		<p:panelGrid id="ng-panel-search" columns="2" columnClasses="column1,column2">
+				<p:outputLabel for="processing" value="#{i18n['document.label.processing']}:" />
+					<h:panelGroup>
+					<p:calendar id="processing"
+								value="#{defaultMBean.filterVO.initialProcessingDate}"
+								locale="pt" 
+								showOn="button" 
+								pattern="#{defaultMBean.layouts.DATE.format}"
+								styleClass="dateTimeField" >
+								<p:ajax event="dateSelect" update=":ng-form:ng-search-comp:ng-tabview-search:processingend" listener="#{detailedInvoiceReportMB.fillFinalProcessingDate(defaultMBean.filterVO.initialProcessingDate)}" />
+					</p:calendar>
+					<h:outputLabel style="margin:8px">a</h:outputLabel>
+					<p:calendar id="processingend"
+								value="#{defaultMBean.filterVO.finalProcessingDate}"
+								locale="pt" 
+								showOn="button" 
+								pattern="#{defaultMBean.layouts.DATE.format}"
+								styleClass="dateTimeField"
+								mindate="#{defaultMBean.filterVO.initialProcessingDate}">
+								<p:ajax event="dateSelect" update=":ng-form:ng-search-comp:ng-tabview-search:processingend" listener="#{defaultMBean.setFinalProcessingDate(defaultMBean.filterVO.finalProcessingDate)}"/>
+					</p:calendar>
+					</h:panelGroup>
+					
+					<p:outputLabel for="issuedateini" value="#{i18n['document.label.issuedate']}:" />
+					<h:panelGroup>
+					<p:calendar id="issuedateini"
+								value="#{defaultMBean.filterVO.initialEmissionDate}"
+								locale="pt" 
+								showOn="button" 
+								pattern="#{defaultMBean.layouts.DATE.format}"
+								styleClass="dateTimeField">
+								<p:ajax event="dateSelect" update=":ng-form:ng-search-comp:ng-tabview-search:issuedateend" listener="#{defaultMBean.fillFinalEmissionDate(defaultMBean.filterVO.initialEmissionDate)}" />
+					</p:calendar>
+					<h:outputLabel style="margin:8px">a</h:outputLabel>
+					<p:calendar id="issuedateend"
+								value="#{defaultMBean.filterVO.finalEmissionDate}"
+								locale="pt" 
+								showOn="button" 
+								pattern="#{defaultMBean.layouts.DATE.format}"
+								styleClass="dateTimeField"
+								mindate="#{defaultMBean.filterVO.initialEmissionDate}">
+								<p:ajax event="dateSelect" update=":ng-form:ng-search-comp:ng-tabview-search:issuedateend" listener="#{defaultMBean.setFinalEmissionDate(defaultMBean.filterVO.finalEmissionDate)}"/>
+					</p:calendar>
+					</h:panelGroup>
+					
+					<p:outputLabel for="serieIni" value="#{i18n['document.label.serie']}:" />
+					<h:panelGroup style="float: left;">
+						<p:inputText id="serieIni" value="#{defaultMBean.invoiceStringFilterVO.ideInitialSerie}" style="width: 25px;" maxlength="3"/>
+						<h:outputLabel style="margin:5px">a</h:outputLabel>
+						<p:inputText id="serieFim" value="#{defaultMBean.invoiceStringFilterVO.ideFinalSerie}" style="width: 25px;" maxlength="3"/>
+			
+						<p:outputLabel for="documentNumberIni" value="#{i18n['document.label.documentnumber']}:" styleClass="ng-document-ini-lb" style="margin-right:10px;margin-left:42px "/>
+						<p:inputText id="documentNumberIni"
+									value="#{defaultMBean.invoiceStringFilterVO.ideInitialNNF}"
+									style="width: 60px;" maxlength="9"/>
+						<h:outputLabel style="margin:5px">a</h:outputLabel>
+						<p:inputText id="documentNumberFim"
+									value="#{defaultMBean.invoiceStringFilterVO.ideFinalNNF}"
+									style="width: 60px;" maxlength="9"/>
+					</h:panelGroup>
+					
+					<p:outputLabel for="nfetype" value="#{i18n['invoice.report.label.nfeType']}:" />
+					<h:panelGroup>
+						<p:selectOneMenu id="nfetype" value="#{defaultMBean.filterVO.received}" style="width:100px;float:left;" >
+							<f:selectItems value="#{defaultMBean.listProcessTypes}"  
+											var="nfe"
+											itemValue="#{nfe.id}"
+											itemLabel="#{nfe.desc}" 
+											/>
+						</p:selectOneMenu>
+						
+						<p:outputLabel for="cnpj" value="#{i18n['document.label.cnpj']}:" style="margin-right:10px; margin-left:50px"/>
+						<p:inputMask id="cnpj" 
+									value="#{defaultMBean.filterVO.emitCNPJ}" 
+									mask="#{defaultMBean.layouts.CNPJ.searchMask}" 
+									style="width: 125px;"
+									/>
+					</h:panelGroup>	
+					
+					<p:outputLabel for="processTypeNfe" value="#{i18n['invoice.report.label.processTypeNfe']}:" />
+					<h:panelGroup>
+						<p:selectOneMenu id="processTypeNfe" value="#{defaultMBean.invoiceStringFilterVO.ideTpNf}" style="width:75px;float:left;">
+							<f:selectItem itemLabel="#{i18n['lbl_all']}" itemValue="#{null}"/>			
+							<f:selectItems value="#{defaultMBean.listTypeNfes}"  
+											var="nfe"
+											itemValue="#{nfe.id}"
+											itemLabel="#{nfe.desc}" 
+											/> 
+						</p:selectOneMenu>
+						
+						<p:outputLabel for="cnpjcpfadressee" value="#{i18n['invoice.report.label.adressee']}:" style="margin:10px" />
+						<h:panelGroup>
+							<p:inputText id="cnpjcpfadressee" value="#{defaultMBean.filterVO.destCNPJ}" maxlength="20" style="width: 125px;"/>
+						</h:panelGroup>
+					</h:panelGroup>
+					
+					<p:outputLabel for="documentstatus" value="#{i18n['document.label.status']}:" />
+					<h:panelGroup>
+						<p:selectOneMenu id="documentstatus" value="#{defaultMBean.filterVO.status}" style="width:100px;float:left;">
+							<f:selectItems value="#{defaultMBean.invoiceStatusType}" 
+											var="status"
+											itemValue="#{status}" 
+											itemLabel="#{status.desc}" 
+											/> 
+						</p:selectOneMenu>
+						
+						<p:outputLabel for="cnpjcarrier" value="#{i18n['invoice.label.cnpjcarrier']}:" style="margin:10px; margin-left:26px"/>
+						<p:inputMask id="cnpjcarrier" value="#{defaultMBean.filterVO.transpCNPJ}"
+										mask="#{defaultMBean.layouts.CNPJ.searchMask}"
+										style="width: 125px;" />
+					</h:panelGroup>
+			
+					<p:outputLabel for="emissiontype" value="#{i18n['invoice.label.emissiontype']}:" />
+					<h:panelGroup>
+						<p:selectOneMenu id="emissiontype" value="#{defaultMBean.invoiceStringFilterVO.ideTpEmis}" style="width: 100px;float: left" >
+							<f:selectItem itemLabel="#{i18n['lbl_all']}" itemValue="#{null}"/>
+							<f:selectItems value="#{defaultMBean.emissionTypes}"
+											var="emission"
+											itemValue="#{emission.id}"
+											itemLabel="#{emission.desc}"
+											/>
+						</p:selectOneMenu>
+					</h:panelGroup>
+					
+					
+			<p:focus context="ng-panel-search" />											
+			<p:fieldset legend="#{i18n['invoice.report.label.item']}" style="margin-left: 450px;margin-top: -240px;">
+				<p:panelGrid id="ng-panel-search-item" columns="2" columnClasses="column1,column2">
+					<p:outputLabel for="cfop" value="#{i18n['invoice.report.label.cfop']}:"/>
+					<p:inputText id="cfop" value="#{defaultMBean.invoiceStringFilterVO.prodCFOP}" maxlength="4" style="width: 40px;"/>
+		
+					<p:outputLabel for="ncm" value="#{i18n['invoice.report.label.ncm']}:"/>
+					<p:inputText id="ncm" value="#{defaultMBean.invoiceStringFilterVO.prodNCM}" maxlength="8" style="width: 54px;"/>
+		
+					<p:outputLabel for="cean" value="#{i18n['invoice.report.label.cean']}:"/> 
+					<p:inputText id="cean" value="#{defaultMBean.filterVO.prodCEAN}" maxlength="14" style="width: 90px;"/>		
+
+					<p:outputLabel for="cprod" value="#{i18n['invoice.report.label.cprod']}:" />
+					<p:inputText id="cprod" value="#{defaultMBean.filterVO.prodCProd}" maxlength="60" style="width: 90px;"/>
+				</p:panelGrid>
+			</p:fieldset>
+		</p:panelGrid>
+		<p:keyFilter for="serieIni" mask="num"/>
+		<p:keyFilter for="serieFim" mask="num"/>
+		<p:keyFilter for="documentNumberFim" mask="num"/>
+		<p:keyFilter for="documentNumberIni" mask="num"/>
+		<p:keyFilter for="cean" mask="num"/>
+		<p:keyFilter for="ncm" mask="num"/>
+		<p:keyFilter for="cfop" mask="num"/>
+</ui:composition>

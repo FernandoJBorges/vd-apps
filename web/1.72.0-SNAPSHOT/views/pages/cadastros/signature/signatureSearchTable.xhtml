@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:column id="columnName" headerText="#{i18n['signature.label.name']}"
+		sortBy="#{row.name}">
+		<h:outputText id="name" value="#{row.name}" />
+	</p:column>
+
+	<p:column id="columnType" headerText="#{i18n['signature.label.type']}"
+		width="700" sortBy="#{row.type}">
+		<h:outputText id="type" value="#{row.type.i18n}" />
+	</p:column>
+
+	<p:column id="columnEdit" styleClass="ng-column-action" width="5">
+		<p:commandLink id="edit" action="#{defaultMBean.editAction}"
+			update=":ng-form :ng-panel-crud-dialog :messages"
+			title="#{i18n['signature.label.edit']}">
+			<span class="icon-edit ng-icon" />
+			<f:setPropertyActionListener target="#{defaultMBean.entity}"
+				value="#{row}" />
+		</p:commandLink>
+	</p:column>
+
+	<p:column id="columnDelete" styleClass="ng-column-action" width="25">
+		<p:commandLink id="delete" title="#{i18n['signature.label.delete']}"
+			onclick="PF('dlConfirmDeleteBean').show();">
+			<span class="icon-delete ng-icon" />
+			<f:setPropertyActionListener target="#{defaultMBean.entity}"
+				value="#{row}" />
+		</p:commandLink>
+	</p:column>
+
+</ui:composition>

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:dialogFiscal="http://java.sun.com/jsf/composite/dialog">
+
+	<h:outputScript library="js" name="nfeDetails.js" target="body" />
+
+	<p:remoteCommand name="loadTabData" action="#{defaultMBean.loadTabData(defaultMBean.generalDataTab)}"
+		update="@(.document-detail-column) @(.ng-nfe-buttons) accordionPanel"/>
+		
+	
+	<p:outputPanel styleClass="ui-g-12 ng-nfe-buttons">
+		<!-- Espaço em branco -->
+		<p:outputPanel styleClass="ui-g-6" />
+			<p:outputPanel styleClass="ui-g-6">
+				<!-- reenviar a prefeitura -->
+				<p:commandButton id="btn-resend-rps"
+						ajax="false"
+						icon="icon-reenviarSEFAZ ng-button"
+						styleClass="ng-ui-button ng-float-right"
+						action="#{defaultMBean.actionEvent('resendCityHall')}"
+						value="#{i18n['nfse.label.action.resendToCityHall']}"
+						disabled="#{defaultMBean.actionResendCityHallAction.isDisabled(utils:singletonList(defaultMBean.getOrLoadLocalDocument()))}"
+						rendered="#{defaultMBean.actionResendCityHallAction.isRendered(defaultMBean.getOrLoadLocalDocument().getFlowTypeEnum())}"
+						update=":messages">
+				</p:commandButton>
+				<!-- Reenviar ao ERP -->
+				<p:commandButton id="btn-resend-erp"
+						icon="icon-sendERP ng-button"
+						styleClass="ng-ui-button ng-float-right"
+						disabled="#{defaultMBean.actionSendToErp.isDisabled(utils:singletonList(defaultMBean.getOrLoadLocalDocument()))}"
+						rendered="#{defaultMBean.actionSendToErp.rendered}"
+						action="#{defaultMBean.actionEvent('sendDocToERP')}"
+						value="#{i18n['nfse.label.details.action.resendToERP']}"
+						update=":messages"
+				/>
+				<!-- RPS -->
+				<p:commandButton id="btn-generate-rps"
+						icon="icon-print ng-button"
+						styleClass="ng-ui-button ng-float-right"
+						update=":messages"
+						disabled="#{defaultMBean.actionDownloadRPS.isDisabled(utils:singletonList(defaultMBean.getOrLoadLocalDocument()))}"
+						rendered="#{defaultMBean.actionDownloadRPS.isRendered(defaultMBean.getOrLoadLocalDocument().getFlowTypeEnum())}"
+						action="#{defaultMBean.actionEvent('downloadDA')}"
+						value="#{i18n['nfse.label.details.action.darps']}"
+				/>
+				<!-- DANFSE -->
+				<p:commandButton id="btn-generate-da"
+						icon="icon-print ng-button"
+						styleClass="ng-ui-button ng-float-right"
+						update=":messages"
+						disabled="#{defaultMBean.actionDownloadDanfse.isDisabled(utils:singletonList(defaultMBean.getOrLoadLocalDocument()))}"
+						rendered="#{defaultMBean.actionDownloadDanfse.isRendered(defaultMBean.getOrLoadLocalDocument().getFlowTypeEnum())}"
+						action="#{defaultMBean.actionEvent('downloadRPS')}"
+						value="#{i18n['nfse.label.details.action.danfse']}"
+				/>
+			</p:outputPanel>
+		</p:outputPanel>
+
+
+	<p:outputPanel styleClass="ui-g-12 document-detail-column">
+		<!-- Número do RPS -->
+		<p:outputPanel styleClass="ui-g-2">
+			<p:outputLabel value="#{i18n['nfse.label.rpsnumber']}:" />
+			<p:outputPanel>
+				<h:outputText id="detailsRPSNumber" value="#{defaultMBean.detailData.generalData.rpsNumber}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Série do RPS -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.rps.serie']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.rpsSerial}" />
+			</p:outputPanel>	
+		</p:outputPanel>
+		
+		<!-- Data de Emissão -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.emissionDate']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.emissionDate}" />
+			</p:outputPanel>
+		</p:outputPanel>
+		
+		<!-- Município  -->
+			<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.city']}:"/>
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.city}"/>
+			</p:outputPanel>
+		</p:outputPanel>
+		
+		<!-- Regime Especial de Tributação -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.especial.tax.regime']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.regEspTribut}" />
+			</p:outputPanel>
+		</p:outputPanel>
+		
+		<!-- Valor Total dos Serviços -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.service.total.value']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.totalValue}" />
+			</p:outputPanel>
+		</p:outputPanel>
+		
+	</p:outputPanel>
+	
+	<p:outputPanel styleClass="ui-g-12 document-detail-column">
+		<!-- Número da NFS-e -->
+		<p:outputPanel styleClass="ui-g-2">
+			<p:outputLabel value="#{i18n['nfse.label.details.nfsenumber']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.nfseNumber}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Tipo do RPS -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.rps.type']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.rpsType}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Status do RPS-->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.rps.status']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.rpsStatus}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Simples Nacional -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.simple.nacional']}:"/>
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.simpleNac}" />
+			</p:outputPanel>
+		</p:outputPanel>
+		
+		<!-- Natureza de Operação -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.operation.nature']}:"/>
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.natOp}" />
+			</p:outputPanel>
+		</p:outputPanel>
+	</p:outputPanel>
+	
+	<p:outputPanel styleClass="ui-g-12 document-detail-column"/>
+
+	<div class="ui-g-12 document-details-buttons-header-place">
+		<ui:include src="../../../document/details/sections/acordionPanelHeader.xhtml" />
+	</div>
+	
+	<div class="ui-g-12 document-detail-accordion-panel-place">
+		<p:accordionPanel id="accordionPanel" multiple="true" widgetVar="accordionPanel" activeIndex="0" class="document-detail-accordion-panel">
+			<p:tab title="#{i18n['invoice.label.process.data.information']}">
+				<ui:include src="../../../document/details/sections/processDataSection.xhtml">
+					<ui:param name="digestValueLabel" value="nfse.label.details.verification.code" />
+					<ui:param name="processData" value="#{defaultMBean.detailData.generalData.processData}" />
+				</ui:include>
+			</p:tab>
+
+			<p:tab title="#{i18n['nfse.label.details.service.provider']}">
+				<ui:include src="general/serviceSection.xhtml">
+					<ui:param name="service" value="#{defaultMBean.detailData.generalData.serviceProvider}" />
+				</ui:include>
+			</p:tab>
+
+			<p:tab title="#{i18n['nfse.label.details.service.service.taker']}" >
+				<ui:include src="general/serviceSection.xhtml">
+					<ui:param name="service" value="#{defaultMBean.detailData.generalData.serviceTaker}" />
+				</ui:include>
+			</p:tab>
+
+			<p:tab title="#{i18n['nfse.label.details.cancel']}" rendered="#{defaultMBean.functionalityHelper.isCancelSectionEnabled()}">
+				<div class="ui-g-12 document-detail-column">
+					<div class="ui-g-12 document-additional-information">
+						<p:outputLabel value="#{i18n['nfse.label.details.cancel.reason']}:" /><br/>
+						<h:inputTextarea id="cancReason" rows="5" cols="100" readonly="true" value="#{defaultMBean.detailData.generalData.motivoCancelamento}" />
+					</div>
+				</div>
+			</p:tab>
+
+			<p:tab title="#{i18n['nfse.label.details.substituted.rps']}" rendered="#{defaultMBean.functionalityHelper.isRPSSubstitutedSectionEnabled()}">
+				<ui:include src="general/rpsSubstitutedSection.xhtml">
+					<ui:param name="rpsSubstituted" value="#{defaultMBean.detailData.generalData.rpsSubstituted}" />
+				</ui:include>
+			</p:tab>
+
+			<p:tab title="#{i18n['nfse.label.details.service.provided']}" >
+				<ui:include src="general/serviceProvidedSection.xhtml">
+					<ui:param name="items" value="#{defaultMBean.detailData.generalData.servicesProvided}" />
+				</ui:include>
+			</p:tab>
+
+			<p:tab title="#{i18n['nfse.label.details.service.itens']}" >
+				<ui:include src="general/serviceItensSection.xhtml">
+					<ui:param name="items" value="#{defaultMBean.detailData.generalData.serviceItens}" />
+				</ui:include>
+			</p:tab>
+
+			<p:tab title="#{i18n['nfse.label.details.totals']}" >
+				<ui:include src="general/serviceTotalsSection.xhtml">
+					<ui:param name="totalsValues" value="#{defaultMBean.detailData.generalData.totalsValues}" />
+				</ui:include>
+			</p:tab>
+
+			<p:tab title="#{i18n['nfse.label.details.complementary.information']}" >
+				<div class="ui-g-12 document-detail-column">
+					<div class="ui-g-12 document-additional-information">
+						<p:outputLabel value="#{i18n['nfse.label.details.rps.complementary.information']}:" /><br/>
+						<h:inputTextarea rows="5" cols="100" readonly="true" value="#{defaultMBean.detailData.generalData.descricaoRPS}" />
+					</div>
+				</div>
+			</p:tab>
+
+		</p:accordionPanel>
+	</div>
+
+	<h:outputScript library="js" name="ondemand-loaddata.js" />
+
+</ui:composition>

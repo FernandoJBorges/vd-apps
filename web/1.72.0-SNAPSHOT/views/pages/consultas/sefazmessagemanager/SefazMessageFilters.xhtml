@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:dialog="http://java.sun.com/jsf/composite/dialog">
+	<div class="ui-g-12">
+		<ui:include src="filters/calendarInitial.xhtml" />
+		<ui:include src="filters/calendarFinal.xhtml" />
+		<ui:include src="filters/docidentifier.xhtml" />
+		<ui:include src="filters/cnpj.xhtml" />
+	</div>
+	<div class="ui-g-12">
+		<ui:include src="filters/dateOf.xhtml" />
+		<ui:include src="filters/datePeriodSelector.xhtml" />
+		<div class="ui-g-5 filter-nopad ui-margin-col">
+			<ui:include src="filters/flowType.xhtml" />
+			<ui:include src="filters/operation.xhtml" />
+			<ui:include src="filters/messageTypes.xhtml" />
+		</div>
+		<div class="ui-g-3 filter-nopad ui-margin-col">
+			<div class="ui-g-10">
+				<p:outputLabel value="#{i18n['sefaz.message.sefazid']}:" />
+				<p:inputText id="sefazInput"
+					value="#{defaultFilterMBean.filterVO.sefazID}" />
+			</div>
+			<div class="ui-g-1 ui-g-nopad search-nopad">
+				<p:commandButton icon="ui-icon-circle-close"
+					action="#{defaultFilterMBean.resetValues}"
+					resetValues="true"
+					update="ng-form:ng-search-comp:ng-tabview-search:ng-tabview-basic:sefazInput"
+					immediate="true">
+				</p:commandButton>
+			</div>			
+			<div class="ui-g-1 ui-g-nopad search-nopad">
+				<p:commandButton icon="ui-icon-search"
+					action="#{sefazDialogHelper.resetValues(defaultFilterMBean.filterVO.operation.ordinal())}"
+					resetValues="true"
+					update="sefazMessage:sefazMessageForm:sefazMessageTable sefazMessage:sefazMessageForm:sefazID sefazMessage:sefazMessageForm:uf"
+					immediate="true">
+				</p:commandButton>
+			</div>
+		</div>
+	</div>
+</ui:composition>

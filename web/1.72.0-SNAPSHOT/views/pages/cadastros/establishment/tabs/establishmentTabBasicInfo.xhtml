@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+	<p:panelGrid id="panelGridForm" columns="2" columnClasses="column1,column2">
+						<p:outputLabel for="url" value="#{i18n['establishment.label.urlmonitor']}:" />
+						<p:inputText id="url" size="60" value="#{defaultMBean.entity.url}" maxlength="256" required="true" 
+										requiredMessage="#{i18n['establishment.input.required.urlmonitor']}" />
+						<p:outputLabel for="email" value="#{i18n['establishment.label.email']}:" />
+						<p:inputText	 id="email" 
+										value="#{defaultMBean.entity.email}" 
+										size="60"
+										 maxlength="128"  
+										required="true" 
+										requiredMessage="#{i18n['establishment.input.required.email']}">
+										<f:attribute name="inputName" value="#{i18n['establishment.msg.error.mail']}" /> 
+										<f:validator binding="#{mailValidator}" />
+						</p:inputText>
+						<p:outputLabel for="replyTo" value="#{i18n['establishment.label.replyTo']}:" />
+						<p:inputText id="replyTo" value="#{defaultMBean.entity.replyTo}" size="60" maxlength="128">
+							<f:attribute name="inputName" value="#{i18n['establishment.msg.error.mailreplyto']}" /> 
+							<f:validator binding="#{mailValidator}" />
+						</p:inputText>
+						<p:outputLabel for="logo" value="#{i18n['establishment.label.logo']}:"  rendered="#{defaultMBean.isStateUpdate()}" />
+						<h:outputText id="fileNameID" value="#{defaultMBean.filters.fileName}"  rendered="#{defaultMBean.isStateUpdate()}" />
+						<p:spacer></p:spacer>
+						<p:fileUpload id="logo" widgetVar="upload" rendered="#{defaultMBean.isStateUpdate()}"
+								process="@this"
+								label="#{i18n['uploadDocument.label.chooseFile']}"
+								 update="ng-form:ngFormEdit:ngTabview:fileNameID"
+								fileUploadListener="#{defaultMBean.handleFileUpload}"
+								uploadLabel="Upload" multiple="false" mode="advanced"
+								showButtons="false" auto="true"
+								allowTypes="/(\.|\/)(jpeg|jpg|gif|bmp|tif|png)$/"
+								title="#{i18n['uploadDocument.label.selectUploadFile.toolTip']}"
+								sizeLimit="1048576"
+								messageTemplate="{name}"
+								invalidFileMessage="Formatos permitidos: (JPG,GIF,TIF,BITMAP) Arquivo:"
+								invalidSizeMessage="#{i18n['uploadDocument.msg.error.maxfileSizeJpg']}"
+								>
+						</p:fileUpload>
+						<script type="text/javascript">
+								$(document).ready(function() {
+										$(':input[type=file]').attr('accept','.jpg,.gif,.tif,.bmp,.png,.jpeg');
+								});
+						</script>
+	</p:panelGrid>
+	<p:focus id="tabBasicFocus" context="panelGridForm" />
+</ui:composition>

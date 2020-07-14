@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<div class="ui-g-3 ui-g-nopad establishment-select">
+			<div class="ui-g-10">
+				<p:outputLabel for="establishment" value="#{i18n['addresse.label.establishment']}:" />
+				<p:inputText id="establishment" required="true" requiredMessage="#{i18n['addresse.msg.error.invalidEstablishment']}" styleClass="readonly" onfocus="readonly();" value="#{defaultMBean.entity.owner.name}" 
+							title="#{defaultMBean.entity.owner.name}" disabled="#{defaultMBean.stateUpdate}" >
+				<p:tooltip id="toolTipEstab" for="establishment" value="#{defaultMBean.entity.owner.name}" position="bottom" />
+				</p:inputText>
+			</div>
+			<div class="ui-g-2 ui-g-nopad" style="padding-top:5px">
+				<p:spacer />
+				<p:commandButton icon="ui-icon-search" 
+						id="ng-btn-matrix-search"
+						resetValues="true"
+						global="false"
+						onclick="PF('zoomEstUser').show();" 
+						update=":zoomEstUser:zoomEstUserForm:zoomEstUsertbStabelecimento :zoomEstUser:zoomEstUserForm:zoomEstUserPanelGrid"
+						immediate="true"
+						disabled="#{defaultMBean.stateUpdate}">
+				</p:commandButton>
+			</div>
+		</div>
+</ui:composition>

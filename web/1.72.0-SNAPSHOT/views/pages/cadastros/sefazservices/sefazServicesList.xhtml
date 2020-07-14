@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/crud"
+	xmlns:ngCommon="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:dialog="http://java.sun.com/jsf/composite/common/component/dialog"
+	template="/common/templates/crud/ngCrudTemplate.xhtml">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{sefazServicesMB}" />
+	<!-- bloco de pesquisa -->
+	<ui:define name="searchlistBlock">
+		<h:outputStylesheet name="sefazservice.css" library="css" />
+		<ng:ngCrudSearch id="ng-search-comp" titleView="#{i18n['sefaz.label.title']}">
+		<div class="ui-g ui-fluid">
+						<div class="ui-g-2">
+							<h:panelGroup>
+								<p:outputLabel for="state" value="#{i18n['sefaz.label.uf']}:" />
+								<p:selectOneMenu id="state" value="#{defaultMBean.filters.state}">
+										<f:selectItem itemLabel="#{i18n['lbl_all_states']}" itemValue="-1"/> 
+										<f:selectItems value="#{defaultMBean.states}"/>
+								</p:selectOneMenu>
+							</h:panelGroup>
+						</div>
+						<div class="ui-g-2">
+							<h:panelGroup>
+								<p:outputLabel for="project" value="#{i18n['sefaz.label.project']}:" />
+								<p:selectOneMenu  id="project" value="#{defaultMBean.filters.docType}" valueChangeListener="#{defaultMBean.updateDocType}">
+										 <f:selectItem itemLabel="#{i18n['lbl_all']}" itemValue=""/>
+										 <f:selectItems value="#{defaultMBean.docTypes}" var="docTye" itemValue="#{docTye.id}" itemLabel="#{docTye.desc}" />
+										 <p:ajax event="change" partialSubmit="false" global="false" update=":ng-form:ng-search-comp:ng-tabview-search:schemaVersion " />
+								</p:selectOneMenu>
+							</h:panelGroup>
+						</div>
+						<div class="ui-g-2">
+							<h:panelGroup>
+								<p:outputLabel for="schemaVersion" value="#{i18n['sefaz.label.schemaversion']}:" />
+								<p:selectOneMenu  id="schemaVersion" value="#{defaultMBean.filters.schemaVersion}">
+										 <f:selectItem itemLabel="#{i18n['lbl_all_states']}" itemValue=""/>
+										 <f:selectItems value="#{defaultMBean.getSchemaVersions()}" var="schemaVersion" itemValue="#{schemaVersion.version}" itemLabel="#{schemaVersion.version}" />
+								</p:selectOneMenu>
+							</h:panelGroup>
+						</div>
+			</div>
+		</ng:ngCrudSearch>
+		<ngCommon:ngSelectedActions id="ng-selected-actions">
+			<p:menuitem value="#{i18n['sefaz.label.alterarTimezone']}"
+						icon="ng-btn-actions-select fa fa-clock-o"
+						action="#{defaultMBean.actionEvent('DialogTime')}"
+						styleClass="ng-context-menu-item"
+						update=":messages :ng-modify-time:dialogTimezone"
+						disabled="#{defaultMBean.filters.enableButtonActionSelected}" 
+						rendered="#{defaultMBean.hasPermission('CREATE') or defaultMBean.hasPermission('EDIT')}"
+						immediate="true" >
+			</p:menuitem>
+		</ngCommon:ngSelectedActions>
+		<ng:ngDetailDataTableSelected id="ng-detail-dataTable" btnRenderRemove="false" btnRenderEdit="false" customAction="true" ajaxShowLoad="false">
+				<p:column headerText="#{i18n['label.title.exporter.actions']}" exportable="false" toggleable="false" style="width:30px">
+					<ng:ngColumnActions btnDisabledRemove="#{!defaultMBean.isDeletableRow(row)}">
+								<p:separator />
+								<p:menuitem value="#{i18n['sefaz.tooltip.commandLink.sefazOccurrence']}" 
+										update=":ng-form :ng-panel-crud-dialog :messages"
+										action="#{defaultMBean.editAction}" 
+										icon="fa fa-list"
+										styleClass="ng-context-menu-item"
+										disabled="true"
+										onclick="document.location.href ='#{request.contextPath}/views/pages/consultas/sefazoccurrencemanager/sefazOccurrenceManagerList.jsf'" 
+										rendered="#{defaultMBean.hasPermission('OCCURRENCE')}"
+										immediate="true">
+										<f:setPropertyActionListener value="#{row}" target="#{defaultMBean.entity}" /> 
+								</p:menuitem>
+								<p:menuitem value="#{i18n['sefaz.tooltip.commandLink.clone']}" 
+										update=":messages :identifierClone:dlConfirmClone:dlConfirmCloneMessage"
+										icon="fa fa-files-o"
+										styleClass="ng-context-menu-item"
+										onclick="PF('dlConfirmCloneRegister').show();"
+										rendered="#{defaultMBean.hasPermission('CLONE')}"
+										immediate="true">
+										<f:setPropertyActionListener value="#{row}" target="#{defaultMBean.entity}" /> 
+								</p:menuitem>
+					</ng:ngColumnActions> 
+				</p:column>
+				<p:column id="state" headerText="#{i18n['sefaz.label.uf']}" sortBy="#{row.state}" style="width:40px" >
+					<h:outputText value="#{row.state}" />
+				</p:column>
+				<p:column id="project" headerText="#{i18n['sefaz.label.project']}">
+					<h:outputText value="#{defaultMBean.getDocTypesDesc(row)}"/>
+				</p:column>
+				<p:column id="identification" headerText="#{i18n['sefaz.label.identifier']}" sortBy="#{row.sefazID}">
+					<h:outputText value="#{row.sefazID}" />
+				</p:column>
+				<p:column id="schemaVersion" headerText="#{i18n['sefaz.label.schemaversion']}" sortBy="#{row.schemaVersion}">
+					<h:outputText value="#{row.schemaVersion}" />
+				</p:column>
+				<p:column id="timezone" headerText="#{i18n['sefaz.label.gmt']}" sortBy="#{row.timezone}" style="width:50px">
+					<h:outputText value="GMT#{row.timezone}" />
+				</p:column>
+		</ng:ngDetailDataTableSelected>
+		<p:focus context="ng-form:ng-search-comp:ng-tabview-search" />
+	</ui:define>
+	
+	<!-- bloco de criacao edicao -->
+ 	<ui:define name="addUpdateBlock">
+		<ui:include src="sefazServicesCreateOrUpdate.xhtml" />
+	</ui:define>
+
+	<ui:define name="addDialogBlock">
+		
+		<!-- Popup de confirma clonagem de registro -->
+		<h:form id="ng-modify-pass" prependId="true">
+			<dialog:ngDialogConfirm id="dlConfirmCloneRegister" 
+									header="#{i18n['popup.msg.warn']}" 
+									widgetVar="dlConfirmCloneRegister"
+									titleBtn="#{i18n['btn_action_yes']}"
+		 							btnActionConfirm="#{sefazServicesMB.confirmClone}">
+		 						 		<p:outputLabel value="#{i18n['sefaz.info.duplicate.questions']}" />	
+		 						 </dialog:ngDialogConfirm>
+		</h:form>
+
+		<h:form id="identifierClone" prependId="true">
+			<dialog:ngDialogConfirm id="dlConfirmClone" 
+									header="#{i18n['popup.msg.warn']}" 
+									widgetVar="dlConfirmClone"  
+									titleBtnConfirm="#{i18n['btn_action_save']}" 
+									titleBtnCancel="#{i18n['btn_action_cancel']}"
+		 							btnActionConfirm="#{sefazServicesMB.cloneRegister}"
+		 						 	updateGrid=":ng-form:ng-detail-dataTable:ng-panel-datatable :identifierClone:dlConfirmClone:dlConfirmCloneFocus">
+				<p:outputLabel value="#{i18n['sefaz.info.newIdentifier']}" />		 						 	
+				<p:panelGrid id="panelGridDialog" columns="2" columnClasses="column1,column2">
+					<p:outputLabel for="identifier" value="#{i18n['sefaz.label.identifier']}:" />
+					<p:inputText id="identifier" value="#{defaultMBean.entity.sefazID}" maxlength="20" size="30" required="true" />
+				</p:panelGrid>	
+				<p:focus id="dlConfirmCloneFocus" context="panelGridDialog" />				
+			</dialog:ngDialogConfirm>
+		</h:form>
+ 
+		<!-- Popup de alterar GMT -->
+		<h:form id="ng-modify-time" prependId="true">
+			<dialog:ngDialogMessageGlobal 	id="dialogTimezone"
+											width="250" 
+											updateGrid=":messages :ng-form:ng-detail-dataTable:ng-data-table"
+											icon="fa fa-clock-o" 
+											widgetVar="DialogTime" 
+											viewMessageDialog="false"
+											titleBtnConfirm="#{i18n['btn_action_save']}"
+											titleBtnCancel="#{i18n['btn_action_cancel']}"
+											header="#{i18n['sefaz.label.alterarTimezone']}"
+											btnActionConfirm="#{sefazServicesMB.modifyTimezone}" 
+											>
+						<p:panelGrid columns="2" columnClasses="column1,column2">
+							<p:outputLabel for="gmt" value="#{i18n['sefaz.label.gmt']}:" />
+							<p:selectOneMenu id="gmt" value="#{defaultMBean.timezone}" style="width:110px">
+								 <f:selectItems value="#{defaultMBean.timezones}"
+								 				var="timezone" 
+								 				itemValue="#{timezone.idTime}" 
+								 				itemLabel="#{timezone.descGmt}" 
+								 				/>
+							</p:selectOneMenu>
+						</p:panelGrid>
+			</dialog:ngDialogMessageGlobal>
+		</h:form>	   
+	</ui:define>	 
+</ui:composition>

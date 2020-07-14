@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+	
+	<ui:param name="defaultMBean" value="#{dataExportationRequestMB}" />
+	<h:outputStylesheet library="css" name="fix-responsive.css" />
+	<div class="ui-g ui-fluid">
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['ng.label.date.initial']}:" />
+			<p:calendar id="initial-request-date"
+				label="#{i18n['ng.label.date.initial']}"
+				value="#{defaultMBean.filterVO.initialDate}" locale="pt"
+				showOn="button" pattern="#{defaultMBean.layouts.DATE.format}"
+				maxdate="#{defaultMBean.maxDateFilter}"
+				required="true"
+				a:autofocus="true"
+				maxdateid="ng-form:ng-search-comp:ng-tabview-search:final-request-date">
+				<f:validator binding="#{nonFutureDateTimeValidator}" />
+				<f:validator binding="#{periodFinalDateTimeValidator}" />
+			</p:calendar>
+		</div>
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['ng.label.date.final']}:" />
+			<p:calendar id="final-request-date"
+				label="#{i18n['ng.label.date.final']}"
+				required="true"
+				value="#{defaultMBean.filterVO.finalDate}" locale="pt"
+				showOn="button" pattern="#{defaultMBean.layouts.DATE.format}">
+			</p:calendar>
+		</div>
+		
+		<div class="ui-g-2">
+			<p:outputLabel for="status" value="#{i18n['ng.label.status']}:" />
+			<p:selectOneMenu id="status" value="#{defaultMBean.filterVO.status}">
+				<f:selectItems value="#{defaultMBean.statusTypes}" 
+					var="status"
+					itemValue="#{status}" 
+					itemLabel="#{i18n[utils:getEnumQualifiedName(status)]}" />
+			</p:selectOneMenu>
+		</div>
+		<div class="ui-g-2">
+			<p:outputLabel for="exportation-type" value="#{i18n['dataexportation.label.exportationtype']}:" />
+			<p:selectOneMenu id="exportation-type" value="#{defaultMBean.filterVO.exportationType}">
+				<f:selectItems value="#{defaultMBean.exportationTypes}" 
+					var="exportationType"
+					itemValue="#{exportationType}" 
+					itemLabel="#{i18n[utils:getEnumQualifiedName(exportationType)]}" />
+			</p:selectOneMenu>
+		</div>
+		<div class="ui-g-2">
+			<p:outputLabel for="id-data-exportation" value="#{i18n['dataexportation.label.requestid']}:" />
+			<p:inputNumber id="id-data-exportation"
+				value="#{defaultMBean.filterVO.dataExportationId}" 
+				decimalPlaces="0"
+				thousandSeparator=""
+				maxValue="9223372036854775807"
+				minValue="0">
+			</p:inputNumber>
+		</div>
+	</div>
+</ui:composition>

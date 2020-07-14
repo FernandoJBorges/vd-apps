@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	>
+
+
+<style type="text/css">
+.columnSoluction {
+	width: 161px;
+	height: auto;
+	text-align: right;
+}
+
+.column1{
+  min-width:130px !important;
+}
+
+.ng-select-one-menu {
+    min-width: 204px;
+}
+</style>
+<p:panelGrid style="width:100%;padding:0px;margin:0px">
+	<p:row>
+		<p:column style="width:48%;padding:0px;margin:0px">
+		<p:focus id="cnpjFocus" for="cnpj"/>
+		<p:focus id="cpfFocus" for="cpf"/>
+			<p:panelGrid id="gridEstab" columns="2" style="padding:0px;margin:0px" columnClasses="column1,column2">
+						<p:outputLabel for="personType" value="Pessoa:" />
+						<h:panelGroup>
+							<p:selectOneRadio id="personType" style="float:left" value="#{defaultMBean.establishmentSolutionVO.personType}" disabled="#{defaultMBean.stateUpdate}">
+					            <f:selectItems value="#{defaultMBean.personType}" var="personType" itemLabel="#{i18n[personType.i18n]}" itemValue="#{personType.ordinal()}" />
+					            <p:ajax global="false" update=":ng-form:ngFormEdit:ngTabview:cnpjFocus :ng-form:ngFormEdit:ngTabview:cpfFocus :ng-form:ngFormEdit:ngTabview:gridEstab :ng-form:ngFormEdit:ngTabview:sefazSolutionsCTE :ng-form:ngFormEdit:ngTabview:sefazSolutionsMDFE" process="@this" event="change"   />  
+					        </p:selectOneRadio>
+							<p:outputPanel id="helpStatus">
+								<p:outputPanel style="float:left;padding-left:0px;padding-top:3px;margin-top:5px;marging-left:0px" >
+							        <ngComp:ngHelp messageHelp="#{i18n['establishment.msg.help.personPhisicalInsert']}" style="margin-left:-5px;margin-top:-7px" /> 
+	            			    </p:outputPanel>
+            			    </p:outputPanel>					        
+			        	</h:panelGroup>
+
+						<p:outputLabel for="cnpj" value="#{i18n['establishment.label.personType.cnpj']}:" rendered="#{defaultMBean.establishmentSolutionVO.personType == 1}" />
+						<p:inputMask id="cnpj" disabled="#{defaultMBean.stateUpdate}" size="22" value="#{defaultMBean.entity.establishmentID}" mask="99.999.999/9999-99" required="true" requiredMessage="#{i18n['establishment.input.required.cnpj']}" rendered="#{defaultMBean.establishmentSolutionVO.personType == 1}">
+							<f:converter converterId="maskConverter" />
+							<f:validator binding="#{cnpjValidator}" />
+						</p:inputMask>
+						
+						<p:outputLabel for="cpf" value="#{i18n['establishment.label.personType.cpf']}:" rendered="#{defaultMBean.establishmentSolutionVO.personType == 0}" />
+						<p:inputMask id="cpf" disabled="#{defaultMBean.stateUpdate}" value="#{defaultMBean.entity.establishmentID}" mask="999.999.999-99" required="true" requiredMessage="#{i18n['establishment.input.required.cpf']}" rendered="#{defaultMBean.establishmentSolutionVO.personType == 0}">
+							<f:converter converterId="maskConverter" />
+							<f:validator binding="#{cpfValidator}" />
+						</p:inputMask>
+
+						<p:outputLabel for="name" value="#{defaultMBean.establishmentSolutionVO.personType == 0 ? i18n['establishment.label.name.phisical'] : i18n['establishment.label.name']}" />
+						<p:inputText id="name" value="#{defaultMBean.entity.name}"  required="true" size="50" maxlength="120" requiredMessage="#{defaultMBean.establishmentSolutionVO.personType == 0 ? i18n['establishment.input.required.phisical'] : i18n['establishment.input.required.razaoSocial']}"/>
+						
+						<p:outputLabel for="namefantasy" value="#{i18n['establishment.label.namefantasy']}:" rendered="#{defaultMBean.establishmentSolutionVO.personType == 1}"  />
+						<p:inputText id="namefantasy" value="#{defaultMBean.entity.nameFantasy}" size="50" maxlength="120"  rendered="#{defaultMBean.establishmentSolutionVO.personType == 1}" />
+						
+						<p:outputLabel for="state" value="#{i18n['establishment.label.uf']}:" />
+						<p:selectOneMenu id="state" value="#{defaultMBean.entity.state}" required="true" style="min-width:90px" requiredMessage="#{i18n['establishment.input.required.uf']}" >
+							<p:ajax listener="#{establishmentSolutionMB.loadSefaz}" event="change" global="false" />
+							<f:selectItem itemLabel="#{i18n['label.title.select']}" itemDisabled="#{defaultMBean.stateUpdate}" />
+							<f:selectItems value="#{defaultMBean.states}" />
+						</p:selectOneMenu>
+		 	</p:panelGrid>
+		 	<p:focus id="tabEstbFocus" for="cnpj" />
+		 	<ngComp:ngSubTitleView title="Selecionar Soluções"></ngComp:ngSubTitleView>	 
+			<ngComp:ngHelp messageHelp="#{i18n['establishment.msg.soluc.uf']}" />
+			
+			<!-- NFSE -->
+				<p:outputPanel id="sefazSolutionsNFSE">
+					<p:panelGrid columns="4" columnClasses="columnSoluction" style="margin-top:15px">
+						<p:outputLabel for="nfseSolution" value="#{i18n['docType.label.NFSE']}: " />
+						<p:selectBooleanCheckbox id="nfseSolution" value="#{defaultMBean.establishmentSolutionVO.nfseCheck}" disabled="#{establishmentSolutionMB.enableCheckSoluction('NFSE')}" valueChangeListener="#{establishmentSolutionMB.selectNFSE}">
+							<p:ajax event="change" update=":ng-form:ngFormEdit:ngTabview:matrixPanel" />
+						</p:selectBooleanCheckbox> 
+					</p:panelGrid>
+				</p:outputPanel>
+			<!-- CFE -->
+			<p:outputPanel id="sefazSolutionsCFE">
+				<p:panelGrid columns="4" columnClasses="columnSoluction">
+					<p:outputLabel for="cfeSolution" value="#{i18n['docType.label.CFE']}: " />
+					<p:selectBooleanCheckbox id="cfeSolution" value="#{defaultMBean.establishmentSolutionVO.cfeCheck}" disabled="#{establishmentSolutionMB.enableCheckSoluction('CFE_DOCUMENT')}" valueChangeListener="#{establishmentSolutionMB.selectCFE}">
+						<p:ajax event="change" update=":ng-form:ngFormEdit:ngTabview:matrixPanel" />
+					</p:selectBooleanCheckbox> 
+				</p:panelGrid>
+			</p:outputPanel>
+			<!-- CTE -->
+				<p:outputPanel id="sefazSolutionsCTE">
+					<p:panelGrid columns="4" columnClasses="columnSoluction">
+						<p:outputLabel for="cteSolution" value="#{i18n['docType.label.CTE']}: " />
+						<p:selectBooleanCheckbox id="cteSolution" value="#{defaultMBean.establishmentSolutionVO.cteCheck}" disabled="#{establishmentSolutionMB.enableCheckSoluction('CTE')}" valueChangeListener="#{establishmentSolutionMB.selectCTe}"> 
+							<p:ajax event="change" />
+						</p:selectBooleanCheckbox>
+						<p:outputLabel value="#{i18n['establishment.label.sefaz']}:" />
+						<p:selectOneMenu id="sefazCte" value="#{establishmentMB.establishmentSolutionVO.sefazCteSelected}" styleClass="ng-select-one-menu" disabled="#{!defaultMBean.establishmentSolutionVO.cteCheck}" required="#{defaultMBean.establishmentSolutionVO.cteCheck}" requiredMessage="#{i18n['establishment.input.required.solution.cte']}" >
+							<f:selectItem itemValue="" itemLabel="Selecionar" />
+							<f:selectItems value="#{establishmentMB.establishmentSolutionVO.sefazCteList}" var="sefaz" itemValue="#{sefaz.sefazUID}" itemLabel="#{sefaz.sefazID}" />
+							<p:ajax event="change" />
+						</p:selectOneMenu>
+					</p:panelGrid>
+					<p:outputPanel id="aquavPanel">
+						<p:panelGrid columns="2" columnClasses="columnSoluction" rendered="#{defaultMBean.establishmentSolutionVO.cteCheck}">
+								<p:outputLabel endered="#{defaultMBean.establishmentSolutionVO.cteCheck}" />
+								<h:panelGroup rendered="#{defaultMBean.establishmentSolutionVO.cteCheck}">
+										<p:selectBooleanCheckbox value="#{defaultMBean.establishmentSolutionVO.aquavCheck}" itemLabel="#{i18n['establishment.label.cteaquaviario']}" valueChangeListener="#{establishmentSolutionMB.selectAqua}" rendered="#{defaultMBean.establishmentSolutionVO.cteCheck}"> 
+											<p:ajax event="change" />
+										</p:selectBooleanCheckbox>
+										<ngComp:ngHelp messageHelp="#{i18n['establishment.msg.help.cteaquaviario']}" style="float:right;margin:0px" />
+								</h:panelGroup>
+						</p:panelGrid>
+					</p:outputPanel>
+				</p:outputPanel>
+
+			<!-- MDFE -->
+			<p:outputPanel id="sefazSolutionsMDFE">
+				<p:panelGrid  columns="4"  columnClasses="columnSoluction">
+					<p:outputLabel for="mdfeSolution" value="#{i18n['docType.label.MDFE']}:" />
+					<p:selectBooleanCheckbox id="mdfeSolution" value="#{defaultMBean.establishmentSolutionVO.mdfeCheck}" valueChangeListener="#{establishmentSolutionMB.selectMDFE}" disabled="#{establishmentSolutionMB.enableCheckSoluction('MDFE')}"> 
+						<p:ajax event="change" />
+					</p:selectBooleanCheckbox>
+					<p:outputLabel value="#{i18n['establishment.label.sefaz']}:" />
+					<p:selectOneMenu id="sefazMdfe"	value="#{establishmentMB.establishmentSolutionVO.sefazMdfeSelected}" styleClass="ng-select-one-menu" disabled="#{!defaultMBean.establishmentSolutionVO.mdfeCheck}" required="#{defaultMBean.establishmentSolutionVO.mdfeCheck}" requiredMessage="#{i18n['establishment.input.required.solution.mdfe']}" >
+						<f:selectItem itemValue="" itemLabel="Selecionar" />
+						<f:selectItems value="#{defaultMBean.establishmentSolutionVO.sefazMdfeList}" var="sefaz" itemValue="#{sefaz.sefazUID}" itemLabel="#{sefaz.sefazID}" />
+						<p:ajax event="change" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+			</p:outputPanel>
+
+			<!-- NFE -->
+			<p:outputPanel id="sefazSolutionsNFE">
+				<p:panelGrid columns="4" columnClasses="columnSoluction">
+					<p:outputLabel for="nfeSolution" value="#{i18n['docType.label.NFE']}:" />
+					<p:selectBooleanCheckbox id="nfeSolution" value="#{defaultMBean.establishmentSolutionVO.nfeCheck}" valueChangeListener="#{establishmentSolutionMB.selectNFE}" disabled="#{establishmentSolutionMB.enableCheckSoluction('NFE')}">
+						<p:ajax event="change" immediate="true" update="ng-form:ngFormEdit:ngTabview:nfeAuditorService ng-form:ngFormEdit:ngTabview:evalution"/>
+					</p:selectBooleanCheckbox>
+					<p:outputLabel value="#{i18n['establishment.label.sefaz']}:" />
+					<p:selectOneMenu id="sefazNfe" value="#{establishmentMB.establishmentSolutionVO.sefazNfeSelected}" styleClass="ng-select-one-menu" disabled="#{!defaultMBean.establishmentSolutionVO.nfeCheck}" required="#{defaultMBean.establishmentSolutionVO.nfeCheck}" requiredMessage="#{i18n['establishment.input.required.solution.nfe']}" >
+						<f:selectItem itemValue="" itemLabel="Selecionar" />
+						<f:selectItems value="#{defaultMBean.establishmentSolutionVO.sefazNfeList}" var="sefaz" itemValue="#{sefaz.sefazUID}" itemLabel="#{sefaz.sefazID}" />
+						<p:ajax event="change" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+				<p:outputPanel id="accountingConfrontationPanel">
+					<p:panelGrid columns="2" columnClasses="columnSoluction" rendered="#{defaultMBean.establishmentSolutionVO.nfeCheck and !sec:areNotGranted('ROLE_SYSTEM_ADMIN, ROLE_SUPPORT')}">
+							<p:outputLabel endered="#{defaultMBean.establishmentSolutionVO.nfeCheck}" />
+							<h:panelGroup rendered="#{defaultMBean.establishmentSolutionVO.nfeCheck}">
+								<p:selectBooleanCheckbox value="#{defaultMBean.establishmentSolutionVO.accountingConfrontationCheck}" itemLabel="#{i18n['docType.label.accounting.confrontation']}" valueChangeListener="#{establishmentSolutionMB.selectAccountingConfrontation}" rendered="#{defaultMBean.establishmentSolutionVO.nfeCheck}"> 
+									<p:ajax event="change" />
+								</p:selectBooleanCheckbox>
+								<ngComp:ngHelp messageHelp="#{i18n['establishment.msg.help.accounting.confrontation']}" style="margin:0px;float:right" />
+							</h:panelGroup>
+					</p:panelGrid>
+				</p:outputPanel>
+			</p:outputPanel>
+
+			<!-- NFCE -->
+		<p:outputPanel id="sefazSolutionsNFCE">	
+			<p:panelGrid columns="4" columnClasses="columnSoluction">
+				<p:outputLabel for="nfceSolution" value="#{i18n['docType.label.NFCE']}:" />
+				<p:selectBooleanCheckbox id="nfceSolution" value="#{defaultMBean.establishmentSolutionVO.nfceCheck}" valueChangeListener="#{establishmentSolutionMB.selectNFCE}" disabled="#{establishmentSolutionMB.enableCheckSoluction('NFCE')}">
+						<p:ajax event="change" immediate="true" />
+				</p:selectBooleanCheckbox>
+				<p:outputLabel value="#{i18n['establishment.label.sefaz']}:" />
+				<p:selectOneMenu id="sefazNfce" value="#{establishmentMB.establishmentSolutionVO.sefazNfceSelected}" styleClass="ng-select-one-menu" disabled="#{!defaultMBean.establishmentSolutionVO.nfceCheck}" required="#{defaultMBean.establishmentSolutionVO.nfceCheck}" requiredMessage="#{i18n['establishment.input.required.solution.nfce']}" >
+					<f:selectItem itemValue="" itemLabel="Selecionar" />
+					<f:selectItems value="#{defaultMBean.establishmentSolutionVO.sefazNfceList}" var="sefaz" itemValue="#{sefaz.sefazUID}" itemLabel="#{sefaz.sefazID}" />
+					<p:ajax event="change" />
+				</p:selectOneMenu>
+			</p:panelGrid>
+		</p:outputPanel>
+		</p:column>
+		<p:column style="width:99%;float:left">
+				<p:panelGrid id="matrixPanel" columns="2" style="float:left;max-width:70%;min-width:370px;">
+						<p:outputLabel for="matrixID" value="#{i18n['establishment.label.matrix']}:" style="float: right;" />
+						<h:panelGroup>
+								<p:inputText id="matrixID" value="#{defaultMBean.entity.dad.name}" readonly="true"  style="min-width:200px" />
+								<p:commandButton id="ng-btn-matrix-clean" icon="ui-icon-circle-close" style="margin-left:5px" action="#{establishmentMatrizMB.cleanMatrixEstab}" global="false" immediate="true" update=":ng-form:ngFormEdit:ngTabview:matrixPanel :ng-form:ngFormEdit:ngTabview:ng-panel-certificate" disabled="#{sec:areNotGranted('ROLE_SYSTEM_ADMIN, ROLE_SUPPORT') or establishmentMatrizMB.isEstabMatriz()}" />
+								<p:commandButton id="ng-btn-matrix-search" icon="ui-icon-search" resetValues="true" global="false" onclick="PF('zoomEstUser').show();" immediate="true" disabled="#{sec:areNotGranted('ROLE_SYSTEM_ADMIN, ROLE_SUPPORT') or establishmentMatrizMB.isEstabMatriz()}" update=":zoomEstUser:zoomEstUserForm:zoomEstUsertbStabelecimento :zoomEstUser:zoomEstUserForm:zoomEstUserPanelGrid">
+									<p:ajax global="false" update=":zoomEstUser:zoomEstUserForm:zoomEstUserPanelGrid" resetValues="true" />
+								</p:commandButton>
+						</h:panelGroup>
+						<p:spacer rendered="#{establishmentMatrizMB.isMatrixSelected}" />
+						<h:panelGroup rendered="#{establishmentMatrizMB.isMatrixSelected}">
+							<p:panelGrid columns="1" style="margin-left:-10px">
+									<p:selectBooleanCheckbox id="checkDadRules" value="#{defaultMBean.entity.dadRules}"  itemLabel="#{i18n['establishment.label.regrasMatriz']}" valueChangeListener="#{establishmentMatrizMB.ruleMatrizHandle}">
+										<p:ajax event="change" update=":ng-form-select-cte" /> 
+									</p:selectBooleanCheckbox> 
+									<p:selectBooleanCheckbox value="#{defaultMBean.entity.dadNotify}"   itemLabel="#{i18n['establishment.label.noftMatriz']}"  valueChangeListener="#{establishmentMatrizMB.notifyMatrizHandle}">
+										<p:ajax event="change" immediate="true" update=":ng-form-select-cte" />
+									</p:selectBooleanCheckbox> 
+									<p:selectBooleanCheckbox value="#{defaultMBean.entity.dadQueue}"  itemLabel="#{i18n['establishment.label.filasMatriz']}"  valueChangeListener="#{establishmentMatrizMB.queueMatrizHandle}">
+										<p:ajax event="change" immediate="true" update=":ng-form-select-cte" />
+									</p:selectBooleanCheckbox> 
+									<p:selectBooleanCheckbox value="#{defaultMBean.entity.dadCertificate}"  itemLabel="#{i18n['establishment.label.certMatriz']}" valueChangeListener="#{establishmentMatrizMB.selectCert}">
+										<p:ajax event="change" immediate="true" />
+									</p:selectBooleanCheckbox> 
+									<p:selectBooleanCheckbox value="#{defaultMBean.entity.dadDacte}" itemLabel="#{i18n['establishment.label.dacteMatriz']}" disabled="#{!establishmentMatrizMB.disableSoluctionsHasMatriz('CTE')}" valueChangeListener="#{establishmentMatrizMB.enableSoluctionsHasMatrizCTE}">
+										<p:ajax event="change" immediate="true" update=":ng-form-select-cte" />
+									</p:selectBooleanCheckbox> 
+									<p:selectBooleanCheckbox value="#{defaultMBean.entity.dadDamdfe}" itemLabel="#{i18n['establishment.label.damdfeMatriz']}" disabled="#{!establishmentMatrizMB.disableSoluctionsHasMatriz('MDFE')}" valueChangeListener="#{establishmentMatrizMB.enableSoluctionsHasMatrizMDFE}">
+										<p:ajax event="change" immediate="true" update=":ng-form-select-cte" />
+									</p:selectBooleanCheckbox> 
+									<p:selectBooleanCheckbox value="#{defaultMBean.entity.dadDanfe}" itemLabel="#{i18n['establishment.label.nfeMatriz']}" disabled="#{!establishmentMatrizMB.disableSoluctionsHasMatriz('NFE')}" valueChangeListener="#{establishmentMatrizMB.enableSoluctionsHasMatrizNFE}">
+										<p:ajax event="change" immediate="true" update=":ng-form-select-cte" />
+									</p:selectBooleanCheckbox> 
+									<p:selectBooleanCheckbox value="#{defaultMBean.entity.dadDanfce}" itemLabel="#{i18n['establishment.label.nfceMatriz']}" disabled="#{!establishmentMatrizMB.disableSoluctionsHasMatriz('NFCE')}" valueChangeListener="#{establishmentMatrizMB.enableSoluctionsHasMatrizNFCE}">
+										<p:ajax event="change" immediate="true" update=":ng-form-select-cte" />
+									</p:selectBooleanCheckbox>
+							</p:panelGrid>
+						</h:panelGroup>
+			</p:panelGrid>
+		</p:column>
+	</p:row>
+</p:panelGrid>
+</ui:composition>

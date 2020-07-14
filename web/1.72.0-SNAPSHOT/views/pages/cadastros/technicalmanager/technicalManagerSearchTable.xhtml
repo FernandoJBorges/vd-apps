@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:column id="columnUf" headerText="#{i18n['technicalManager.label.uf']}"
+		width="20" sortBy="#{row.stateCode}">
+		<h:outputText id="uf" value="#{row.stateCode}" />
+	</p:column>
+
+	<p:column id="columnCnpj" headerText="#{i18n['technicalManager.label.cnpj']}"
+		width="70" sortBy="#{row.cnpj}">
+		<h:outputText id="cnpj" value="#{row.cnpj}" />
+	</p:column>
+	
+	<p:column id="columnOwnerName" headerText="#{i18n['technicalManager.label.ownerName']}"
+		width="90" sortBy="#{row.ownerName}">
+		<h:outputText id="ownerName" value="#{row.ownerName}" />
+	</p:column>
+	
+	<p:column id="columnSecurityCSRT" headerText="#{i18n['technicalManager.label.securityCSRT']}"
+		width="100" sortBy="#{row.securityCSRT}">
+		<h:outputText id="securityCSRT" value="#{row.securityCSRT}" />
+	</p:column>
+	
+	<p:column id="columnSecurityID" headerText="#{i18n['technicalManager.label.securityID']}"
+		width="100" sortBy="#{row.securityID}">
+		<h:outputText id="securityID" value="#{row.securityID}" />
+	</p:column>
+	
+	<p:column id="columnManagerName" headerText="#{i18n['technicalManager.label.managerName']}"
+		width="80" sortBy="#{row.managerName}">
+		<h:outputText id="managerName" value="#{row.managerName}" />
+	</p:column>
+
+	<p:column id="columnEmailDescription" headerText="#{i18n['technicalManager.label.emailDescription']}"
+		width="90" sortBy="#{row.emailDescription}">
+		<h:outputText id="emailDescription" value="#{row.emailDescription}" />
+	</p:column>
+	
+	<p:column id="columnPhoneDescription" headerText="#{i18n['technicalManager.label.phoneDescription']}"
+		width="70" sortBy="#{row.phoneDescription}">
+		<h:outputText id="phoneDescription" value="#{row.phoneDescription}" />
+	</p:column>
+	
+	<p:column id="columnGenerateTechMngrInfo" headerText="#{i18n['technicalManager.label.generateTechMngrInfo']}" width="100">			
+		<h:outputText value="#{row.generateTechMngrInfo}" converter="#{booleanToYesNoConverter}" />
+	</p:column>
+	
+	<p:column id="columnGenerateSecurityCode" headerText="#{i18n['technicalManager.label.generateSecurityCode']}" width="100">			
+		<h:outputText value="#{row.generateSecurityCode}" converter="#{booleanToYesNoConverter}" />
+	</p:column>
+	
+	<p:column id="columnEdit" styleClass="ng-column-action" width="5">
+		<p:commandLink id="edit" action="#{defaultMBean.editAction}"
+			update=":ng-form :ng-panel-crud-dialog :messages"
+			title="#{i18n['technicalManager.label.edit']}"
+			rendered="#{defaultMBean.hasPermission('EDIT')}">
+			<span class="icon-edit ng-icon" />
+			<f:setPropertyActionListener target="#{defaultMBean.entity}"
+				value="#{row}" />
+		</p:commandLink>
+	</p:column>
+
+</ui:composition>
+

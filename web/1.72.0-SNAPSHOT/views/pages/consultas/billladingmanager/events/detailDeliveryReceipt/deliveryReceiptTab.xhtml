@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ngTab="http://java.sun.com/jsf/composite/common/component/view/table">
+	<ngTab:ngSimpleDataTable 
+		id="deliveryReceiptTableView"
+		value="#{deliveryReceiptDetailVO.getDocumentDatailItems()}"
+		emptyMessage="#{i18n['deliveryReceipt.table.msg.occurrences.notfound']}"
+		paginator="false">
+		<p:column headerText="#{i18n['billing.label.deliveryReceipt.detail.billingAccessKey']}">
+			<h:outputText value="#{row.accessKey}" />
+		</p:column>
+
+		<p:column headerText="#{i18n['billing.label.deliveryReceipt.detail.dateAndTimeDelivery']}"
+			sortBy="#{row.deliveryDate}">
+			<h:outputText id="dateAndTimeDelivery" value="#{row.deliveryDate}">
+				<f:convertDateTime type="date" pattern="#{deliveryReceiptDetailMB.layouts.DATE.format}" />
+			</h:outputText>
+		</p:column>
+		
+		<p:column headerText="#{i18n['billing.label.deliveryReceipt.detail.dateAndTimeAuthorizedEvent']}"
+			sortBy="#{row.eventDate}" >
+			<h:outputText id="dateAndTimeAuthorizedEvent" value="#{row.eventDate}">
+				<f:convertDateTime type="date" pattern="#{deliveryReceiptDetailMB.layouts.DATE.format}" />
+			</h:outputText>
+		</p:column>
+		
+		<p:column headerText="#{i18n['billing.label.deliveryReceipt.detail.situation']}"
+			sortBy="#{row.situation}">
+			<h:outputText value="#{i18n[row.situation]}" />
+		</p:column>
+		
+		<p:column >
+			<p:commandLink 
+				update="@(.ng-containner-dialog)" 
+				disabled="#{!deliveryReceiptDetailMB.isdetailButtonEnabled(row)}" 
+				action="#{deliveryReceiptDetailMB.showOccurrenceDetailsAction(row.documentUID, row.documentAccessKey)}"
+				styleClass="ng-float-right" global="false">
+						
+				<span title="#{i18n['tooltip.commandLink.view.details.deliveryreceipt']}" 
+				class="icon-viewDetails ng-icon" />
+			</p:commandLink>
+		</p:column>
+
+	</ngTab:ngSimpleDataTable>
+</ui:composition>

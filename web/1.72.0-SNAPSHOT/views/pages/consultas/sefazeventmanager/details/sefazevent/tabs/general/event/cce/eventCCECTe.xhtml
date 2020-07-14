@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/table">
+	<div class="ui-g-12 document-detail-column">
+		<div class="ui-g-12 document-detail-column">
+			<p:outputLabel value="#{i18n['eventsefaz.cce.cte.label.correction']}:" />
+			<ng:ngSimpleDataTable value="#{defaultMBean.detailData.generalData.event.infoChangedVO}" emptyMessage="Nenhum item encontrado">
+				<p:column headerText="#{i18n['eventsefaz.cce.cte.label.number.item']}">
+					<h:outputText value="#{row.changedItemNumber}" />
+				</p:column>
+				<p:column headerText="#{i18n['eventsefaz.cce.cte.label.group']}">
+					<h:outputText value="#{row.changedGroup}" />
+				</p:column>
+				<p:column headerText="#{i18n['eventsefaz.cce.cte.label.field']}">
+					<h:outputText value="#{row.changedField}" />
+				</p:column>
+				<p:column headerText="#{i18n['eventsefaz.cce.cte.label.value']}">
+					<h:outputText value="#{row.changedValue}" />
+				</p:column>
+			</ng:ngSimpleDataTable>
+		</div>
+	</div>
+	<div class="ui-g-12 document-detail-column">
+		<div class="ui-g-12 document-additional-information">
+				<p:outputLabel value="#{i18n['eventsefaz.label.details.terms.of.use']}:" />
+				<h:inputTextarea rows="7" readonly="true" value="#{defaultMBean.detailData.generalData.event.condUso}" />
+		</div>
+	</div>
+</ui:composition>

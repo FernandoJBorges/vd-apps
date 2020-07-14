@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+	<p:column id="columnInitialDate"
+		styleClass="tracking-initial-date-column"
+		headerText="#{i18n['ng.label.date.initial']}">
+		<h:outputText id="initialDate" value="#{row.initialDate}">
+			<f:convertDateTime type="date" pattern="#{defaultMBean.layouts.DATE_SHORT.format}" />
+		</h:outputText>
+	</p:column>
+	<p:column id="columnFinalDate"
+		styleClass="tracking-final-date-column"
+		headerText="#{i18n['ng.label.date.final']}">
+		<h:outputText id="finalDate" value="#{row.finalDate}">
+			<f:convertDateTime type="date" pattern="#{defaultMBean.layouts.DATE_SHORT.format}" />
+		</h:outputText>
+	</p:column>
+	<p:column id="columnOwnerID"
+		headerText="#{i18n['establishment.label.cnpj']}"
+		styleClass="tracking-owner-id-column">
+		<h:outputText id="ownerID" value="#{row.ownerID}"/>
+	</p:column>
+	<p:column id="columnOwnerName"
+		headerText="#{i18n['establishment.label.name']}"
+		styleClass="tracking-owner-name-column">
+		<h:outputText id="ownerName" value="#{row.ownerName}"/>
+	</p:column>
+	<p:column id="columnType"
+		headerText="#{i18n['tracking.label.document.type']}"
+		styleClass="tracking-type-column"
+		rendered="#{trackingListMB.consultTypeDocument}">
+		<h:outputText id="type" value="#{i18n[utils:getEnumQualifiedName(row.entryType)]}"/>
+	</p:column>
+	<p:column id="columnProcessingType"
+		headerText="#{i18n['tracking.label.processing.type']}"
+		styleClass="tracking-processing-type-column"
+		rendered="#{trackingListMB.consultTypeDocument}">
+		<h:outputText id="processingType" value="#{i18n[utils:getEnumQualifiedName(row.trackingProcessType)]}"/>
+	</p:column>
+	<p:column id="columnCount"
+		headerText="#{i18n['tracking.label.tracking']}"
+		styleClass="tracking-count-column">
+		<h:outputText id="count" value="#{row.count}" title="#{i18n['tracking.tooltip.tracking']}" />
+	</p:column>
+</ui:composition>

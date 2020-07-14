@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/custom">
+	
+<ui:param name="defaultMBean" value="#{invoiceCreateManifestMB}" />
+	<!-- CRIAR MANIFESTACAO DESTINATARIO --> 
+	
+	<h:form id="ng-invoice-manifest" prependId="true">
+		<p:outputPanel id="ng-invoice-manifest-panel" rendered="#{defaultMBean.stateCreateManifests}" >
+			<ng:ngFormEdit id="ngFormCreate"  
+						titleView="#{i18n['invoice.create.event.manifest.title']}"  
+						mbean="#{invoiceCreateManifestMB}"
+						actionSubmit="createManifest"
+						actionGoBack="goBackInvoiceList"
+						update=":ng-invoice-manifest :ng-form :ng-panel-crud-dialog :messages" >
+				<div class="ui-fluid document-filter-panel ng-containner ng-containner-details">
+					<div class="ui-g create-manifest">
+					<p:outputLabel id="pageSubtitle" value="#{i18n['invoice.manifest.message']}"	styleClass="ng-subtitle" />
+						<ui:include src="formCreateManifest.xhtml">
+							<ui:param name="docType" value="#{defaultMBean.docType}" />
+						</ui:include>			
+					</div>
+				</div>						
+			</ng:ngFormEdit>	
+		</p:outputPanel>
+	</h:form>   
+</ui:composition>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:dialog="http://java.sun.com/jsf/composite/common/component/dialog"
+	template="/common/templates/ngs/responsive.xhtml">
+	<ui:define name="content">
+		<f:facet name="last">
+			<h:outputStylesheet name="dashboard.css" library="css" />
+		</f:facet>	
+		<p:panel id="ng-panel-dashboard" styleClass="panel-dashboard-banner">
+			<h1>
+				<h:outputText escape="false" value="#{i18n['dashboard.info.head.title']}" />
+			</h1>
+		</p:panel>
+		<ngComp:ngContainerBox>
+				<ngComp:ngBox 
+					styleColor="#{i18n['dashboard.ngBox.one.color']}"
+					titleBox="#{i18n['dashboard.ngBox.one.title']}"
+					imageName="#{i18n['dashboard.ngBox.one.image']}">
+					<h:outputText escape="false" value="#{i18n['dashboard.ngBox.one.text']}" />
+				</ngComp:ngBox>
+				
+				<ngComp:ngBox 
+					styleColor="#{i18n['dashboard.ngBox.two.color']}"
+					titleBox="#{i18n['dashboard.ngBox.two.title']}"
+					imageName="#{i18n['dashboard.ngBox.two.image']}">
+					<h:outputText escape="false" value="#{i18n['dashboard.ngBox.two.text']}" />
+				</ngComp:ngBox>
+		</ngComp:ngContainerBox>
+		<p:outputPanel rendered="#{releaseNoteMB.isDefaultOperationDocType()}">
+			<ui:include src="releaseNotes.xhtml"></ui:include>
+		</p:outputPanel>
+	</ui:define>
+</ui:composition>

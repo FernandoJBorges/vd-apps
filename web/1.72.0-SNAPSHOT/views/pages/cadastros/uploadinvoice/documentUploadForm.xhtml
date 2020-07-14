@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/crud"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	 xmlns:dialogEstab="http://java.sun.com/jsf/composite/dialog"
+	template="/common/templates/crud/ngCrudTemplate.xhtml">
+		<ui:param name="defaultMBean" value="#{documentUploadMBean}" />
+		
+		<ui:define name="addUpdateBlock">
+			<!-- componente ng:ngFormEdit -->
+			<ng:ngFormEdit id="ngFormEdit"
+				titleView="#{i18n['uploadDocument.label.title']}"
+				btnGoBackVisible="false" btnSaveLabel="Upload">
+				<!-- taview e os campos do cadastro - os botoes voltar e salvar ja estao sendo inseridos pelo componente de forma abstrata-->
+				<p:tabView id="ngTabview" dynamic="true" cache="false">
+					<p:tab id="ngBasic" title="#{i18n.ngTabBasic}">
+						<p:panelGrid id="panelGridForm" columns="2" columnClasses="column1,column2">
+							<p:outputLabel for="estabID" value="#{i18n['uploadDocument.label.establishment']}: " />
+							<h:panelGroup>
+								<p:inputText id="estabID" value="#{defaultMBean.establishment.name eq null ? '' : defaultMBean.establishment.name}" readonly="true" required="true" />
+								<p:commandButton id="ng-btn-establishment-search" icon="ui-icon-search" resetValues="true" update=":zoomEstUser:zoomEstUserForm:zoomEstUsertbStabelecimento :zoomEstUser:zoomEstUserForm:zoomEstUserPanelGrid" onclick="PF('zoomEstUser').show();" immediate="true" />
+								<ngComp:ngHelp messageHelp="#{i18n['uploadDocument.label.selectEstablishment.help']}" />
+							</h:panelGroup>
+							<p:outputLabel for="docTypeID" value="#{i18n['uploadDocument.label.entryType']}: " rendered="#{! defaultMBean.estabWithNoAllowedSolution and defaultMBean.establishment.name != null}" />
+							<h:panelGroup rendered="#{defaultMBean.establishment.name != null}">
+								<p:selectOneMenu id="docTypeID" value="#{defaultMBean.params.entryTypeEscolhido}" title="#{i18n['uploadDocument.label.selectEntryType.toolTip']}" rendered="#{! defaultMBean.estabWithNoAllowedSolution}">
+									<f:selectItems value="#{defaultMBean.entryTypeList}" var="entryType" itemValue="#{entryType.key}" itemLabel="#{i18n[entryType.i18n]}"/>
+								</p:selectOneMenu>
+							</h:panelGroup>
+							<h:outputText id="fileNameUploaded" value="#{i18n['uploadDocument.label.fileNameUploaded']}: " rendered="#{!defaultMBean.estabWithNoAllowedSolution and defaultMBean.establishment.name != null}"/>
+							<h:panelGroup rendered="#{defaultMBean.establishment.name != null and !defaultMBean.estabWithNoAllowedSolution}">
+								<h:outputText id="fileNameID" value="#{defaultMBean.params.fileName}" />
+								<ngComp:ngHelp messageHelp="#{i18n['uploadDocument.label.chooseFile.help']}" />
+							</h:panelGroup>
+							<p:spacer></p:spacer>
+							<p:fileUpload id="fileUploadID" widgetVar="upload"
+								process="fileUploadID" label="#{i18n['uploadDocument.label.chooseFile']}"
+								fileUploadListener="#{defaultMBean.handleFileUpload}" uploadLabel="Upload" multiple="false" mode="advanced"
+								showButtons="false" auto="true" sizeLimit="#{defaultMBean.maxFileSize}"
+								allowTypes="/(\.|\/)(xml|zip|txt)$/" required="true" update="ng-form:ngFormEdit:ngTabview:fileNameID"
+								title="#{i18n['uploadDocument.label.selectUploadFile.toolTip']}" invalidFileMessage="#{i18n['uploadDocument.msg.error.wrongfileType']}."
+								invalidSizeMessage="#{i18n['uploadDocument.msg.error.maxfileSize']}." rendered="#{!defaultMBean.estabWithNoAllowedSolution and defaultMBean.establishment.name != null}">
+							</p:fileUpload>
+							<!-- script injeta attritube accept no input=file -->
+							<script type="text/javascript">
+								$(document).ready(function() {
+									$(':input[type=file]').attr('accept','.xml,.zip,.txt');
+								});
+							</script>
+						</p:panelGrid>
+						<p:focus context="panelGridForm" />
+					</p:tab>
+				</p:tabView>
+			</ng:ngFormEdit>
+			
+		</ui:define>
+			<ui:define name="addDialogBlock">
+				<dialogEstab:dialogEstablishment id="zoomEstUser" defaultMBs="#{documentUploadMBean}" updateField=":messages :zoomEstUser:zoomEstUserForm:zoomEstUsertbStabelecimento" enabledSelectionMode="false" renderBtnSelectAll="false" />			
+			</ui:define>
+			
+</ui:composition>

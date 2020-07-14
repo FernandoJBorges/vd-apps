@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/crud"	
+	xmlns:ngTab="http://java.sun.com/jsf/composite/common/component/view/tabview"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+	
+	<p:importEnum type="com.neogrid.fiscal.dataexportation.type.DataExportationType" var="DataExportationType" /> 
+	<ui:param name="defaultMBean" value="#{dataExportationRequestMB}" />
+	
+	<ng:ngFormEdit id="ngFormEdit"
+		btnSaveLabel="#{i18n['btn_action_save']}"
+		titleView="#{i18n['dataexportation.label.new.title']}">
+
+		<ngTab:ngSingleTabView id="ngTabview">
+			<div class="ui-g ui-fluid">
+				<div class="ui-g-2">
+					<p:outputLabel for="exportation-type" value="#{i18n['dataexportation.label.exportationtype']}:" />
+					<p:selectOneMenu id="exportation-type" required="true" value="#{defaultMBean.entity.exportationType}"> 
+						<f:selectItems value="#{defaultMBean.exportationTypes}" 
+							var="exportationType"
+							itemValue="#{exportationType}" 
+							itemLabel="#{i18n[utils:getEnumQualifiedName(exportationType)]}" />
+						<p:ajax event="change" listener="#{defaultMBean.changeExportationType}" update=":messages, ngSingleTabView" partialSubmit="true" />
+					</p:selectOneMenu>
+				</div>
+			</div>
+			<c:if test="#{defaultMBean.entity.exportationType != DataExportationType.NONE}">
+				<p:panelGrid id="panel-exportation-info">
+					<div class="ui-g">
+						<div class="ui-g-12">
+							<p:outputPanel styleClass="data-exportation-fieldset-header">
+								<p:outputLabel id="filter-section-label" value="#{i18n['dataexportation.label.new.filters']}" />
+							</p:outputPanel>
+						</div>
+						<div class="ui-g-12">
+							<ui:include src="layouts/#{defaultMBean.entity.exportationType}/filters.xhtml" />
+						</div>
+					</div>
+				<c:if test="#{defaultMBean.layout.layoutUsesNotification}">
+					<div class="ui-g">
+						<div class="ui-g-12">
+							<p:outputPanel id="ng-panel-title-form-view" styleClass="data-exportation-fieldset-header">
+								<p:outputLabel id="notify-section-label" value="#{i18n['dataexportation.label.new.notification']}" />
+							</p:outputPanel>
+						</div>
+						<div class="ui-g-12">
+							<ui:include src="layouts/notification.xhtml" />
+						</div>
+					</div>
+				</c:if>
+					<!-- TODO: Quando existir mais de um tipo de entrega incluir aqui as opções de escolha (hoje tem apenas DOWNLOAD) -->
+				</p:panelGrid>
+			</c:if> 
+		</ngTab:ngSingleTabView>
+		<script type="text/javascript">
+			selectCheckboxMenuLabelControl.allItemsSelected = "#{i18n['component.selectcheckboxmenu.allselected']}";
+			selectCheckboxMenuLabelControl.noItemsSelected =  "#{i18n['component.selectcheckboxmenu.noselection']}";
+			selectCheckboxMenuLabelControl.nItemsSelected = "#{i18n['component.selectcheckboxmenu.nselected']}";			
+			selectCheckboxMenuLabelControl.inject();
+		</script>
+	</ng:ngFormEdit>	
+</ui:composition>

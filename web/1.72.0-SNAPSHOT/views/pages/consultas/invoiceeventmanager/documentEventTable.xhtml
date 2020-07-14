@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+>
+				<ui:param name="defaultMBean" value="#{documentEventMBean}" />
+				<p:column headerText="#{i18n['label.title.exporter.actions']}" exportable="false" toggleable="false" style="max-width:4ex">
+					<ng:ngColumnActions />
+				</p:column>
+				<p:column headerText="#{i18n['ocorrencia.label.serie']}" style="max-width:4ex">
+					<h:outputText value="#{row.document.serialNumber}" />
+				</p:column> 
+				<p:column headerText="#{i18n['ocorrencia.label.documentnumber']}"
+					style="max-width:10ex">
+					<h:outputText value="#{row.document.documentNumber}" />
+				</p:column>
+                <p:column styleClass="ng-truncate-column" headerText="#{i18n['ocorrencia.label.ocorrencia']}" sortBy="#{row.event}" style="max-width:60px">
+                    <h:outputText value="${row.event}" converter="invoiceEventConverter" styleClass="ng-truncate-output" title="#{documentEventMBean.convertInvoiceEvent(row.event)}"/>
+                </p:column>
+                <p:column headerText="#{i18n['ocorrencia.label.count']}"
+                    style="max-width:40px">
+                    <h:outputText value="#{row.count}" />
+                </p:column>
+                <p:column headerText="#{i18n['ocorrencia.label.date']}"
+                    style="max-width:12ex" resizable="true">
+                    <h:outputText value="#{row.date}">
+                        <f:convertDateTime type="date" pattern="dd/MM/yyyy HH:mm"/>
+                     </h:outputText>
+                </p:column>
+                <p:column headerText="#{i18n['ocorrencia.label.finaldate']}" style="max-width:12ex">
+                    <h:outputText value="#{row.finalDate}">
+                        <f:convertDateTime type="date" pattern="dd/MM/yyyy HH:mm"/>
+                     </h:outputText>
+                </p:column>
+                <p:column styleClass="ng-truncate-column" headerText="#{i18n['ocorrencia.label.statusdescription']}" style="max-width:25ex">
+                    <h:outputText value="#{row.statusDescription}" styleClass="ng-truncate-output" title="#{row.statusDescription}"/>
+                </p:column>
+                <p:column headerText="UF">
+                    <h:outputText value="#{row.document.drawer.state}" />
+                </p:column>
+                <p:column headerText="#{i18n['ocorrencia.label.draweruid']}" style="max-width:12ex">
+                    <h:outputText value="#{row.document.drawer.name}" title="#{row.document.drawer.establishmentID}" />
+                </p:column>
+                <p:column headerText="#{i18n['ocorrencia.label.addresseuid']}" style="max-width:12ex">
+                    <h:outputText value="#{row.document.addresse.name}" title="#{row.document.addresse.establishmentID}" />
+                </p:column>
+				<p:column headerText="#{i18n['ocorrencia.label.login']}" style="max-width:8ex">
+					<h:outputText value="#{row.login}" />
+				</p:column>
+                <p:column headerText="Projeto" style="max-width:5ex">
+                    <h:outputText value="#{defaultMBean.convertProject(row.document.docType)}" />
+                </p:column>
+                <p:column headerText="ID Mensagem Origem" style="max-width:8ex">
+                    <h:outputText value="#{row.appMsgId}" />
+                </p:column>
+</ui:composition>

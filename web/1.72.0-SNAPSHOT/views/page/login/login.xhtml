@@ -1,0 +1,102 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component">
+<ui:composition template="/common/templates/login/defaultLogin.xhtml">
+	<ui:param name="disableRecoveryPassword" value="false" />
+	<ui:param name="enableDefaultMessages" value="true" />
+	
+	<ui:define name="content">
+		<c:if test="${param.logout != null}">
+			<ng:ngMessage message="#{i18n['param.logout']}" messageType="info"></ng:ngMessage>
+		</c:if>
+		<c:if test="${param.sessionExpired != null}">
+			<ng:ngMessage message="#{i18n['msg.session.expired']}"
+				messageType="info"></ng:ngMessage>
+		</c:if>
+		<c:if test="${param.error != null}">
+			<ng:ngMessage message="#{i18n['param.error']}"
+				messageType="error"></ng:ngMessage>
+		</c:if>
+		<c:if test="${param.disabledUser != null}">
+			<ng:ngMessage message="#{i18n['param.disabledUser']}"
+				messageType="error"></ng:ngMessage>
+		</c:if>
+		<!-- multilogout -->
+		<c:if test="${param.invalidatedSessionBy != null}">
+			<ng:ngMessage
+				message="#{i18n['msg.multilogout.invalidatedby'.concat(param.invalidatedSessionBy)]}"
+				messageType="info" />
+		</c:if>
+		<div id="ng-container-left" class="ng-content-frm-login-left">
+			<div id="ng-login-title" class="ng-login-title">
+				<p:outputLabel value="#{i18n['login.label.btn.acess']}" />
+			</div>
+			<div id="ng-login-preencha" class="ng-login-text">
+				<p:outputLabel value="#{i18n.ngLoginPreencha}:" />
+			</div>
+			<h:form id="ng-form-login" prependId="false">
+				<p:focus context="ng-form-login" />
+				<p:panelGrid columns="2" columnClasses="column1,column2">
+					<h:outputText for="username" value="Login*:" />
+					<p:inputText id="username" size="34" required="true"
+						maxlength="128"
+						requiredMessage="#{i18n['login.msg.required.login']}">
+					</p:inputText>
+					<h:outputText value="#{i18n['login.label.password']}*:" />
+					<p:inputText type="password" size="34" id="password"
+						required="true" maxlength="20"
+						requiredMessage="#{i18n['login.msg.required.password']}" />
+				</p:panelGrid>
+				<br />
+				<p:commandButton id="btnLogin" type="submit" ajax="false" 
+					styleClass="ng-ui-button"
+						value="${fn:toUpperCase(i18n['login.label.btn.acess'])}" />
+				<div id="auxiliaryText" class="ng-login-text">
+					<h:outputText value="#{i18n['login.label.text.auxiliar']}" />
+				</div>
+			</h:form>
+		</div>
+		<!-- coluna central de atendimento -->
+		<div id="ng-container-right" class="ng-content-frm-login-right">
+			<div class="ng-login-options-item">
+				<h:graphicImage styleClass="ng-login-flag" 
+					name="img/header/pt_BR.png"
+					library="common" />
+				<div class="ng-login-label-trad">
+					<p:outputLabel value="#{i18n.ngLoginPortugues}" />
+				</div>
+			</div>
+			<div class="ng-login-options-item">
+				<div class="ng-login-title">
+					<p:outputLabel value="#{i18n.ngLoginCentral}" />
+				</div>
+				<div class="ng-login-text">
+					<p:outputLabel value="#{i18n['login.info.header']}" />
+					<a href="#{i18n['login.info.link']}" style="font-weight: bold;"
+						target="_blank">#{i18n['login.info.link']}</a>
+					<p:outputLabel value="#{i18n['login.info.footer']}" />
+				</div>
+			</div>
+			<div class="ng-login-options-item">
+				<div class="ng-login-title">
+					<p:outputLabel value="#{i18n.ngLoginRequisitos}" />
+				</div>
+				<div class="ng-login-text">
+					<p:outputLabel value="#{i18n.ngLoginResolucao}" />
+					<p:outputLabel value="#{i18n['login.info.screen.size']}"
+						styleClass="ng-login-info-screen" />
+					<br />
+					<p:outputLabel value="#{i18n.ngLoginNavegadores}" />
+					<ng:ngHelp messageHelp="#{i18n['ngLoginNavegadoresHelp']}"
+						style="margin-left: 2px" />
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

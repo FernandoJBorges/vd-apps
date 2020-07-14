@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<p:outputPanel styleClass="ui-g-12">
+	   	<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['invoice.manifest.typemanifest']}" />
+			<p:selectOneMenu id="typemanifest" value="#{invoiceCreateManifestMB.sefazEventVO.type}">
+				<f:selectItems value="#{docType}" var="manifestType" 
+								itemValue="#{manifestType}" itemLabel="#{i18n['DocType.'.concat(manifestType)]}" />
+				<p:ajax event="change" partialSubmit="true" update="teste1" />
+			</p:selectOneMenu>
+		</div>
+		<div class="ui-g-2">			
+			<p:outputLabel value="#{i18n['invoice.manifest.datemanifest']}" />
+			<p:calendar id="processing" required="true" label="#{i18n['invoice.manifest.datemanifest']}:" 
+						value="#{invoiceCreateManifestMB.sefazEventVO.emissionDate}"
+						locale="pt" showOn="button" pattern="#{defaultMBean.layouts.DATE.format}" 
+						styleClass="dateTimeField" />
+		</div>
+		<div class="ui-g-2" style="padding-top:10px">
+			<br>
+				<p:outputLabel value="#{i18n['invoice.manifest.gmt']}:"	style="margin:10px" />
+				<p:outputLabel value="#{invoiceCreateManifestMB.sefazEventVO.sefazGMTData.sefazGmt}" />
+			</br> 
+		</div>
+
+		<p:outputPanel styleClass="ui-g-12" id="teste1">
+			<p:outputPanel styleClass="ui-g-2" onclose="true">			
+				<p:outputLabel value="#{i18n['invoice.manifest.correction']}" rendered="#{defaultMBean.enableJustification}"/>
+				
+				<p:inputTextarea rows="5"  label="#{i18n['invoice.manifest.correction']}:"
+								autoResize="false" 
+								id="correction" 
+								style="resize:none; margin: 0px; width: 700px; height: 90px;"
+								counter="remainingCounterfooter" 
+								maxlength="255"
+								counterTemplate="{0} caracteres restantes."
+								required="#{defaultMBean.enableJustification}"
+								rendered="#{defaultMBean.enableJustification}" 
+								value="#{defaultMBean.sefazEventVO.correction}">
+					<f:validateLength minimum="15" />
+				</p:inputTextarea> 
+				<h:outputText id="remainingCounterfooter" />
+			</p:outputPanel>
+		</p:outputPanel>
+	</p:outputPanel>
+</ui:composition>

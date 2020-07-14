@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<!-- Nome/Razão Social -->
+	<div class="ui-g-3">
+		<p:outputLabel value="#{i18n['document.label.nome.razao']}:" /><br/>
+		<h:outputText value="#{estab.name}" />
+	</div>
+
+	<!-- CNPJ -->
+	<p:outputPanel styleClass="ui-g-2">
+		<p:outputLabel value="#{i18n['document.label.cnpj.cpf']}:" rendered="#{isCNPJCPFLabel}" />
+		<p:outputLabel value="#{i18n['document.label.cnpj']}:" rendered="#{!isCNPJCPFLabel}" />
+		<br />
+		<h:outputText value="#{estab.cnpj}" />
+	</p:outputPanel>
+
+	<!-- Inscrição Estadual -->
+	<div class="ui-g-3">
+		<p:outputLabel value="#{i18n['cte.label.inscricao.estadual']}" /><br/>
+		<h:outputText value="#{estab.inscricaoEstadual}" />
+	</div>
+
+	<!-- Telefone -->
+	<div class="ui-g-2">
+		<p:outputLabel value="#{i18n['establishment.label.address.phone']}:" /><br/>
+		<h:outputText value="#{estab.phone}" />
+	</div>
+
+	<!-- UF -->
+	<div class="ui-g-1">
+		<p:outputLabel value="#{i18n['document.label.uf']}:" /><br/>
+		<h:outputText value="#{estab.uf}" />
+	</div>
+
+</ui:composition>

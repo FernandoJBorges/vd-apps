@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:outputStylesheet library="css" name="releaseNotes.css" />
+<h:outputScript library="js" name="jquery.cookie.js"></h:outputScript>
+<h:outputScript library="js" name="releaseNotes.js"></h:outputScript>
+<body class="login" onload="checkCookie();">
+	<article id="myModal" class="modal" >
+		<form class="form-content">
+			<aside class="modal-content">
+				<i class="close"></i>
+				<div id="page-title" class="modal-content-header">
+					<h2><strong>Bem-vindo a</strong> Versão #{principalMB.appVersion}!</h2>
+					<p>Seu produto foi atualizado, conheça as novidades desta versão:</p>
+				</div>
+				<section class="model-context-description">
+					<ul>
+						<li><h2>MDF-e:</h2></li>
+							<table>
+								<tr>
+									<td class="check"><div class="fa fa-check" /></td>
+									<td>Adequação do MDF-e a Nota Técnica NT 2020.001 - MDF-e Integrado (v1.01)</td>
+								</tr>
+							</table>	
+					</ul>			
+				</section>
+				<footer class="modal-content-footer" >
+					<div id="myfooter">
+					<p>O detalhamento desta e outras informações poderão ser encontradas no Release Notes, disponível no menu "Ajuda"</p>
+					<button type="button" class="button">Continuar Acesso</button>
+					</div>
+					<div id="Mycheckbox">
+						<input type="checkbox" id="hidexVersionInformation" class="checkbox" /> 
+						<label for="hidexVersionInformation">Não exibir mais este informativo</label>
+					</div>
+				</footer>
+			</aside>
+		</form>
+	</article>
+	<label id="appVersion" version="#{principalMB.appVersion}"></label>
+</body>
+</html>

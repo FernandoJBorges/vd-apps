@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+	<div class="ui-g ui-fluid">
+		<div class="ui-g-3 ui-g-nopad">
+			<div class="ui-g-12">
+				<p:outputLabel for="name"  value="#{i18n['role.label.nome']}:" />
+				<p:inputText id="name" maxlength="50" value="#{defaultMBean.filterVO.name}" />
+			</div>
+		</div>
+		<div class="ui-g-2">
+			<div class="ui-g-10 ui-g-nopad">
+				<p:outputLabel for="defaultRole" value="#{i18n['role.label.defaultrole']}:" />
+				<p:selectOneMenu id="defaultRole" value="#{defaultMBean.filterVO.defaultRole}">
+					<f:selectItems value="#{defaultMBean.types}" var="defaultRoleStatus" itemLabel="#{i18n[utils:getEnumQualifiedName(defaultRoleStatus)]}" itemValue="#{defaultRoleStatus}"/>
+				</p:selectOneMenu>
+			</div>	
+			<div class="ui-g-1 ui-g-nopad">
+				<ngComp:ngHelp messageHelp="#{i18n['role.label.defaultrole.helper']}" style="margin-top:15px;" />
+			</div>
+		</div>
+	</div>
+</ui:composition>

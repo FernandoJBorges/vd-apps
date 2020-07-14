@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:dialogFiscal="http://java.sun.com/jsf/composite/dialog">
+
+	<h:outputScript library="js" name="nfeDetails.js" target="body"/>
+
+	<p:remoteCommand name="loadTabData" action="#{defaultMBean.loadTabData(defaultMBean.generalDataTab)}"
+		update="@(.document-detail-column) accordionPanel"/>
+	
+	<p:outputPanel styleClass="ui-g-12 document-detail-column">
+		<!-- Chave de Acesso -->
+		<p:outputPanel styleClass="ui-g-3">
+			<p:outputLabel value="#{i18n['document.label.accessKey']}:" />
+			<p:outputPanel>
+				<h:outputText id="detailsGeneralDataAccessKey" value="#{defaultMBean.detailData.generalData.accessKey}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Número da Nota Fiscal -->
+		<p:outputPanel styleClass="ui-g-1">
+			<h:outputLabel value="#{i18n['document.label.documentnumber']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.number}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Serie da Nota Fiscal -->
+		<p:outputPanel styleClass="ui-g-1">
+			<h:outputLabel value="#{i18n['document.label.serie']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.serialNumber}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Modelo da Nota Fiscal -->
+		<p:outputPanel styleClass="ui-g-1">
+			<h:outputLabel value="#{i18n['invoice.label.model']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.documentModel}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Data de Emissão -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['invoice.label.emissionDate']}"/>
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.emissionDate}"/>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Tipo da Operação -->
+		<p:outputPanel styleClass="ui-g-1">
+			<h:outputLabel value="#{i18n['invoice.label.operation.type']}"/>
+			<p:outputPanel>
+				<h:outputText converter="operationTypeConverter" value="#{defaultMBean.detailData.generalData.operationType}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Valor total da Nota Fiscal -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['invoice.label.total.value']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{defaultMBean.detailData.generalData.totalValue}" />
+			</p:outputPanel>
+		</p:outputPanel>
+	</p:outputPanel>
+
+	<div class="ui-g-12 document-details-buttons-header-place">
+		<ui:include src="../../../../../document/details/sections/acordionPanelHeader.xhtml" />
+	</div>
+
+	<div class="ui-g-12 document-detail-accordion-panel-place">
+		<p:accordionPanel id="accordionPanel" multiple="true" widgetVar="accordionPanel" activeIndex="0" class="document-detail-accordion-panel">
+			<p:tab title="#{i18n['invoice.label.process.data.information']}">
+				<ui:include src="../../../../../document/details/sections/processDataSection.xhtml">
+					<ui:param name="processData" value="#{defaultMBean.detailData.generalData.processData}"/>
+				</ui:include>
+			</p:tab>
+			
+			<p:tab title="#{i18n['document.label.drawer']}">
+				<ui:include src="drawerSection.xhtml">
+					<ui:param name="drawer" value="#{defaultMBean.detailData.generalData.drawer}"/>
+				</ui:include>
+			</p:tab>
+		</p:accordionPanel>
+	</div>
+
+	<h:outputScript library="js" name="ondemand-loaddata.js"></h:outputScript>
+
+</ui:composition>

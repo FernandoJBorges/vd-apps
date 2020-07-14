@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<div class="ui-g-5">
+		<p:outputLabel for="#{id}" value="#{labelMessage}:" />
+		<p:inputTextarea id="#{id}"
+						rows="4"
+						cols="70"
+						maxlength="256"
+						autoResize="false"
+						style="resize:none"
+						counter="#{id}remainingCounterMail"
+						counterTemplate="{0} caracteres restantes."
+						value="#{value}">
+						<f:attribute name="inputName" value="#{tabMessagePrefix} #{labelMessage}" /> 
+						<f:validator binding="#{mailValidator}" />
+		</p:inputTextarea>
+		<h:outputText id="#{id}remainingCounterMail" />
+	</div>
+</ui:composition>

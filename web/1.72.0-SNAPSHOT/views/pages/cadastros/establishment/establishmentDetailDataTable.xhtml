@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/crud">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{establishmentMB}" />
+	<p:column headerText="#{i18n['label.title.exporter.actions']}" exportable="false" toggleable="false" style="width:30px">
+				<ng:ngColumnActions btnRenderedRemove="false" id="establishmentColumnActions">
+							<p:menuitem value="#{i18n['tooltip.commandLink.delete']}" 
+										update=":ng-form :ng-panel-crud-dialog :messages"
+										action="#{defaultMBean.listnerDeleteUserEstab}" 
+										icon="fa fa-times-circle"
+										styleClass="ng-context-menu-item"
+										title="#{defaultMBean.hasDeleteEstabPermission() ? 'Não é possível excluir esse estabelecimento pois o usuário logado esta atrelado ao mesmo. Favor logar com outro usuario.': ''}"
+										disabled="#{defaultMBean.hasDeleteEstabPermission()}"
+										rendered="#{defaultMBean.hasPermission('REMOVE')}"
+										immediate="true">
+										<f:setPropertyActionListener value="#{row}" target="#{defaultMBean.entity}" /> 
+							</p:menuitem>
+							<p:separator />
+							<p:menuitem value="#{i18n['label.config.entity']} #{i18n['ESTABLISHMENTMATRIXCONFIGTYPE_1_DAD_NOTIFICATIONS']}" 
+										update=":ng-form-est-notify :ng-form :ng-panel-crud-dialog :messages"
+										action="#{notifyEventMB.loadNotifyEvent(true)}" 
+										icon="fa fa-envelope"
+										global="false"
+										styleClass="ng-context-menu-item"
+										rendered="#{defaultMBean.hasPermission('ESTAB_NOTIFY')}"
+										immediate="true">
+										<f:setPropertyActionListener value="#{row}" target="#{defaultMBean.entity}" /> 
+							</p:menuitem>
+							<p:menuitem value="#{i18n['label.config.entity']} #{i18n['ESTABLISHMENTMATRIXCONFIGTYPE_0_DAD_RULES']}" 
+										update=":ng-form-est-rules :ng-form :ng-panel-crud-dialog :messages"
+										action="#{ruleMB.loadRules}"
+										global="false"
+										icon="fa fa-wrench"
+										styleClass="ng-context-menu-item"
+										rendered="#{defaultMBean.hasPermission('ESTAB_RULE')}"
+										immediate="true">
+										<f:setPropertyActionListener value="#{row}" target="#{defaultMBean.entity}" /> 
+							</p:menuitem>
+							<p:menuitem value="#{i18n['label.config.entity']} #{i18n['ESTABLISHMENTMATRIXCONFIGTYPE_2_DAD_QUEUES']}" 
+										update=":ng-form-est-queue :ng-form :ng-panel-crud-dialog :messages"
+										action="#{queueMB.loadQueue(true)}"
+										icon="fa fa-tasks"
+										global="false"
+										styleClass="ng-context-menu-item"
+										rendered="#{defaultMBean.hasPermission('ESTAB_QUEUE')}"
+										immediate="true">
+										<f:setPropertyActionListener value="#{row}" target="#{defaultMBean.entity}" /> 
+							</p:menuitem>
+							<p:menuitem value="Customizar DANFE" 
+										update=":ng-form-est-queue :ng-form :ng-panel-crud-dialog :messages"
+										icon="fa fa-print"
+										styleClass="ng-context-menu-item"
+										disabled="true"
+										rendered="#{defaultMBean.hasPermission('ESTAB_PRINT')}"
+										immediate="true">
+										</p:menuitem>
+							<p:menuitem value="#{i18n['establishment.btn.verif.cert']}" 
+										update=":messages"
+										action="#{defaultMBean.createCertificatesVerification}"
+										icon="fa fa-lock"
+										styleClass="ng-context-menu-item"
+										title="#{row.dadCertificate and row.dadUID != null ? i18n['establishment.btn.verif.cert.disable'] :'' }"
+										rendered="#{defaultMBean.hasPermission('ESTAB_CERTIFICATE')}"
+										immediate="true">
+											<f:setPropertyActionListener target="#{defaultMBean.entity}" value="#{row}" />
+							</p:menuitem>
+				</ng:ngColumnActions>
+			</p:column>	
+			<p:column headerText="#{i18n['establishment.label.cnpj']}/#{i18n['establishment.label.personType.cpf']}" sortBy="#{row.establishmentID}" style="width:110px">
+					<h:outputText value="#{row.establishmentID}">
+						<f:converter converterId="CnpjCpfConverter" />
+					 </h:outputText>
+			</p:column>
+			<p:column headerText="#{i18n['establishment.label.name']}" 	sortBy="#{row.name}">
+					<h:outputText value="#{row.name}" />
+			</p:column>
+			<p:column headerText="#{i18n['establishment.label.uf']}" style="width:40px">
+					<h:outputText value="#{row.state}" />
+			</p:column>
+			<p:column headerText="#{i18n['establishment.label.certificateValidation']}" style="width:135px">
+				<h:outputText value="#{defaultMBean.getCertificateDate(row.establishmentUID)}">
+					<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="#{i18n['establishment.label.cnpj']} Matriz" style="width:110px">
+					<h:outputText value="#{row.dad.establishmentID}">
+						<f:converter converterId="CnpjCpfConverter" />
+					</h:outputText>
+			</p:column>
+			<p:column headerText="#{i18n['establishment.label.matrixName']}">
+				<h:outputText value="#{row.dad.name}" title="#{row.dad.establishmentID}"/>
+			</p:column>
+</ui:composition>

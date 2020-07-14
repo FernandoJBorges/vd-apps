@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:p="http://primefaces.org/ui">
+	<div class="ui-g-12">
+		<p:outputLabel for="disponib-config-#{tabDoctype}" value="#{i18n['addresse.label.disponibilization-config']}:" styleClass="ng-subtitle" />
+	</div>
+	<div class="ui-g-12">
+		<div class="ui-g-2 edit-addresse-field">
+			<p:selectOneMenu id="disponib-config-#{tabDoctype}" value="#{disponibConfigValue}" >
+				<f:selectItems	value="#{defaultMBean.addresseConfigTypes}"
+								var="addresseConfigType"
+								itemValue="#{addresseConfigType.useEstablishmentConfig}"
+								itemLabel="#{i18n[utils:getEnumQualifiedName(addresseConfigType)]}" />
+			<p:ajax update=":ng-form:ngFormEdit:ngTabview:sorted-#{tabDoctype} :ng-form:ngFormEdit:ngTabview:queue-name-#{tabDoctype}" 
+					global="false" event="change" listener="#{addresseMB.fillDocTypeTabInfo(tabDoctype)}" />
+			</p:selectOneMenu>
+		</div>
+		<div class="ui-g-1 edit-fa-question">
+			<ngComp:ngHelp messageHelp="#{i18n['addresse.edit.disp-config.helper']}" />
+		</div>
+	</div>
+</ui:composition>

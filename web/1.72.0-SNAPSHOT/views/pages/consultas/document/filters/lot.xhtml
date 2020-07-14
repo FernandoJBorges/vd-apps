@@ -1,0 +1,37 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<p:outputPanel rendered="#{defaultFilterMBean.renderedLot()}">
+		<div class="ui-g #{classlotinitcontainer}">
+			<div class="ui-g-5 ui-g-nopad">
+				<p:outputLabel for="lotEnd" value="#{i18n['invoice.label.lot']}:" />
+				<p:inputNumber id="lotIni"
+								value="#{defaultFilterMBean.filterVO.initialLot}" 
+								decimalPlaces="0"
+								thousandSeparator=""
+								maxValue="9999999999"
+								minValue="0">
+								<p:ajax global="false" />
+				</p:inputNumber>
+			</div>
+			<div class="ui-g-1 ui-g-nopad ng-label-to">
+				<h:outputLabel value="a"></h:outputLabel>
+			</div>
+			<div class="ui-g-5 ui-g-nopad">
+				<p:spacer />
+				<p:inputNumber id="lotEnd"
+								value="#{defaultFilterMBean.filterVO.finalLot}" 
+								decimalPlaces="0"
+								thousandSeparator=""
+								maxValue="9999999999"
+								minValue="0">
+								<f:validator binding="#{rangeNumbersValidator}" />
+								<f:attribute name="initialNumber" value="#{defaultFilterMBean.filterVO.initialLot}" />
+								<f:attribute name="tab" value="document.tab.advanced" />
+				</p:inputNumber>
+			</div>
+		</div>
+	</p:outputPanel>
+</ui:fragment>

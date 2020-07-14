@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="ui-g-12">
+		<div class="ui-g-12 ui-g-nopad">
+			<p:outputLabel for="jks" value="#{i18n['signature.label.jks']}:" />
+		</div>
+		<div class="ui-g-2 ui-g-nopad">
+			<p:inputText id="jks" value="#{defaultMBean.entity.accessPath}"
+				maxlength="128" required="true" />
+		</div>
+	</div>
+	<div class="ui-g-12">
+		<div class="ui-g-12 ui-g-nopad">
+			<p:outputLabel for="password"
+				value="#{i18n['signature.label.password']}:" />
+		</div>
+		<ui:include src="passwordOrKeystore.xhtml">
+			<ui:param name="id" value="password" />
+		</ui:include>
+	</div>
+
+</ui:composition>

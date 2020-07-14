@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/crud"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:dialog="http://java.sun.com/jsf/composite/common/component/dialog"
+	xmlns:ngCommon="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:ngTab="http://java.sun.com/jsf/composite/common/component/view/tabview"
+	xmlns:dialogEstab="http://java.sun.com/jsf/composite/dialog"
+	template="/common/templates/crud/ngCrudTemplate.xhtml">
+	<ui:param name="defaultMBean" value="#{addresseMB}" />
+	<ui:define name="searchlistBlock">
+		<f:facet name="last">
+			<h:outputStylesheet name="addresse.css" library="css" />
+		</f:facet>
+		<ng:ngCrudSearch id="ng-search-comp" titleView="#{i18n['addresse.label.title']}">
+			<ngTab:ngTabViewBasic id="ng-tabview-basic">
+				<div class="ui-fluid ui-g">
+					<ui:include src="addresseFilters.xhtml" />
+				</div>
+			</ngTab:ngTabViewBasic>
+		</ng:ngCrudSearch>
+		
+		<ngCommon:ngSelectedActions id="ng-selected-actions">
+			<p:menuitem value="#{i18n['addresse.label.ediQueue']}"
+						icon="ng-btn-actions-select fa fa-tasks"
+						styleClass="ng-context-menu-item"
+						action="#{defaultMBean.actionEvent('UpdateQueueEdi')}"
+						update=":messages :updateQueueEdi:dlUpdateQueueEdi:tabEstbFocus :updateQueueEdi:dlUpdateQueueEdi:UpdateQueueEdiMessage"
+						disabled="#{defaultMBean.filters.enableButtonActionSelected}"
+						immediate="true" >
+			</p:menuitem>
+		</ngCommon:ngSelectedActions>
+		<ngComp:ngToolbar id="ng-toolbar" hasExport="true" />
+		<ng:ngDetailDataTableSelected id="ng-detail-dataTable" customAction="true" btnRenderRemove="false" btnRenderEdit="false" ajaxShowLoad="false">
+			<ui:include src="table.xhtml" />
+		</ng:ngDetailDataTableSelected>
+		
+		<dialog:ngDialogWarn id="validRegContr"  widgetVar="validRegContrWidgetVar">
+			<p:outputLabel value="#{i18n['addresse.msg.search.regContr']}" />
+		</dialog:ngDialogWarn>
+		
+	</ui:define>
+	<!-- bloco de criacao edicao -->
+	<ui:define name="addUpdateBlock">
+		<ng:ngFormEdit id="ngFormEdit" titleView="#{i18n['addresse.label.titleEdit']}"  dialogHeader="#{i18n['popup.msg.warn']}"  >
+			<p:tabView id="ngTabview" widgetVar="ngTabWidgetVar" style="min-width: 1000px;padding:0px">
+			<p:ajax event="tabChange" listener="#{addresseMB.onTabChange}" />
+				<p:tab id="identificationTab" title="#{i18n['sefaz.label.identifier']}">
+					<ui:include src="tabs/identification/identificationTab.xhtml" />
+				</p:tab>
+				<p:tab id="nfeTab" title="#{i18n['docType.label.NFE']}" disabled="#{!defaultMBean.enablePopupSoluctions('NFE')}">
+					<ui:include src="tabs/solutions/nfeTab.xhtml" />
+				</p:tab>
+				<p:tab id="cteTab" title="#{i18n['docType.label.CTE']}" disabled="#{!defaultMBean.enablePopupSoluctions('CTE')}">
+					<ui:include src="tabs/solutions/cteTab.xhtml" />
+				</p:tab>
+				<p:tab id="nfceTab" title="#{i18n['docType.label.NFCE']}" disabled="#{!defaultMBean.enablePopupSoluctions('NFCE')}">
+					<ui:include src="tabs/solutions/nfceTab.xhtml" />
+				</p:tab>
+			</p:tabView>
+		</ng:ngFormEdit>
+	</ui:define>
+	
+	<ui:define name="addDialogBlock">
+		<dialogEstab:dialogEstablishment id="zoomEstUser" defaultMBs="#{addresseMB}" updateField=":zoomEstUser:zoomEstUserForm:zoomEstUsertbStabelecimento" enabledSelectionMode="false" renderBtnSelectAll="false" />
+	</ui:define>
+</ui:composition>

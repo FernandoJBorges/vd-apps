@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:h="http://java.sun.com/jsf/html">
+				<div class="#{defaultMBean.stateUpdate ? 'status-usr' : 'status-usr-align'}">
+					<p:outputLabel class="ng-font-weight-bold" value="#{i18n[defaultMBean.entity.enabled ? 'UsrStatusType.ACTIVE' : 'UsrStatusType.INACTIVE']}"/>
+					<p:outputLabel style="display:block" rendered="#{defaultMBean.stateInsert}" value="-"/>
+					<p:outputLabel style="display:block" class="btn-color-green" rendered="#{defaultMBean.stateUpdate}" value="#{i18n['btn_action_yes']}"/>
+				</div>
+				
+				<ngComp:ngContextMessages id="ng-context-messages" message="#{i18n['usr.label.msg.info.header']}" rendered="#{defaultMBean.stateInsert}" />
+				
+				<div class="ui-g ui-fluid">
+					<div class="ui-g-12">
+						<div class="ui-g-3">
+							<p:outputLabel for="name" value="#{i18n['usr.label.nome']}:" />
+							<p:inputText id="name" value="#{defaultMBean.entity.name}" maxlength="60" required="true" requiredMessage="#{i18n['usr.msg.error.name']}" />
+						</div>
+						<div class="ui-g-3">
+							<p:outputLabel for="lastName" value="#{i18n['usr.label.lastName']}:" />
+							<p:inputText id="lastName" value="#{defaultMBean.entity.lastName}" maxlength="80" required="true" requiredMessage="#{i18n['usr.msg.error.lastname']}" />
+						</div>
+					</div>
+					<div class="ui-g-12">
+						<div class="ui-g-3">
+							<div class="ui-g-12 ui-g-nopad">
+								<p:outputLabel for="email" value="#{i18n['usr.label.email']}/#{i18n['usr.label.login']}:" />
+							</div>
+							<div class="ui-g-11 ui-g-nopad">
+								<p:inputText id="email"  readonly="#{defaultMBean.stateUpdate}" value="#{defaultMBean.entity.login}" maxlength="128" required="true" requiredMessage="#{i18n['usr.msg.error.mail']}">
+									<f:attribute name="inputName" value="#{i18n['usr.label.email']}" />
+									<f:validator binding="#{mailValidator}" /> 
+									<f:validator binding="#{usrMailValidator}" /> 
+									<f:attribute name="roleType" value="#{defaultMBean.entity.roleType}" />
+								</p:inputText>
+							</div>
+							<div class="ui-g-1  ui-g-nopad">
+								<ngComp:ngHelp messageHelp="#{i18n['usr.label.help.validade.mail']}" style="margin: 1px" />
+							</div>
+						</div>
+						<p:outputPanel id="nameRolePanel" styleClass="ui-g-3 nameRolePanel">
+							<div class="ui-g-11 ui-g-nopad">
+								<p:outputLabel for="nameRole" value="#{i18n['usr.label.title.dialog']}:" />
+								<p:inputText id="nameRole" value="#{defaultMBean.entity.role.name}" required="true" readonly="#{facesContext.renderResponse}" requiredMessage="#{i18n['usr.msg.error.roleusr']}"/>
+							</div>
+							<div class="ui-g-1 ui-g-nopad">
+								<p:spacer></p:spacer>
+								<p:commandButton icon="ui-icon-search"
+											immediate="true"
+											update=":dialogRolesEdit:dialogForm:PanelGrid :dialogRolesEdit:dialogForm:ng-datatable nameRolePanel @(ng-estab)"
+											disabled="#{usrEditMB.buttonSelectRoleDisabled}"
+											resetValues="true"
+											actionListener="#{roleDialog.init}"
+											onclick="PF('dialogRolesEdit').show()" />
+							</div>
+						</p:outputPanel>
+						<p:outputPanel styleClass="ui-g-5 nameRolePanel" style="padding-top: 23px;">
+								<p:outputPanel rendered="#{usrCreateMB.renderUserSuperCheck}">
+									<p:selectBooleanCheckbox id="superUsr" 
+															value="#{defaultMBean.entity.superUsr}"
+															itemLabel="#{i18n['usr.label.superUser']}"
+															valueChangeListener="#{usrCreateMB.changeSuperUserCheckbox}">
+															<p:ajax event="change" update="@(.ng-estab)" />
+									</p:selectBooleanCheckbox>
+									<ngComp:ngHelp messageHelp="#{i18n['usr.label.help.superusr']}" style="margin-left: -14px;"/>
+								</p:outputPanel>
+								<p:outputPanel rendered="#{usrCreateMB.isRenderEstabAdmin()}">
+									<p:selectBooleanCheckbox id="addresseAdmin"
+																	value="#{defaultMBean.entity.addresseAdmin}"
+																	itemLabel="#{i18n['usr.label.admUserDest']}" >
+									</p:selectBooleanCheckbox>
+									<ngComp:ngHelp messageHelp="#{i18n['usr.label.help.addresseadmin']}" style="margin-left: -14px;"/>
+								</p:outputPanel>
+						</p:outputPanel>
+					</div>
+				</div>
+</ui:composition>

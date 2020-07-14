@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/table"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<div class="ui-g-12 document-detail-column">
+		<p:outputLabel value="#{i18n['eventsefaz.exportationendorsement.endorseditens.label']}:" />
+		<ng:ngSimpleDataTable id="endorsed-itens"
+			value="#{defaultMBean.detailData.generalData.event.endorsedItens}"
+			emptyMessage="#{i18n['invoice.label.details.related.event.notfound']}">
+			<p:column
+				headerText="#{i18n['eventsefaz.exportationendorsement.dhEmbarque.label']}"
+				styleClass="rel-event-column-header-event-type">
+				<h:outputText value="#{row.dhEmbarque}">
+					<f:convertDateTime type="date" pattern="#{defaultMBean.layouts.DATE.format}" />
+				</h:outputText>
+			</p:column>
+			<p:column
+				headerText="#{i18n['eventsefaz.exportationendorsement.dhAverbacao.label']}"
+				styleClass="rel-event-column-header-event-type">
+				<h:outputText value="#{row.dhAverbacao}">
+					<f:convertDateTime type="date" pattern="#{defaultMBean.layouts.DATE.format}" />
+				</h:outputText>
+			</p:column>
+			<p:column
+				headerText="#{i18n['eventsefaz.exportationendorsement.nDue.label']}">
+				<h:outputText value="#{row.nDue}" />
+			</p:column>
+			<p:column
+				headerText="#{i18n['eventsefaz.exportationendorsement.nItem.label']}">
+				<h:outputText value="#{row.nItem}" />
+			</p:column>
+			<p:column
+				headerText="#{i18n['eventsefaz.exportationendorsement.nItemDue.label']}">
+				<h:outputText value="#{row.nItemDue}" />
+			</p:column>
+			<p:column
+				headerText="#{i18n['eventsefaz.exportationendorsement.qItem.label']}">
+				<h:outputText value="#{row.qItem}">
+					<f:convertNumber minFractionDigits="4" groupingUsed="true" locale="pt_BR"/>  
+				</h:outputText>
+			</p:column>
+			<p:column
+				headerText="#{i18n['eventsefaz.exportationendorsement.motAlteracao.label']}">
+				<h:outputText value="#{row.motAlteracao} - #{i18n['eventsefaz.exportationendorsement.motAlteracao.'.concat(row.motAlteracao).concat('.label')]}" />
+			</p:column>
+		</ng:ngSimpleDataTable>
+	</div>
+</ui:composition>

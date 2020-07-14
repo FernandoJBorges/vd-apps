@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/crud"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:ngCommon="http://java.sun.com/jsf/composite/common/component/view/search"
+	template="/common/templates/crud/ngCrudTemplate.xhtml">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{taskMBean}" />
+	<!-- bloco de pesquisa -->
+	<ui:define name="searchlistBlock">
+		<ng:ngCrudSearch id="ng-search-comp" titleView="#{i18n['task.label.title']}">
+						<p:panelGrid id="ng-panel-search" columns="4" columnClasses="column1,column2,column3,column4">
+								<p:outputLabel for="cnpj" value="#{i18n['usr.label.cnpj']}:" />
+								<p:inputText id="cnpj" value="#{defaultMBean.filters.cnpj}" size="25" maxlength="20"/>
+
+								<p:outputLabel for="subject" value="#{i18n['task.label.subject']}:" />
+								<p:inputText id="subject" value="#{defaultMBean.filters.subject}" size="67" maxlength="80"/>
+
+								<p:outputLabel for="dtTask" value="#{i18n['task.label.initialDate']}:" />
+								<p:calendar id="dtTask" value="#{defaultMBean.filters.initialDate}" locale="pt" showOn="button" mask="true" pattern="dd/MM/yyyy HH:mm"  >
+						             <p:ajax event="dateSelect" update=":ng-form:ng-search-comp:ng-tabview-search:taskFinalDate" />
+								</p:calendar>
+								
+								<p:outputLabel for="taskFinalDate" value="#{i18n['task.label.finalDate']}:" />
+								<h:panelGroup>
+								<p:calendar id="taskFinalDate" value="#{defaultMBean.filters.finalDate}" mindate="#{defaultMBean.filters.initialDate}" mask="true"
+						            locale="pt" showOn="button" pattern="dd/MM/yyyy HH:mm">
+								</p:calendar>
+						        <p:selectBooleanCheckbox id="check" style="margin-left: 20px" value="#{defaultMBean.filters.activeTaskCheck}" itemLabel="#{i18n['task.label.filterByActiveTasks']}" />
+								</h:panelGroup>
+						</p:panelGrid>
+						<p:focus context="ng-panel-search" />
+						<p:keyFilter for="cnpj" mask="num"/>
+		</ng:ngCrudSearch>
+		<ngCommon:ngSelectedActions id="ng-selected-actions" />
+		<ng:ngDetailDataTable id="ng-detail-dataTable" btnRenderRemove="false" btnRenderEdit="false">
+			<p:column headerText="#{i18n['label.title.exporter.actions']}" exportable="false" toggleable="false" style="width:30px">
+					<ng:ngColumnActions id="columnActions"/>
+			</p:column>
+			<p:column id="cnpj" headerText="#{i18n['usr.label.cnpj']}" style="width:110px">
+				<h:outputText value="#{row.businessUnit == null or row.businessUnit.person.personIN.value eq '1'  ? 'Geral': row.businessUnit.person.personIN.value}" />
+			</p:column>
+			<p:column id="subject" headerText="#{i18n['task.label.subject']}" sortBy="#{row.subject}">
+				<h:outputText value="#{row.subject}" />
+			</p:column>
+			<p:column id="dtCreation"  headerText="#{i18n['task.label.dtCreation']}" sortBy="#{row.creationDate}" style="width:110px">
+				<h:outputText value="#{row.creationDate}">
+					<f:convertDateTime type="date" pattern="dd/MM/yyyy HH:mm"  />
+				</h:outputText>
+			</p:column>
+			<p:column id="initialDate" headerText="#{i18n['task.label.initialDate']}" sortBy="#{row.initialDate}" style="width:110px">
+				<h:outputText value="#{row.initialDate}">
+					<f:convertDateTime type="date" pattern="dd/MM/yyyy HH:mm"  />
+				</h:outputText>
+			</p:column>
+			<p:column id="finalDate"  headerText="#{i18n['task.label.finalDate']}" sortBy="#{row.finalDate}" style="width:110px">
+				<h:outputText value="#{row.finalDate}">
+					<f:convertDateTime type="date" pattern="dd/MM/yyyy HH:mm"  />
+				</h:outputText>
+			</p:column>
+			<p:column id="sendEmail"  headerText="#{i18n['task.label.sendEmail']}" style="width:180px">			
+				<h:outputText value="#{defaultMBean.descEnviarEmail(row)}" />
+			</p:column>
+		</ng:ngDetailDataTable>
+	</ui:define>
+	<!-- bloco de criacao edicao -->
+	<ui:define name="addUpdateBlock">
+	<style type="text/css">
+       	.column1{width: 118px;height:auto}
+    </style>
+    <ng:ngFormEditConfirm id="ngFormEdit" titleView="#{i18n['task.label.title']}" labelBtnCancel="#{i18n['btn_action_no']}" width="387">
+		<p:tabView id="ngTabview">
+			<p:tab id="ngBasic" title="#{i18n.ngTabBasic}">
+				<p:panelGrid id="panelGridForm" columnClasses="column1">
+				 	<p:row>
+			            <p:column width="10%" style="text-align: right">
+			            <p:outputLabel for="initialDate" value="#{i18n['task.label.initialDate']}: " /></p:column>
+			            <p:column width="10%">
+							<p:calendar id="initialDate" value="#{defaultMBean.entity.initialDate}" mask="true" locale="pt" showOn="button"  pattern="dd/MM/yyyy HH:mm" binding="#{initialDate}" required="true" valueChangeListener="#{defaultMBean.initialDateChanged}">
+					            <p:ajax event="change" update=":ng-form:ngFormEdit:ngTabview:finalDate" />
+					            <p:ajax event="dateSelect" update=":ng-form:ngFormEdit:ngTabview:finalDate" />
+							</p:calendar>
+							
+							<p:outputLabel for="finalDate" value="#{i18n['task.label.finalDate']}: " style="margin-left:30px;margin-right:15px" />
+			          		<p:calendar id="finalDate" value="#{defaultMBean.entity.finalDate}" mindate="#{defaultMBean.entity.initialDate}" mask="true"
+					            locale="pt" showOn="button"  pattern="dd/MM/yyyy HH:mm" required="true" >
+								   <f:attribute name="fromDate" value="#{initialDate.value}" />
+								   <f:validator binding="#{dateRangeValidator}" />
+							</p:calendar>
+						</p:column> 
+			        </p:row>
+			        <p:row>
+			            <p:column width="10%" style="text-align: right"><p:outputLabel for="subject" value="#{i18n['task.label.subject']}: "  />
+			            </p:column>
+			            <p:column width="90%" colspan="5">
+			            <p:inputText id="subject" value="#{defaultMBean.entity.subject}" maxlength="80" required="true" size="82">
+			            		<f:validator binding="#{taskSubjectValidator}" />
+								<f:attribute name="initialDate" value="#{defaultMBean.entity.initialDate}" />
+								<f:attribute name="stateInsert" value="#{defaultMBean.stateInsert}" />
+								<f:attribute name="taskCurrent" value="#{defaultMBean.entity}" />
+			            </p:inputText>
+			            <ngComp:ngHelp messageHelp="#{i18n['task.msg.help.subjectTask']}" />
+			            </p:column>
+			        </p:row>
+ 					<p:row>
+			            <p:column width="10%" style="text-align: right">
+			            	<p:outputLabel for="description" value="#{i18n['task.label.description']}: "  />
+			            </p:column>
+			            <p:column>
+			            	<p:inputTextarea id="description" rows="5" cols="88" value="#{defaultMBean.entity.description}"  counter="remainingCounter" maxlength="4000" counterTemplate="{0} caracteres restantes." autoResize="false" style="resize:none;float:left" required="true" size="10"/>
+			        		<ngComp:ngHelp messageHelp="#{i18n['task.msg.help.descTask']}" style="float:left" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column width="10%"></p:column>
+						<p:column width="90%" colspan="6"><h:outputText id="remainingCounter" /></p:column>
+					</p:row>
+				    <p:row>
+				        <p:column colspan="6">
+				            <p:spacer height="0"/>
+				        </p:column>
+				    </p:row>									
+				    <p:row>
+				        <p:column colspan="6">
+						<ngComp:ngSubTitleView title="#{i18n['task.label.sendEmail']}"/>
+				        </p:column>
+				    </p:row>							        
+				    <p:row>
+			        	<p:column width="10%"  style="text-align: right">
+							<p:selectBooleanCheckbox id="sendEmailEstabs" value="#{defaultMBean.entity.sendEmailEstabs}"  valueChangeListener="#{defaultMBean.emailEstabsCheckChanged}" >
+							    <p:ajax event="change" process="sendEmailEstabs"  update=":ng-form:ngFormEdit:ngPanelBtn" partialSubmit="true" />
+							</p:selectBooleanCheckbox>
+			        	</p:column>
+			        	<p:column width="90%" colspan="5">
+							<p:outputLabel for="sendEmailEstabs" value="#{defaultMBean.sendEmailEstabsLabel()} " /> 
+							<p:outputLabel for="sendEmailEstabs" value="#{defaultMBean.qtdEmailsToSend} #{i18n['task.label.emails']}." style="font-weight:bolder"/>
+			        	</p:column>
+			        </p:row>
+			        <p:row>
+			        	<p:column  width="10%" style="text-align: right">
+							<p:selectBooleanCheckbox id="sendAltEmailCheck" value="#{defaultMBean.checkedAltEmail}" valueChangeListener="#{defaultMBean.altEmailCheckChanged}" >
+								 <p:ajax event="change" process="sendAltEmailCheck"   listener="#{defaultMBean.clearAtMail}" update=":ng-form:ngFormEdit:ngTabview:sendAltEmailPanel :ng-form:ngFormEdit:ngPanelBtn " partialSubmit="true" /> 
+							</p:selectBooleanCheckbox>
+			        	</p:column>
+			        	<p:column width="90%" colspan="5">
+			        		<p:outputLabel for="sendAltEmail" value="#{i18n['task.label.altEmail']}:"/>
+			        	</p:column>
+			        </p:row>
+			        <p:row>
+			        	<p:column width="10%" colspan="1" ><p:spacer></p:spacer></p:column>
+			        	<p:column width="90%" colspan="2">
+			        	<p:outputPanel id="sendAltEmailPanel" >
+			        		<p:inputTextarea id="sendAltEmail" rows="5" cols="88" value="#{defaultMBean.entity.sendAltEmail}" counter="remainingCounterAltEmail" maxlength="4000" counterTemplate="{0} caracteres restantes." autoResize="false" disabled="#{not defaultMBean.checkedAltEmail}" required="#{defaultMBean.checkedAltEmail}" style="resize:none;float:left">
+			        			<f:attribute name="inputName" value="#{i18n['task.label.altEmail']}" /> 
+			        		 	<f:validator binding="#{mailValidator}" />
+			        		</p:inputTextarea>
+		        			<ngComp:ngHelp messageHelp="#{i18n['task.msg.error.altEmailTaskSeparator']}" rendered="#{defaultMBean.checkedAltEmail}" style="float:left"/>
+			        	</p:outputPanel>
+			        	</p:column>
+			        </p:row>
+					<p:row>
+						<p:column width="10%"><p:spacer></p:spacer></p:column>
+						<p:column  width="90%" colspan="5">
+							<p:outputLabel id="remainingCounterAltEmail" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+				<p:focus context="panelGridForm" />
+			</p:tab>
+		</p:tabView>
+	</ng:ngFormEditConfirm>
+	</ui:define>
+</ui:composition>

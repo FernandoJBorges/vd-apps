@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/table">
+	<div class="ui-g-12 document-detail-column">
+		<!-- adicionar um render para o cancelamento -->
+			<div class="ui-g-6 document-detail-column">
+				<p:outputLabel value="#{i18n['eventsefaz.request.extension.label.items']}:" />
+				<ng:ngSimpleDataTable value="#{defaultMBean.detailData.generalData.event.listRequestExtension}" emptyMessage="Nenhum item encontrado">
+					<p:column headerText="#{i18n['eventsefaz.request.extension.label.answer.treasury']}">
+							<h:outputText  value="#{i18n[utils:getEnumQualifiedName(row.statPedidoEnum)]}" />
+					</p:column>
+					<p:column headerText="#{i18n['eventsefaz.mdfe.label.justification']}">
+							<h:outputText  value="#{i18n[utils:getEnumQualifiedName(row.justStatusCancEnum)]}" />
+					</p:column>
+				</ng:ngSimpleDataTable>
+			</div>
+	</div>
+</ui:composition>

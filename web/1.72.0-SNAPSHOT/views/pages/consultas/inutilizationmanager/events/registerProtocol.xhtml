@@ -1,0 +1,114 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/custom">
+	<h:form id="register-protocol" prependId="true">
+		<p:outputPanel
+			rendered="#{inutilizationProtocolMB.stateRegisterProtocol}">
+			<ng:ngFormEdit id="ngFormCreateContingency"
+				titleViewBegin="#{i18n['inutilization.protocol.title.begin']}"
+				titleView="#{i18n['inutilization.protocol.title']}"
+				mbean="#{inutilizationProtocolMB}" actionSubmit="registerProtocol"
+				actionGoBack="goBackInutilizationList"
+				update="#{extraUpdate} :ng-form :ng-panel-crud-dialog :messages">
+				<p:outputPanel id="panel-register-protocol">
+					<p:outputPanel class="ui-fluid ng-container">
+						<p:outputPanel class="ui-g">
+							<p:outputPanel class="ui-g-12 ui-g-nopad ng-container-subtitle">
+								<p:outputLabel id="lb-subtitle"
+									value="#{i18n['inutilization.protocol.subtitle']}" />
+							</p:outputPanel>
+
+							<p:outputPanel
+								styleClass="ui-g-12 ui-g-nopad ng-container-content">
+								<p:outputPanel styleClass="ui-g-3">
+									<p:outputPanel>
+										<p:outputLabel
+											value="#{i18n['inutilization.label.initialnumber']}:" />
+										<br />
+										<h:outputText id="detailsInitialNumber"
+											value="#{inutilizationProtocolMB.inutilizationRangeBO.initialNumber}" />
+									</p:outputPanel>
+									<br />
+									<p:outputPanel>
+										<p:outputLabel
+											value="#{i18n['inutilization.label.establishment']}:" />
+										<br />
+										<h:outputText id="detailsEstablishment"
+											value="#{inutilizationProtocolMB.inutilizationRangeBO.businessUnit.person.name}" />
+									</p:outputPanel>
+									<br />
+									<p:outputPanel>
+										<p:outputLabel
+											value="#{i18n['inutilization.label.protocol']}:"
+											for="protocol" />
+										<br />
+										<p:inputNumber id="protocol"
+											value="#{inutilizationProtocolMB.inutilizationRangeBO.statusProtocolNumber}"
+											decimalPlaces="0" thousandSeparator=""
+											maxValue="999999999999999" minValue="0"
+											inputStyle="width: 140px;" required="true">
+											<f:validateLength minimum="15" />
+										</p:inputNumber>
+										<br />
+										<p:focus id="focusID" for="protocol" />
+									</p:outputPanel>
+								</p:outputPanel>
+
+								<p:outputPanel styleClass="ui-g-2">
+									<h:outputLabel
+										value="#{i18n['inutilization.label.finalnumber']}:" />
+									<br />
+									<h:outputText
+										value="#{inutilizationProtocolMB.inutilizationRangeBO.finalNumber}" />
+								</p:outputPanel>
+
+								<p:outputPanel styleClass="ui-g-2">
+									<p:outputPanel>
+										<h:outputLabel value="#{i18n['inutilization.label.serie']}:" />
+										<br />
+										<h:outputText
+											value="#{inutilizationProtocolMB.inutilizationRangeBO.serialNumber}" />
+									</p:outputPanel>
+									<br />
+									<p:outputPanel>
+										<h:outputLabel
+											value="#{i18n['inutilization.label.operation']}:" />
+										<br />
+										<h:outputText
+											value="#{inutilizationProtocolMB.inutilizationRangeBO.docType}"
+											converter="docTypeIntegerConverter" />
+									</p:outputPanel>
+								</p:outputPanel>
+
+								<p:outputPanel styleClass="ui-g-2">
+									<h:outputLabel
+										value="#{i18n['inutilization.label.protocol.requestdate']}" />
+									<br />
+									<h:outputText
+										value="#{inutilizationProtocolMB.inutilizationRangeBO.requestDate}">
+										<f:convertDateTime type="date"
+											pattern="#{defaultMBean.layouts.DATE_SHORT.format}" />
+									</h:outputText>
+								</p:outputPanel>
+							</p:outputPanel>
+
+							<p:outputPanel
+								styleClass="ui-g-12 ui-g-nopad ng-container-content">
+								<h:outputLabel
+									value="#{i18n['inutilization.protocol.warning.title']}:" />
+								<br />
+								<h:outputText
+									value="#{i18n['inutilization.protocol.warning.message']}"
+									escape="false" />
+							</p:outputPanel>
+						</p:outputPanel>
+					</p:outputPanel>
+				</p:outputPanel>
+			</ng:ngFormEdit>
+		</p:outputPanel>
+	</h:form>
+</ui:composition>

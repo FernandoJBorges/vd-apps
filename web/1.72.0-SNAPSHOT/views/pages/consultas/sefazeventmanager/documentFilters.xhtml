@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core" 
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+	<p:outputPanel styleClass="ui-g-12 document-column">
+		<ui:include src="../document/filters/calendarInitial.xhtml" />
+		<ui:include src="../document/filters/calendarFinal.xhtml" />
+		<ui:include src="../document/filters/accesskeys.xhtml" />
+		<ui:include src="../document/filters/cnpjdrawer.xhtml" />
+		<p:outputPanel styleClass="ui-g-2 received-for-panel">
+			<p:outputLabel for="nfetype" value="#{i18n['eventsefaz.label.processtype']}:" />
+			<p:selectOneMenu id="nfetype" value="#{defaultFilterMBean.filterVO.eventSefazProcessType}">
+				<f:selectItems value="#{defaultFilterMBean.processType}" var="processType" itemValue="#{processType}" itemLabel="#{i18n[utils:getEnumQualifiedName(processType).concat('.event')]}" />
+				<p:ajax listener="#{defaultFilterMBean.changeProcessType}" event="change" global="false" update="@(.received-for-panel) @(.event-type) @(.desc-cnpj) @(.advanced-filter)" />
+			</p:selectOneMenu>
+		</p:outputPanel>
+		<p:outputPanel styleClass="ui-g-2">
+			<p:outputPanel styleClass="received-for-panel">
+				<p:outputPanel rendered="#{defaultFilterMBean.renderedReceivedFor()}">
+					<p:outputLabel for="receivedFor" value="#{i18n['eventsefaz.label.received.for']}:" />
+					<p:selectOneMenu id="receivedFor" value="#{defaultFilterMBean.filterVO.eventSefazReceivedForType}">
+						<f:selectItems value="#{defaultFilterMBean.receivedForTypes}" var="processType" itemValue="#{processType}"
+							itemLabel="#{i18n[utils:getEnumQualifiedName(processType).concat('.').concat(defaultFilterMBean.filterVO.operation)]}" />
+						<p:ajax listener="#{defaultFilterMBean.changeReceivedFor}" event="change" global="false" process="@this" update="@(.event-type) @(.desc-cnpj)" />
+					</p:selectOneMenu>
+				</p:outputPanel>
+			</p:outputPanel>
+		</p:outputPanel>
+	</p:outputPanel>
+	<p:outputPanel styleClass="ui-g-12 document-column">
+		<ui:include src="../document/filters/dateOf.xhtml" />
+		<ui:include src="../document/filters/datePeriodSelector.xhtml" />
+		<ui:include src="../document/filters/serieAndNumber.xhtml" />
+		<p:outputPanel styleClass="ui-g-2">
+			<p:outputLabel for="operation" value="#{i18n['eventsefaz.label.operation']}:" />
+			<p:selectOneMenu id="operation" value="#{defaultFilterMBean.filterVO.operation}">
+				<f:selectItems var="operation" value="#{defaultFilterMBean.operations}" itemValue="#{operation}" itemLabel="#{operation.desc}" />
+				<p:ajax listener="#{defaultFilterMBean.changeProcessType}" event="change" global="false" update="@(.received-for-panel) @(.event-type) @(.desc-cnpj)" />
+			</p:selectOneMenu>
+		</p:outputPanel>
+		<p:outputPanel styleClass="ui-g-2 event-type">
+			<p:outputLabel for="eventType" value="#{i18n['eventsefaz.label.eventType']}:" />
+			<p:selectOneMenu id="eventType" value="#{defaultFilterMBean.filterVO.eventType}">
+				<f:selectItems var="eventType" value="#{defaultFilterMBean.getEventType()}" itemValue="#{eventType}" itemLabel="#{i18n[utils:getEnumQualifiedName(eventType).concat('.event')]}" />
+			</p:selectOneMenu>
+		</p:outputPanel>
+		<p:outputPanel styleClass="ui-g-2">
+		<p:outputLabel for="documentstatus" value="#{i18n['document.label.status']}:" />
+		<p:selectOneMenu id="documentstatus" value="#{defaultFilterMBean.filterVO.status}">
+			<f:selectItems var="status" 
+						value="#{defaultFilterMBean.statusTypes}" 
+						itemValue="#{status}"
+						itemLabel="#{i18n[utils:getEnumQualifiedName(status).concat('.event')]}" />
+		</p:selectOneMenu>
+	</p:outputPanel>
+	</p:outputPanel>
+</ui:composition>

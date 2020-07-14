@@ -1,0 +1,21 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+		<p:outputPanel id="cceComplementButtonPanel" styleClass="ui-g-12 ui-g-nopad" rendered="#{!createEventMBean.formCreateCCeRendered}">
+			<p:outputPanel styleClass="ui-g-10" />
+			<p:outputPanel styleClass="ui-g-2" style="text-align:right">
+					<p:commandButton id="button-cce"
+									icon="fa fa-plus" 
+									resetValues="true"
+									style="width:145px" 
+									global="false"
+									styleClass="ng-ui-button-secundary button-cce"
+									action="#{createEventMBean.formCreateCCeHandle}"
+									value="#{i18n['document.create.event.cce.label.btn']}"
+									update="cceComplementButton cceComplementList cceComplementForm" />
+			</p:outputPanel>
+	</p:outputPanel>
+</ui:composition>
+
+

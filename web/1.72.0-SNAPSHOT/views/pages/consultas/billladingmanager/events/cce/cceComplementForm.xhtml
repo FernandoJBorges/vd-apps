@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+		<p:outputPanel id="cceComplementFormPanel" rendered="#{createEventMBean.formCreateCCeRendered}">
+        	<p:outputPanel styleClass="ui-g-12">
+				<p:outputPanel styleClass="ui-g-3 ui-g-nopad">
+					<p:outputLabel for="changedGroup" value="#{i18n['document.create.event.cce.form.correction.group']}:" />
+					<p:inputText id="changedGroup" value="#{createEventMBean.cceInfoChangedVO.changedGroup}" required="true" maxlength="20" />
+				</p:outputPanel>
+				<p:outputPanel styleClass="ui-g-1"></p:outputPanel>
+				<p:outputPanel styleClass="ui-g-3 ui-g-nopad">
+					<p:outputLabel for="changedField" value="#{i18n['document.create.event.cce.form.correction.edited']}:" />
+					<p:inputText id="changedField" value="#{createEventMBean.cceInfoChangedVO.changedField}" required="true" maxlength="20" />
+				</p:outputPanel>
+				<p:outputPanel styleClass="ui-g-1"></p:outputPanel>
+				<p:outputPanel styleClass="ui-g-3 ui-g-nopad">
+					<p:outputLabel for="changedItemNumber" value="#{i18n['document.create.event.cce.form.correction.num.edited']}:" />
+					<p:inputNumber id="changedItemNumber" value="#{createEventMBean.cceInfoChangedVO.changedItemNumber}" decimalPlaces="0"  thousandSeparator="" maxValue="99" minValue="0" />
+				</p:outputPanel>
+			</p:outputPanel>
+			<p:outputPanel styleClass="ui-g-12 ui-g-nopad">
+				<p:outputLabel for="valEdit" value="#{i18n['document.create.event.cce.form.correction.val.edited']}:" />
+				<br/>
+				<p:inputTextarea id="valEdit" 
+								rows="5" 
+								autoResize="false"
+								value="#{createEventMBean.cceInfoChangedVO.changedValue}"
+								counter="remainingCounter" maxlength="500"
+								counterTemplate="{0} caracteres restantes." 
+								style="width:100%;resize:none;float:left" required="true"/>
+			</p:outputPanel>
+			<p:outputPanel styleClass="ui-g-12 ui-g-nopad">
+				<h:outputText id="remainingCounter" />
+			</p:outputPanel>
+			<p:outputPanel styleClass="ui-g-12 ui-g-nopad">
+				<p:outputPanel styleClass="ui-g-1 ui-g-nopad">
+								<p:commandButton id="ng-btn-add"
+												icon="fa fa-plus"
+												global="false"
+												oncomplete="handleSubmitScrollTo(xhr, status, args)"
+												update="cceComplementButton cceComplementList cceComplementForm :messages"
+												styleClass="ng-ui-button"
+												action="#{createEventMBean.addCCeComplement}"
+												value="#{i18n['btn_action_include']}" />
+		
+				</p:outputPanel>
+				<p:outputPanel styleClass="ui-g-1 ui-g-nopad">
+							<p:commandButton id="ng-btn-cancel" 
+											icon="fa fa-power-off"
+											immediate="true" 
+											global="false"
+											action="#{createEventMBean.formCancelCCeHandle}"
+											value="#{i18n['btn_action_cancel']}"
+											process="@this" 
+											update=":messages cceComplementButton cceComplementList cceComplementForm"
+											styleClass="ng-ui-button" />
+				</p:outputPanel>
+			</p:outputPanel>
+		</p:outputPanel>
+		<p:focus context="cceComplementFormPanel" />
+</ui:composition>

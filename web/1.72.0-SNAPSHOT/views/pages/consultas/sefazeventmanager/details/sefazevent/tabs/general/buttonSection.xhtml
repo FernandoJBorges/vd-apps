@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+		<p:outputPanel styleClass="ui-g ng-nfe-buttons">
+	
+		<!-- Espaço em branco -->
+		<p:outputPanel styleClass="ui-g-6"></p:outputPanel>
+
+		<p:outputPanel styleClass="ui-g-6">
+			<!-- Reenviar ao ERP -->
+			<p:commandButton id="btn-resend-erp"
+				immediate="true" 
+				update=":messages"
+				icon="icon-sendERP ng-button"
+				styleClass="ng-ui-button ng-float-right"
+				action="#{defaultMBean.actionEvent('sendDocToERP')}"
+				value="#{i18n['cte.label.details.buttons.resend.to.erp']}"
+				disabled="#{defaultMBean.isSendToERPDisabled()}"
+				rendered="#{defaultMBean.sentToERP.rendered}"  
+				 />
+			<!-- Reenviear DACTE ao ERP -->
+			<p:commandButton id="btn-da-erp"
+				icon=" icon-print ng-button"
+				styleClass="ng-ui-button ng-float-right"
+				global="false" ajax="false" immediate="true" 
+				action="#{defaultMBean.actionEvent('downloadDACCE')}"
+				value="#{i18n['eventsefaz.tooltip.DACCE']}"
+				disabled="#{!defaultMBean.isDACCEEnabled()}"  
+				rendered="#{defaultMBean.isDACCERendered()}"  
+			/>
+		</p:outputPanel>
+	</p:outputPanel>
+</ui:composition>

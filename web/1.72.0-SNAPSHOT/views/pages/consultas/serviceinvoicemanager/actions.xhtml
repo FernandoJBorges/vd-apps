@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+			<p:menuitem id="dowloadXmlAction" 
+						global="false"
+						action="#{defaultMBean.actionEvent('downloadZIP')}"
+						ajax="false"
+						icon="icon-download-alt"
+						onclick="updateMessages()"
+						styleClass="ng-context-menu-item" 
+						value="#{i18n['document.label.action.downloads']}" 
+						disabled="#{defaultMBean.actionDownloadXml.isDisabled(defaultMBean.lazyModelSelection)}"
+						rendered="#{defaultMBean.actionDownloadXml.rendered}"
+						immediate="true">
+			</p:menuitem>
+			<p:menuitem id="resendErpAction"
+						value="#{i18n['document.label.action.doctoerp']}"
+						icon="icon-sendERP"
+						ajax="false"
+						action="#{defaultMBean.actionEvent('sendDocToERP')}"
+						update=":messages"
+						disabled="#{defaultMBean.actionSendToErp.isDisabled(defaultMBean.lazyModelSelection)}"
+						rendered="#{defaultMBean.actionSendToErp.rendered}"
+						immediate="true" >
+			</p:menuitem>
+			<p:menuitem id="resendToCityHall"
+						value="#{i18n['nfse.label.action.resendToCityHall']}"
+						icon="icon-reenviarSEFAZ"
+						update=":messages"
+						action="#{defaultMBean.actionEvent('resendCityHall')}"
+						disabled="#{defaultMBean.actionResendCityHallAction.isDisabled(defaultMBean.lazyModelSelection)}"
+						rendered="#{defaultMBean.actionResendCityHallAction.isRendered(defaultFilterMBean.documentFlowType)}"
+						immediate="true" >
+			</p:menuitem>
+</ui:composition>

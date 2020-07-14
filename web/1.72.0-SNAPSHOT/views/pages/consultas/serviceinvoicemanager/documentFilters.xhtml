@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+	<p:outputPanel styleClass="ui-g-12 document-column">
+		<ui:include src="../document/filters/calendarInitial.xhtml" />
+		<ui:include src="../document/filters/calendarFinal.xhtml" />
+		<p:outputPanel styleClass="ui-g-2">
+				<ui:include src="filters/city.xhtml" />
+				<ui:include src="filters/rpsnumber.xhtml" />				
+		</p:outputPanel>
+		<ui:include src="filters/drawer.xhtml" />
+		<ui:include src="filters/processtype.xhtml" />
+	</p:outputPanel>
+	
+	<p:outputPanel styleClass="ui-g-12 document-column">
+		<ui:include src="../document/filters/dateOf.xhtml" />
+		<ui:include src="../document/filters/datePeriodSelector.xhtml" />
+		
+		<p:outputPanel styleClass="ui-g-2">
+				<ui:include src="filters/serial.xhtml" />
+				<ui:include src="filters/nfsenumber.xhtml" />
+		</p:outputPanel>
+		
+		<ui:include src="filters/adressee.xhtml" />
+		<ui:include src="../document/filters/status.xhtml" />
+	</p:outputPanel>
+</ui:composition>

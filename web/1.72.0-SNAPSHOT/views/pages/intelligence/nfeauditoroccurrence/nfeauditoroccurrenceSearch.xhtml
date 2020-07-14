@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:dialog="http://java.sun.com/jsf/composite/common/component/dialog"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:utils="http://www.neogrid.com/functions/utils"	
+	template="/common/templates/search/ngSearchTemplate.xhtml">
+	<!-- passa parâmetro para o template -->
+	
+	<ui:param name="defaultMBean" value="#{nfeAuditorOccurrenceMB}" />
+	<!-- bloco de pesquisa -->
+	<ui:define name="searchlistBlock">
+		<!-- filtros -->
+		
+		<style>
+		.dateTimeField input {
+		width:137px;	
+		}
+		</style>
+		<ng:ngViewSearch id="ng-search-comp" titleView="#{i18n['docFiscalValid.label.title']}" btnGoBackRendered="false">
+					<p:panelGrid id="ng-panel-search" columns="4" columnClasses="column1,column2,column3,column4,column5,column6">
+							<p:outputLabel for="processing" value="#{i18n['docFiscalValid.label.processo']}:" />
+								<h:panelGroup> 
+									<p:calendar id="processing" label="Data Emissão Inicial:"
+												value="#{defaultMBean.filters.initialProcessingDate}"
+												locale="pt" 
+												showOn="button"
+												mask="true" 
+												placeholder="${fn:replace(defaultMBean.layouts.DATE.format, '[a-zA-Z]', '_')}"												
+												pattern="#{defaultMBean.layouts.DATE.format}"
+												styleClass="dateTimeField" minSecond="7">
+												<p:ajax event="dateSelect" update=":ng-form:ng-search-comp:ng-tabview-search:processingend"/>
+									</p:calendar>
+									<h:outputLabel style="margin:10px">a</h:outputLabel>
+									<p:calendar id="processingend"  label="Data Emissão Final:"
+									 			value="#{defaultMBean.filters.finalProcessingDate}"
+									 			locale="pt"
+									 			showOn="button"	
+									 			mask="true"								 		
+									 			placeholder="${fn:replace(defaultMBean.layouts.DATE.format, '[a-zA-Z]', '_')}"
+												pattern="#{defaultMBean.layouts.DATE.format}"
+												styleClass="dateTimeField"
+												style="float:right"
+												minSecond="7" 
+												mindate="#{defaultMBean.filters.initialProcessingDate}">
+												<p:ajax event="dateSelect" />
+									</p:calendar>																	
+								</h:panelGroup>
+								<p:outputLabel for="cnpj" value="#{i18n['docFiscalValid.label.cnpjEmissor']} :" />
+								<h:panelGroup>
+							<p:inputMask id="cnpj" value="#{defaultMBean.filters.cnpjDrawer}" mask="#{defaultMBean.layouts.CNPJ.searchMask}" max="#{defaultMBean.layouts.CNPJ.maxLength}" autoClear="false" style="width:100px">
+								<f:validator binding="#{cnpjFilterValidator}" /> 
+							</p:inputMask>
+							<p:outputLabel for="cnpjDest" value="#{i18n['docFiscalValid.label.cnpjDestinatario']} :" style="margin-left:15px" />
+							<p:inputMask id="cnpjDest" value="#{defaultMBean.filters.cnpjAddresse}" mask="#{defaultMBean.layouts.CNPJ.searchMask}" max="#{defaultMBean.layouts.CNPJ.maxLength}"  autoClear="false"  style="width:100px;margin-left:5px">
+								<f:validator binding="#{cnpjFilterValidator}" />
+							</p:inputMask>
+							</h:panelGroup>
+							<p:outputLabel for="dateRange" value="#{i18n['DateRangeType.filter']}" />
+							<p:selectOneMenu id="dateRange" value="#{defaultMBean.filters.dateRange}"  style="width:388px" >
+									<p:ajax listener="#{defaultMBean.loadDataRange}" event="change" 
+											update=":ng-form:ng-search-comp:ng-tabview-search:processingend :ng-form:ng-search-comp:ng-tabview-search:processing" global="false" />
+									<f:selectItems value="#{defaultMBean.listDateRangeType}" var="dateRange" itemValue="#{dateRange.ordinal()}" itemLabel="#{defaultMBean.getDateRangeTypeDescription(dateRange)}" />
+							</p:selectOneMenu>
+							<p:outputLabel for="fiscalValidCategory" value="#{i18n['docFiscalValid.label.categoryFilter']}:" style="margin-left:15px"/>
+							<p:selectOneMenu id="fiscalValidCategory" value="#{defaultMBean.filters.fiscalValidCategory}" 
+											style="width:353px">
+											<f:selectItem itemValue="-1" itemLabel="Todas"></f:selectItem>
+							<f:selectItems value="#{defaultMBean.listFiscalValidationOccurrCode}" 
+												var="fiscalValidCategory"
+												itemValue="#{fiscalValidCategory.ordinal()}"
+												itemLabel="#{fiscalValidCategory.title}" 
+												/>
+							<p:ajax event="change" listener="#{defaultMBean.cleanSearchChartFilters}"/>												
+							</p:selectOneMenu>	
+							<p:outputLabel for="serieIni" value="#{i18n['document.label.serie']}:" />
+							<h:panelGroup>
+							<p:inputText id="serieIni" value="#{defaultMBean.filters.invoiceSerial}"
+										 style="width: 85px;" maxlength="9">
+							</p:inputText>
+							<p:outputLabel for="documentIni" value="#{i18n['document.label.documentnumber']}:" style="margin-left:10px" styleClass="ng-document-ini-lb"/>
+							<h:panelGroup>
+									<p:inputText id="documentIni"
+												value="#{defaultMBean.filters.initialInvoiceNumber}"
+												style="width: 85px;margin-left:5px" maxlength="9">
+									</p:inputText>
+									<h:outputLabel style="margin:5px">a</h:outputLabel>
+									<p:inputText id="documentFim"
+												value="#{defaultMBean.filters.finalInvoiceNumber}"
+												style="width: 85px;" maxlength="9">
+									</p:inputText>							
+							</h:panelGroup>
+							</h:panelGroup>
+							<p:outputLabel for="occurrName" value="#{i18n['docFiscalValid.label.occurrenceFilter']}:" />
+							<p:selectOneMenu id="occurrName" value="#{defaultMBean.filters.occurrName}" 
+											style="width:353px">
+											<f:selectItem itemValue="" itemLabel="Todas"></f:selectItem>
+							<f:selectItems value="#{defaultMBean.listFiscalValidationOccurrName}" 
+												var="occurrName"
+												itemValue="#{occurrName.value}"
+												itemLabel="#{occurrName.label}" 
+												/>
+							<p:ajax event="change" listener="#{defaultMBean.cleanSearchChartFilters}"/>
+							</p:selectOneMenu>
+							<p:outputLabel for="nfetype" value="#{i18n['document.label.processtype']}:" />
+							<p:selectOneMenu id="nfetype" value="#{defaultMBean.filters.nfeType}" 
+											style="width:388px">
+								<f:selectItems value="#{defaultMBean.listProcessTypes}" 
+													var="nfeType"
+													itemValue="#{nfeType.id}"
+													itemLabel="#{i18n[utils:getEnumQualifiedName(nfeType)]}" 
+													/>
+								<p:ajax event="change" listener="#{defaultMBean.cleanSearchChartFilters}"/>
+							</p:selectOneMenu>
+					</p:panelGrid>
+					<p:focus context="ng-panel-search" />
+		</ng:ngViewSearch>
+		<!-- componente de ações para multipla selecoes -->
+		
+		<ng:ngSelectedActions id="ng-selected-actions" renderedBtnExportPdf="false" />
+		<!-- listagem -->
+		<ng:ngDataTable id="ng-detail-dataTable" btnRenderSelection="false" customAction="true">
+	        <p:column style="width:16px" exportable="false">
+				    <p:rowToggler/>
+	        </p:column>
+			<p:column headerText="#{i18n['docFiscalValid.label.operacao']}" >
+					<h:outputText value="#{row.flowType == 0 ?'Saída' :'Entrada' }" />
+			</p:column>
+			<p:column headerText="Tipo de Ocorrência" style="max-width:70px" >
+					<h:outputText value="#{defaultMBean.getDescriptionFiscalValid(row.fiscalValidationResult)}" />
+			</p:column>
+			<p:column headerText="#{i18n['docFiscalValid.label.serie']}" >
+					<h:outputText value="#{row.serialNumber}" />
+			</p:column>
+			<p:column headerText="#{i18n['docFiscalValid.label.numeroInterv']}" >
+					<h:outputText value="#{row.documentNumber}" />
+			</p:column>
+			<p:column headerText="#{i18n['docFiscalValid.label.cnpj']}" >
+					<h:outputText value="#{row.personCnpj}" />
+			</p:column>
+			<p:column headerText="#{i18n['docFiscalValid.label.nome']}" styleClass="ng-truncate-column" style="max-width:18ex">
+					<h:outputText value="#{row.personName}"  title="#{row.personName}" styleClass="ng-truncate-output"/>
+			</p:column>
+			<p:column headerText="#{i18n['docFiscalValid.label.ocorrencia']}" styleClass="ng-truncate-column" style="max-width:18ex">
+					<h:outputText value="#{row.occurrName}"  title="#{row.occurrName}" styleClass="ng-truncate-output" />
+			</p:column>
+			<p:column headerText="#{i18n['docFiscalValid.label.item']}" >
+					<h:outputText value="#{row.occurrItem}" />
+			</p:column>
+			<p:column headerText="#{i18n['docFiscalValid.label.xml']}" styleClass="ng-truncate-column" style="max-width:17ex">
+					<h:outputText value="#{row.occurrInfo}"  title="#{row.occurrInfo}" styleClass="ng-truncate-output" />
+			</p:column>
+			<p:column headerText="#{i18n['docFiscalValid.label.descricao']}" styleClass="ng-truncate-column" style="max-width:17ex" visible="false">
+					<h:outputText value="#{defaultMBean.mountAgroupOccurrence(row)}" />
+			</p:column>
+			<p:column headerText="#{i18n['docFiscalValid.label.emissao']}" style="width:100px"> 
+				<h:outputText value="#{row.issueDate}" >
+					<f:convertDateTime type="date" pattern="dd/MM/yyyy HH:mm"/>
+				</h:outputText>
+			</p:column>
+			<p:column headerText="#{i18n['docFiscalValid.label.processo']}" style="width:100px"> 
+				<h:outputText value="#{row.occurrDate}" >
+					<f:convertDateTime type="date" pattern="dd/MM/yyyy HH:mm"/>
+				</h:outputText>
+			</p:column>
+	        <p:rowExpansion>
+	            <p:panelGrid columnClasses="column1" styleClass="ng-subtable" style="width:100%;" >
+	            	<p:column style="padding-top: 10px !important" >
+		                <p:outputLabel for="infoxml" value="#{i18n['docFiscalValid.label.xml']}: " styleClass="ng-font-weight-bold"/>
+	            	</p:column>
+	            	<p:row/>
+	            	<p:column>
+						<h:outputText id="infoxml" value="#{row.occurrInfo}"  title="#{row.occurrInfo}"/>
+					</p:column>
+					<p:row/>
+	            	<p:column style="padding-top: 10px !important" >
+						<p:outputLabel value="#{i18n['docFiscalValid.label.descricao']}:" styleClass="ng-font-weight-bold"/>
+					</p:column>
+	            	<p:column>
+			            <ui:repeat var="sug" value="#{defaultMBean.occurrDescriptionDetail}">
+				            <p:row>
+								<p:column>
+					                <h:outputText  value="#{sug}" />
+					            </p:column>
+				            </p:row>
+			            </ui:repeat>
+			       	</p:column>
+			       	<p:column/> 
+	            </p:panelGrid>
+	        </p:rowExpansion>	
+		</ng:ngDataTable>
+		
+	</ui:define>
+	<!-- bloco de detalhes -->
+	<ui:define name="searchViewDetailsBlock">
+		
+	</ui:define>
+	<ui:define name="addDialogBlock">
+		
+	</ui:define>
+</ui:composition>

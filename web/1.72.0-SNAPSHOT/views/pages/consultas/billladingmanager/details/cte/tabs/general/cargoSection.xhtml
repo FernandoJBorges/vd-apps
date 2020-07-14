@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/table">
+	
+	<div class="ui-g-12 document-detail-column">
+		<!-- Valor Total da Carga -->
+		<div class="ui-g-4">
+			<p:outputLabel value="#{i18n['cte.label.cargo.total.value']}:" />
+			<div>
+				<h:outputText value="#{cargo.cargoTotalValue}" />
+			</div>
+		</div>
+
+		<!-- Produto Predominante -->
+		<div class="ui-g-4">
+			<p:outputLabel value="#{i18n['cte.label.cargo.product']}:" />
+			<div>
+				<h:outputText value="#{cargo.product}" />
+			</div>
+		</div>
+
+		<!-- Outras Características -->
+		<div class="ui-g-4">
+			<p:outputLabel value="#{i18n['cte.label.cargo.another.particulars']}:" />
+			<div>
+				<h:outputText value="#{cargo.anotherParticulars}" />
+			</div>
+		</div>
+	</div>
+
+	<div class="ui-g-12">
+		<ng:ngSimpleDataTable value="#{cargo.quantities}" emptyMessage="Nenhum item encontrado">
+			<p:column headerText="#{i18n['cte.label.cargo.quantities.quantity']}">
+				<h:outputText value="#{row.quantity}" />
+			</p:column>
+			<p:column headerText="#{i18n['cte.label.cargo.quantities.measure.unit']}">
+				<h:outputText converter="cteMeasureUnitConverter" value="#{row.measureUnit}" />
+			</p:column>
+			<p:column headerText="#{i18n['cte.label.cargo.quantities.measure.type']}">
+				<h:outputText value="#{row.measureType}" />
+			</p:column>
+		</ng:ngSimpleDataTable>
+	</div>
+	
+</ui:composition>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+		<p:menuitem id="createDisagreementServiceAction"
+						icon="fa fa-flag"
+						value="#{i18n['document.create.event.disagreementservice.action']}"
+						action="#{defaultMBean.getDisagreementMB().prepareEvent()}"
+						update=":ng-form :ng-panel-crud-dialog :ng-form:ng-panel-crud :messages"
+						styleClass="ng-context-menu-item"
+						rendered="#{defaultMBean.functionalityHelper.isDisagreementServiceRendered()}"
+						disabled="#{defaultMBean.filters.actionDisagreementService}"
+						immediate="true"
+						resetValues="true">
+			</p:menuitem>
+			<p:menuitem id="reprocessAction"
+						value="#{i18n['document.label.action.reprocess.selection']}"
+						icon="icon-reprocessNFE"
+						action="#{defaultMBean.cteReprocessMB.reprocessDocuments()}"
+						update=":messages"
+						disabled="#{defaultMBean.filters.actionReprocess}" 
+						styleClass="ng-context-menu-item" 
+						immediate="true"
+						rendered="#{defaultMBean.functionalityHelper.isReprocessRendered()}">
+			</p:menuitem>
+			<p:menuitem id="dowloadXmlAction"
+						value="#{i18n['document.label.action.downloads']}"
+						icon="icon-download-alt"
+						action="#{defaultMBean.prepareZipDownload()}"
+						ajax="false"
+						onclick="updateMessages()"
+						styleClass="ng-linkEvent ng-link-invoice-erp"
+						disabled="#{defaultMBean.filters.actionDownloadDocument}"
+						rendered="#{defaultMBean.functionalityHelper.hasPermitionForDownloadXML()}"
+						immediate="true" >
+			</p:menuitem>
+			<p:menuitem id="sendEmailAction"
+						value="#{i18n['document.label.action.emails']}"
+						icon="icon-sendToEmail" 
+						action="#{cteMB.getDocumentSendMailMB().loadSendEmail()}"
+						styleClass="ng-linkEvent ng-link-invoice-erp"
+						disabled="#{defaultMBean.filters.actionSendMail}"
+						rendered="#{defaultMBean.functionalityHelper.isSendMailRendered()}"
+						update=":ng-form :ng-panel-crud-dialog :ng-form:ng-panel-crud :messages"
+						immediate="true" >
+				<p:resetInput target=":view-send-email:panel-send-email" />
+			</p:menuitem>
+			<p:menuitem id="resendErpAction"
+						value="#{i18n['document.label.action.doctoerp']}"
+						icon="icon-sendERP"
+						action="#{defaultMBean.actionEvent('dialogResendDocsToERP')}"
+						update=":messages :resend-to-erp:dialogResendDocsToERP:ng-panel-status-approved"
+						disabled="#{defaultMBean.filters.actionResendInvoiceErp}"
+						rendered="#{defaultMBean.functionalityHelper.hasPermitionForSendDocToERP()}"
+						immediate="true" >
+			</p:menuitem>
+            <p:menuitem id="resendDAToERPAction"
+                        value="#{i18n['cte.label.action.dactetoerp']}"
+                        icon="icon-resendDanfeToERP"
+                        action="#{defaultMBean.resendDAToERP}"
+                        update=":messages"
+                        disabled="#{defaultMBean.filters.actionResendDAToERP}"
+                        rendered="#{defaultMBean.functionalityHelper.isSendDacteToERPRendered()}"
+                        immediate="true" >
+            </p:menuitem>
+			<p:menuitem id="resendEdiAction"
+						value="#{i18n['document.label.action.resendEDI']}"
+						icon="icon-sendEDI"
+ 						action="#{defaultMBean.getSendDocumentToEDIMB().sendToEDI()}"
+ 						update=":ng-form :ng-panel-crud-dialog :ng-form:ng-panel-crud :messages"
+ 						disabled="#{defaultMBean.filters.actionSendToEDI}"
+ 						rendered="#{defaultMBean.functionalityHelper.isSendToEDIRendered()}"
+ 						styleClass="ng-context-menu-item" immediate="true">
+			</p:menuitem>
+			<p:menuitem id="createContingencyAction"
+ 						immediate="true" 
+ 						resetValues="true"
+						value="#{i18n['document.label.action.contingency']}"
+						icon="icon-fire-extinguisher"
+						styleClass="ng-context-menu-item"
+						action="#{defaultMBean.cteContingencyMB.prepareSendContingency()}"
+						disabled="#{defaultMBean.cteContingencyMB.isContingencyDisabled()}"
+						rendered="#{defaultMBean.functionalityHelper.isContingencyRendered()}"
+						update=":ng-form :ng-panel-crud-dialog :ng-form:ng-panel-crud :messages">
+			</p:menuitem>
+			<p:menuitem id="createCCeAction"
+						icon="fa fa-pencil-square-o"
+						value="#{i18n['document.label.action.cce']}"
+						action="#{defaultMBean.getCreateCCEMB().prepareEvent()}"
+						update=":ng-form :ng-panel-crud-dialog :ng-form:ng-panel-crud :messages"
+						styleClass="ng-context-menu-item"
+						rendered="#{defaultMBean.functionalityHelper.isRegisterCCeRendered()}"
+						disabled="#{defaultMBean.filters.actionCreateCCE}"
+						immediate="true"
+						resetValues="true">
+			</p:menuitem>
+</ui:composition>

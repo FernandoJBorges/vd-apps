@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<div class="ui-g-12 document-detail-column">	
+		<ui:include src="modalTypeField.xhtml">
+			<ui:param name="modalType" value="#{modalVO.modalType}" />
+		</ui:include>
+		<div class="ui-g-2">
+			<h:outputLabel value="#{i18n['cte.label.modal.aquaviario.afrmm.bcvalue']}" /><br/>
+			<h:outputText value="#{modalVO.afrmmBCValue}" />
+		</div>
+		<div class="ui-g-1">
+			<h:outputLabel value="#{i18n['cte.label.modal.aquaviario.afrmm.value']}" /><br/>
+			<h:outputText value="#{modalVO.afrmmValue}" />
+		</div>
+		<div class="ui-g-4">
+			<h:outputLabel value="#{i18n['cte.label.modal.aquaviario.ship.name']}" /><br/>
+			<h:outputText value="#{modalVO.shipName}" />
+		</div>
+		<div class="ui-g-2">
+			<h:outputLabel value="#{i18n['cte.label.modal.aquaviario.travelnumber']}" /><br/>
+			<h:outputText value="#{modalVO.travelNumber}" />
+		</div>
+		<p:outputPanel styleClass="ui-g-1">
+			<h:outputLabel value="#{i18n['cte.label.modal.aquaviario.direction']}" /><br/>
+			<p:outputPanel>
+				<h:outputText value="#{i18n[utils:getEnumQualifiedNameWithDefaultValue(modalVO.direction, 'Enum.empty')]}" />
+			</p:outputPanel>
+		</p:outputPanel>				
+		<div class="ui-g-1">
+			<h:outputLabel value="#{i18n['cte.label.modal.aquaviario.ship.irin']}" /><br/>
+			<h:outputText value="#{modalVO.shipIrin}" />
+		</div>		
+	</div>
+</ui:composition>

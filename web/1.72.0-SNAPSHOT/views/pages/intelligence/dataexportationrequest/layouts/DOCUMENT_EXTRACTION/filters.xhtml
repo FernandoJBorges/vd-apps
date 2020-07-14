@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+	
+	<ui:param name="defaultMBean" value="#{dataExportationRequestMB}" />
+	<h:outputStylesheet library="css" name="fix-responsive.css" />
+	<div class="ui-g ui-fluid">
+		<ui:include src="../filter-fields/period.xhtml">
+			<ui:param name="field" value="#{defaultMBean.layout.period}" />
+			<ui:param name="fieldInitialDateLabel" value="#{i18n['ng.label.date.initial']}" />
+			<ui:param name="fieldFinalDateLabel" value="#{i18n['ng.label.date.final']}" />
+			<ui:param name="fieldInitialDateMaxDate" value="#{defaultMBean.maxDateFilter}" />
+		</ui:include>
+		<ui:include src="../filter-fields/process.xhtml">
+			<ui:param name="field" value="#{defaultMBean.layout.process}" />
+			<ui:param name="fieldValueOptions" value="#{defaultMBean.dataExportationMB.processValues}" />
+		</ui:include>
+		<ui:include src="../filter-fields/operation.xhtml">
+			<ui:param name="field" value="#{defaultMBean.layout.operations}" />
+			<ui:param name="fieldValueOptions" value="#{defaultMBean.dataExportationMB.operationValues}" />
+		</ui:include>
+		
+		<ui:include src="../filter-fields/status.xhtml">
+			<ui:param name="field" value="#{defaultMBean.layout.documentStatus}" />
+			<ui:param name="fieldValueOptions" value="#{defaultMBean.dataExportationMB.documentStatusValues}" />
+		</ui:include>		
+	</div>
+
+	<div class="ui-g ui-fluid">
+		<ui:include src="../filter-fields/establishments.xhtml">
+			<ui:param name="field" value="#{defaultMBean.layout.establishmentList}" />
+			<ui:param name="establishmentSelectorMB" value="#{defaultMBean.dataExportationMB.establishmentSelectorMB}" />
+		</ui:include>	
+		<ui:include src="../filter-fields/exportSefazEvents.xhtml">
+			<ui:param name="field" value="#{defaultMBean.layout.exportSefazEvents}" />
+		</ui:include>
+	</div>
+</ui:composition>

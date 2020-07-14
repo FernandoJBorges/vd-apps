@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<p:outputPanel class="ui-g-6">
+		<div class="ui-g-5 ui-g-nopad">
+			<p:outputLabel for="cnpj" value="#{i18n['addresse.label.owner.cnpj']}:" styleClass="ng-truncate-output" />
+		</div>
+		<p:outputPanel styleClass="ui-g-8 ui-g-nopad owner-cpnj-label">
+			<p:inputMask id="cnpj"
+						value="#{defaultMBean.filterVO.ownerID}"
+						tabIndex="1" 
+						label="#{i18n['addresse.label.owner.cnpj.helper']}"
+						mask="#{defaultMBean.layouts.CNPJ.searchMask}" 
+						autoClear="false">
+						<f:validator binding="#{cnpjFilterValidator}" />
+			</p:inputMask>
+		</p:outputPanel>
+		<div class="ui-g-1 ui-g-nopad">
+			<ngComp:ngHelp messageHelp="#{i18n['addresse.label.owner.cnpj.helper']}" class="addresse-helper" />
+		</div>
+	</p:outputPanel>
+</ui:composition>

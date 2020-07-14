@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<p:outputPanel styleClass="ui-g-3 ui-margin-col">
+		<p:outputLabel for="cnpj"
+			value="#{i18n['sefaz.message.cnpj.establishment']}:" />
+		<p:inputMask id="cnpj"
+			label="#{i18n['sefaz.message.cnpj.establishment']}"
+			value="#{defaultFilterMBean.filterVO.establishmentID}"
+			mask="#{defaultMBean.layouts.CNPJ.searchMask}" autoClear="false">
+			<f:validator binding="#{cnpjFilterValidator}" />
+		</p:inputMask>
+	</p:outputPanel>
+</ui:composition>

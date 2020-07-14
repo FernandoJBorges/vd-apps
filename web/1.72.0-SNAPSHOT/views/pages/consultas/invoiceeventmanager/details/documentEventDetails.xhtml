@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search">
+		<ui:param name="defaultMBean" value="#{documentEventMBean}" />
+			<ng:ngDetails titleView="#{i18n['ocorrencia.label.titleDetalhe']}" />
+				<p:tabView id="ngTabview">
+					<p:tab id="ngBasic" title="#{i18n.ngTabBasic}">
+							<p:panelGrid id="ng-panel-search" columns="4" columnClasses="column1,column2,column3,column4">
+								<p:outputLabel for="documentoIni" styleClass="fontBold" value="#{i18n['ocorrencia.label.documento']}:" />
+								<p:outputLabel id="documentoIni" value="#{defaultMBean.entity.document.documentNumber}"  />
+								<p:outputLabel for="serie" value="#{i18n['ocorrencia.label.serie']}:" styleClass="fontBold" />
+								<p:outputLabel id="serie" value="#{defaultMBean.entity.document.serialNumber}" />
+								<p:outputLabel for="ocorrencia" value="#{i18n['ocorrencia.label.ocorrencia']}:"  styleClass="fontBold" />
+								<p:outputLabel id="ocorrencia" value="#{defaultMBean.entity.event}"  converter="invoiceEventConverter" />
+								<p:outputLabel for="destinatario" value="#{i18n['ocorrencia.label.addresseuid']}:" styleClass="fontBold" />
+								<p:outputLabel id="destinatario" value="#{defaultMBean.entity.document.addresse.name}"  size="60" />
+								<p:outputLabel for="emitente" value="#{i18n['ocorrencia.label.draweruid']}:"  styleClass="fontBold" />
+								<p:outputLabel id="emitente" value="#{defaultMBean.entity.document.drawer.name}"  />
+								<p:outputLabel for="situacao" value="#{i18n['ocorrencia.label.statusdescription']}:" styleClass="fontBold" />
+								<p:outputLabel id="situacao" value="#{defaultMBean.entity.statusDescription}"  />
+								<p:outputLabel for="processamento" value="#{i18n['ocorrencia.label.processamento']}:"  styleClass="fontBold" />
+								<p:calendar id="processamento" value="#{defaultMBean.entity.date}" locale="pt" pattern="dd/MM/yyyy HH:mm" disabled="true" />
+							</p:panelGrid>
+						</p:tab>
+				</p:tabView>
+			<ng:ngDetailsDataTable>
+					<p:column headerText="#{i18n['ocorrencia.label.typeevent']}" style="width:150px">
+						<h:outputText value="#{row.documentEvent.event}"  converter="#{eventTypeConverter}" />
+					</p:column>
+					<p:column headerText="#{i18n['ocorrencia.label.description']}">
+						<h:outputText value="#{row.description}" />
+					</p:column>
+			</ng:ngDetailsDataTable>
+</ui:composition>

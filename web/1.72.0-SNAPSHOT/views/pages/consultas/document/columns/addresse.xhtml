@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+	<p:column id="columnAddresseName"
+		headerText="#{headerAddresse}" priority="5"
+		styleClass="ng-truncate-column document-addresse-column"
+		sortBy="#{row.addresse.name}">
+		<h:outputText id="addresseName" value="#{addresseName}" title="#{addresseID}" styleClass="ng-truncate-output" />
+	</p:column>
+</ui:composition>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:dialog="http://java.sun.com/jsf/composite/dialog"
+	xmlns:ngTab="http://java.sun.com/jsf/composite/common/component/view/tabview"
+	template="/common/templates/search/ngSearchTemplate.xhtml"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{inutilizationMB}" />
+	<ui:param name="documentListMBean" value="#{inutilizationListMB}" />
+	<ui:define name="searchlistBlock">
+		<f:facet name="last">
+			<h:outputStylesheet library="css" name="inutilizationmanager.css" />
+		</f:facet>
+		<ngTab:ngViewSearch id="ng-search-comp"
+			titleView="#{i18n['inutilization.label.title']}">
+			<ngTab:ngTabView id="ng-tabview-search"
+				additionalUpdate="ng-form:ng-toolbar:toolbarContainer">
+				<p:outputPanel class="ui-fluid document-filter-panel">
+					<p:outputPanel class="ui-g">
+						<ngTab:ngTabViewBasic id="ng-tabview-basic">
+							<ui:include src="filters.xhtml">
+								<ui:param name="defaultFilterMBean"
+									value="#{defaultMBean.inutilizationFilterMB}" />
+							</ui:include>
+						</ngTab:ngTabViewBasic>
+					</p:outputPanel>
+				</p:outputPanel>
+			</ngTab:ngTabView>
+		</ngTab:ngViewSearch>
+		<!-- listagem inutilizações -->
+		<ng:ngSelectedActions id="ng-selected-actions"
+			showActionsButton="false" />
+		<ngComp:fileDownloadStatus />
+		<ngComp:ngToolbar id="ng-toolbar" hasExport="true">
+			<ui:include src="actions.xhtml" />
+		</ngComp:ngToolbar>
+		<ng:ngDataTable id="ng-detail-dataTable" btnRenderSelection="true"
+			customAction="true">
+			<ui:include src="table.xhtml" />
+		</ng:ngDataTable>
+	</ui:define>
+	<ui:define name="addDialogBlock">
+		<ui:include src="events/registerProtocol.xhtml">
+			<ui:param name="inutilizationProtocolMB"
+				value="#{defaultMBean.inutilizationProtocolMB}" />
+		</ui:include>
+	</ui:define>
+</ui:composition>

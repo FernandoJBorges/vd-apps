@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<p:column headerText="#{i18n['lotmanager.label.ident']}" sortBy="#{row.lotID}" styleClass="lot-id-column" id="lot-id-column">
+		<h:outputText id="lot-id" value="#{row.lotID}" />
+	</p:column>
+	<p:column headerText="#{i18n['lotmanager.label.create']}" sortBy="#{row.creationDate}" styleClass="lot-create-column" id="lot-create-column">
+		<h:outputText id="lot-create-date" value="#{row.creationDate}">
+			<f:convertDateTime type="date" pattern="#{defaultMBean.layouts.DATE.format}" />
+		</h:outputText>
+	</p:column>
+	<p:column headerText="#{i18n['lotmanager.label.close']}" sortBy="#{row.closeDate}" styleClass="lot-closed-column" id="lot-closed-column">
+		<h:outputText id="lot-closed" value="#{row.closeDate}">
+			<f:convertDateTime type="date" pattern="#{defaultMBean.layouts.DATE.format}" />
+		</h:outputText>
+	</p:column>
+	<p:column headerText="#{i18n['lotmanager.label.closetype']}" styleClass="ng-truncate-column lot-type-close-column" id="lot-type-close-column">
+		<h:outputText id="lot-type-close" value="#{row.closeType}" converter="lotCloseTypeConverter" styleClass="ng-truncate-output" />
+	</p:column>
+	<p:column headerText="#{i18n['lotmanager.label.docs']}" styleClass="lot-docs-column" id="lot-docs-column">
+		<h:outputText id="lot-number-of-documents" value="#{row.numberOfDocuments}" />
+	</p:column>
+	<p:column headerText="#{i18n['lotmanager.label.size']}" styleClass="lot-size-column" id="lot-size-column">
+		<h:outputText id="lot-size" value="#{row.lotSize / 1024}">
+			<f:convertNumber pattern="#,##0.00" locale="pt_BR" />
+		</h:outputText>
+	</p:column>
+	<p:column headerText="#{i18n['lotmanager.label.situation']}" sortBy="#{row.statusDescription}" styleClass="ng-truncate-column lot-status-column" id="lot-status-column">
+		<h:outputText id="lot-status" value="#{row.statusDescription}" styleClass="ng-truncate-output"  title="#{row.statusDescription}" />
+	</p:column>
+	<p:column headerText="#{i18n['lotmanager.label.uf']}" sortBy="#{row.businessUnit.state}" styleClass="lot-uf-column" id="lot-uf-column">
+		<h:outputText id="lot-uf" value="#{row.businessUnit.state}" />
+	</p:column>
+	<p:column headerText="#{i18n['lotmanager.label.receipt']}" styleClass="lot-receipt-column" id="lot-receipt-column">
+		<h:outputText id="lot-receipt" value="#{row.receipt}" />
+	</p:column>
+	<p:column styleClass="ng-truncate-column lot-issuer-column" headerText="#{i18n['lotmanager.label.issuer']}" sortBy="#{row.businessUnit.person.name}" id="lot-issuer-column">
+		<h:outputText id="lot-issuer" value="#{row.businessUnit.person.name}" title="#{row.businessUnit.person.personIN.value}" styleClass="ng-truncate-output" />
+	</p:column>
+	<p:column id="columnDetails" styleClass="lot-column-actions">
+		<p:link id="linkDetails" outcome="#{defaultMBean.actionShowInvoice(row)}"
+			update="@(.ng-containner-dialog)"
+			rendered="#{defaultMBean.hasPermissionShowDocuments()}">
+			<span title="#{i18n['lotmanager.label.action.viewdocument']}" class="icon-dropDocument ng-icon" />
+		</p:link>
+	</p:column>
+</ui:composition>

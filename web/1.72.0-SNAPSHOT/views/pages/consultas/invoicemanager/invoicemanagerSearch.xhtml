@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:ngTab="http://java.sun.com/jsf/composite/common/component/view/tabview"
+	xmlns:ngDialog="http://java.sun.com/jsf/composite/common/component/dialog"
+	xmlns:dialog="http://java.sun.com/jsf/composite/dialog"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:comp="http://java.sun.com/jsf/composite/component"
+	template="/common/templates/search/ngSearchTemplate.xhtml">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{invoiceMB}" />
+	<ui:param name="documentListMBean" value="#{invoiceListMB}" />
+	<!-- bloco de pesquisa -->
+	<ui:define name="searchlistBlock">
+		<ngTab:ngViewSearch id="ng-search-comp" titleView="#{i18n['invoice.label.title']}">
+			<ui:include src="../document/filterTabView.xhtml">
+				<ui:param name="defaultFilterMBean" value="#{defaultMBean.nfeFilterMB}" />
+				<ui:param name="includeFilterAdvanced" value="../invoicemanager/advancedFilters.xhtml" />
+				<ui:param name="labelTextCNPJAndCPFAdressee" value="#{i18n['invoice.label.cnpjcpfforeignadressee']}" />
+				<ui:param name="labelTextReceivedFor" value="#{i18n['invoice.label.received.for']}" />
+				<ui:param name="maxlengthCNPJAndCPFAdressee" value="20" />
+				<ui:param name="maskValueCNPJAndCPFAdressee" value="" />
+				<ui:param name="validatorCNPJAndCPFAdresseeDisabled" value="true" />
+				<ui:param name="docType" value="NFE" />
+				<ui:param name="receivedForType" value="#{defaultFilterMBean.filterVO.receivedForType}" />
+			</ui:include>
+		</ngTab:ngViewSearch>
+		
+		<!-- componente de ações para multipla selecoes -->	
+		<ng:ngSelectedActions id="ng-selected-actions" showLegend="true" showActionsButton="false" />
+		
+		
+		<ngComp:fileDownloadStatus />		
+		<ngComp:ngToolbar id="ng-toolbar" hasExport="true">
+			<ui:include src="actions.xhtml" />
+		</ngComp:ngToolbar>
+		
+		<!-- listagem de nfes -->
+		<ng:ngDataTable id="ng-detail-dataTable" btnRenderSelection="true" customAction="true">
+				<ui:include src="table.xhtml" />
+		</ng:ngDataTable>		
+
+		<script type="text/javascript">
+			function start() {
+			    PF('statusDialog').show();
+			}
+			 
+			function stop() {
+			    PF('statusDialog').hide();
+			}
+		</script>
+		<p:outputPanel rendered="#{releaseNoteMB.isNFE()}">
+			<ui:include src="../../releaseNotes.xhtml"></ui:include>
+		</p:outputPanel>
+	</ui:define>
+	<!-- bloco de detalhes -->
+	<ui:define name="searchViewDetailsBlock">
+		<ui:include src="details/auditorDetails.xhtml" />
+	</ui:define>
+	<ui:define name="addDialogBlock">
+			<h:form prependId="false">
+				<dialog:dialogResendErp id="resend-to-erp" defaultMBean="#{defaultMBean}"/>
+			</h:form>
+			<dialog:dialogDocumentLegend width="930" />
+			<!-- GERACAO DE DANFES EM LOTE -->
+			<h:form id="ng-invoice-danfes-lot" prependId="true">
+			<ngDialog:ngDialogConfirmDownload	
+						width="350" 
+						header="#{i18n['invoice.label.action.danfeslot']}"
+						id="dialogDanfesLot"
+						widgetVar="dialogDanfesLot" 
+						updateGrid=":messages @form"
+						action="#{invoiceMB.createDanfesLot()}"
+						fileDownload="#{invoiceMB.documentXML}">
+				</ngDialog:ngDialogConfirmDownload>
+			</h:form>				
+			<!--fiscal valid --> 
+			<h:form id="ng-dialogInfoValidFiscalDisable" prependId="true">
+			<ngDialog:ngDialogWarn id="dialogInfoValidFiscalDisable" 
+								header="#{i18n['popup.msg.warn']}"
+								widgetVar="dialogInfoValidFiscalDisable" width="300">
+								<p:outputLabel id="dialogInfoValidFiscalDisableLabel" value="#{i18n['fiscalValidationOccurr.label.dialog.config']}" />
+			</ngDialog:ngDialogWarn>
+			</h:form>
+			<ui:include src="events/sendDocumentToEDI.xhtml" />
+			<ui:include src="../document/events/sendmail/documentSendMail.xhtml">
+					<ui:param name="documentSendMailMB" value="#{defaultMBean.getDocumentSendMailMB()}" />
+			</ui:include>
+			<ui:include src="../document/dialog/emissionType.xhtml" />
+			<!-- Carta de Correção -->
+			<ui:include src="events/createCCe.xhtml" />
+			<!-- Create Manifest --> 
+			<ui:include src="events/createManifest.xhtml" />
+			<!-- send contingency --> 
+			<ui:include src="../document/events/sendContingency.xhtml">
+				<ui:param name="documentContingencyMB" value="#{defaultMBean.nfeContingencyMB}" />
+				<ui:param name="extraUpdate" value=":ng-invoice-manifest" />
+			</ui:include>
+			<!--Dialog Download Sefaz -->
+			<h:form id="ng-dialogDownloadSefaz">
+				<comp:downloadSefaz downloadSefazMB="#{defaultMBean.downloadSefazMB}"
+					documents="#{defaultMBean.lazyModelSelection}"
+					cacheNFeSummary="#{defaultMBean.cacheNfeSummary}" />
+			</h:form>
+	</ui:define>
+</ui:composition>

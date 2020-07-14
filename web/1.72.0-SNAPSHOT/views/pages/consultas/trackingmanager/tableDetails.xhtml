@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+	<p:column id="columnCreationDate"
+		styleClass="tracking-creation-date-column"
+		headerText="#{i18n['tracking.label.date']}"
+		sortBy="#{row.creationDate}">
+		<h:outputText id="creationDate" value="#{row.creationDate}">
+			<f:convertDateTime type="both" pattern="#{defaultMBean.layouts.DATE.format}" />
+		</h:outputText>
+	</p:column>
+	<p:column id="columnOwnerID"
+		headerText="#{i18n['establishment.label.cnpj']}"
+		styleClass="tracking-owner-id-column">
+		<h:outputText id="ownerID" value="#{row.ownerID}">
+			<f:convertNumber type="number" pattern="#{defaultMBean.layouts.CNPJ.format}" />
+		</h:outputText>
+	</p:column>
+	<p:column id="columnOwnerName"
+		headerText="#{i18n['establishment.label.name']}"
+		styleClass="ng-truncate-column tracking-owner-name-column">
+		<h:outputText id="ownerName" value="#{row.ownerName}" title="#{row.ownerName}" styleClass="ng-truncate-output"/>
+	</p:column>
+	<p:column id="columnType"
+		headerText="#{i18n['tracking.label.document.type']}"
+		styleClass="tracking-type-column">
+		<h:outputText id="type" value="#{i18n[utils:getEnumQualifiedName(row.entryType)]}"/>
+	</p:column>
+	<p:column id="columnProcessingType"
+		headerText="#{i18n['tracking.label.processing.type']}"
+		styleClass="tracking-processing-type-column">
+		<h:outputText id="processingType" value="#{i18n[utils:getEnumQualifiedName(row.trackingProcessType)]}"/>
+	</p:column>
+	<p:column id="columnSerialNumber"
+		headerText="#{i18n['document.label.serie']}"
+		styleClass="tracking-serial-number-column"
+		sortBy="#{row.serialNumber}">
+		<h:outputText id="serialNumber" value="#{row.serialNumber}"/>
+	</p:column>
+	<p:column id="columnDocumentNumber"
+		headerText="#{i18n['document.label.documentnumber']}"
+		styleClass="tracking-document-number-column"
+		sortBy="#{row.documentNumber}">
+		<h:outputText id="documentNumber" value="#{row.documentNumber}"/>
+	</p:column>
+	<p:column id="columnDocumentID"
+		headerText="#{i18n['tracking.label.docidentifier']}"
+		styleClass="tracking-document-id-column">
+		<h:outputText id="documentID" value="#{row.documentID}"/>
+	</p:column>
+	<p:column id="columnLogin"
+		headerText="#{i18n['tracking.label.user']}"
+		styleClass="tracking-login-column">
+		<h:outputText id="login" value="#{row.login}"/>
+	</p:column>
+</ui:composition>

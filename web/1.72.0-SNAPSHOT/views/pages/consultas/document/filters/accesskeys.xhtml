@@ -1,0 +1,16 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+	<p:outputPanel styleClass="ui-g-2">
+		<p:outputLabel for="accesskey" value="#{i18n['document.label.accesskey']}:" />
+		<p:inputMask id="accesskey" 
+						autoClear="false"
+						value="#{defaultFilterMBean.filterVO.accessKey}" 
+						tabIndex="0"
+						mask="#{defaultMBean.layouts.ACCESSKEY.searchMask}"
+						validatorMessage="#{i18n['document.msg.error.accessKeyNotNumber']}">
+						<f:validator binding="#{accessKeyValidator}" />
+		</p:inputMask>
+	</p:outputPanel>
+</ui:fragment>

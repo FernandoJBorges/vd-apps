@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+	<p:outputPanel rendered="#{documentSendMailMB.availableAttachments != null and !documentSendMailMB.availableAttachments.isEmpty()}">
+		<div class="ui-g-12 ui-g-nopad">
+			<p:outputLabel id="lb-select-attachments" value="#{i18n['document.sendmail.label.select.attachments']}" styleClass="ng-subtitle ng-float-left" />
+		</div>
+		<div class="ui-g-12" style="padding-left: 30px">
+			<div class="ui-g-12 ui-g-nopad">
+				<p:outputLabel id="lb-attachments"
+							value="#{i18n['document.sendmail.label.attachments']}"
+							styleClass="ng-font-weight-bold" />
+			</div>
+			<div class="ui-g-12 ui-g-nopad">
+				<p:selectManyCheckbox id="checkbox-attachments"
+							styleClass="ng-float-left"
+							converter="documentSendMailAttachmentTypeConverter"
+							value="#{documentSendMailMB.attachmentsSelected}">
+							<f:selectItems var="attachments"
+									value="#{documentSendMailMB.getAvailableAttachments()}"
+									itemValue="#{attachments.name()}"
+									itemLabel="#{i18n[utils:getEnumQualifiedName(attachments)]}" />
+				</p:selectManyCheckbox>
+				<p:outputPanel rendered="#{documentSendMailMB.showAttachmentHelp() != null}">
+					<ngComp:ngHelp id="help-attachments"
+								style="float:left;margin-top:10px;margin-left:-12px"
+								messageHelp="#{i18n[utils:getEnumQualifiedName(documentSendMailMB.showAttachmentHelp()).concat('.').concat('help')]}" />
+				</p:outputPanel>
+			</div>
+		</div>
+	</p:outputPanel>
+</ui:composition>

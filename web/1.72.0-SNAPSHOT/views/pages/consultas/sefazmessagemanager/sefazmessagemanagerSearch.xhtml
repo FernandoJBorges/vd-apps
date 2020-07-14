@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:ngTab="http://java.sun.com/jsf/composite/common/component/view/tabview"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:dialog="http://java.sun.com/jsf/composite/dialog"
+	template="/common/templates/search/ngSearchTemplate.xhtml">
+	<ui:param name="defaultMBean" value="#{sefazMessageMB}" />
+	<ui:param name="defaultFilterMBean" value="#{defaultMBean.filterMB}" />
+	<ui:define name="searchlistBlock">
+		<h:outputStylesheet library="css" name="sefazmessage.css" />
+		<ngTab:ngViewSearch id="ng-search-comp"
+			titleView="#{i18n['sefaz.message.label.title']}">
+			<ngTab:ngTabView id="ng-tabview-search" additionalUpdate="ng-form:ng-toolbar:toolbarContainer">
+				<p:outputPanel class="ui-fluid ui-g">
+							<ngTab:ngTabViewBasic id="ng-tabview-basic">
+							<ui:include src="SefazMessageFilters.xhtml" />
+						</ngTab:ngTabViewBasic>
+				</p:outputPanel>
+			</ngTab:ngTabView>
+		</ngTab:ngViewSearch>
+		<ng:ngSelectedActions id="ng-selected-actions"
+			showActionsButton="false" />
+		<ngComp:ngToolbar id="ng-toolbar" hasExport="false">
+			<ui:include src="actions.xhtml" />
+		</ngComp:ngToolbar>
+		<ng:ngDataTable id="ng-detail-dataTable" btnRenderSelection="true"
+			customAction="true">
+			<ui:include src="table.xhtml" />
+		</ng:ngDataTable>
+	</ui:define>
+	<ui:define name="addDialogBlock">
+		<dialog:dialogSefaz id="sefazMessage" rows="8"
+			defaultMBs="#{defaultFilterMBean.filterVO}" />
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{establishmentMB}" />
+	<p:tabView id="ngTabview" widgetVar="ngTabWidgetVar" activeIndex="0" style="min-width: 1000px;padding:0px">
+					<p:ajax event="tabChange" global="false" update=":ng-form:ngFormEdit:ngTabview:tabEstbFocus :ng-form:ngFormEdit:ngTabview:tabPanelCertFocus :ng-form:ngFormEdit:ngTabview:inscrEstdFocus :ng-form:ngFormEdit:ngTabview:tabBasicFocus :ng-form:ngFormEdit:ngTabview:tabTokenFocus :ng-form:ngFormEdit:ngTabview:tabCertFocus" />
+					<!-- TAB - ESTAB -->
+					<p:tab id="ngEstabInfo"	title="#{i18n['establishment.label.tabEstabInfo']}">
+							<ui:include src="tabs/establishmentTabEstabInfo.xhtml" />
+					</p:tab>
+					<!-- TAB - BASIC -->
+					<p:tab id="ngBasicInfo"	title="#{i18n['establishment.label.tabBasicInfo']}">
+							<ui:include src="tabs/establishmentTabBasicInfo.xhtml" />
+					</p:tab>
+					<!-- TAB - CERTIFICATE -->
+					<p:tab 	id="ngCertificateInfo"
+							title="#{i18n['establishment.label.tabCertificado']}"
+							disabled="#{sec:areNotGranted('ROLE_SYSTEM_ADMIN, ROLE_SUPPORT, ROLE_NEOGRID_PARTNER') or defaultMBean.establishmentSolutionVO.stateDisableCertTab}"> 
+							<p:outputPanel id="ng-panel-certificate">
+								<p:outputPanel rendered="#{!defaultMBean.establishmentSolutionVO.stateDisableCertTab}">
+										<ui:include src="tabs/establishmentTabCertificate.xhtml" />
+								</p:outputPanel>
+							</p:outputPanel>
+					</p:tab>
+					<!-- TAB - TOKEN -->
+					<p:tab id="ngTokenInfo"	title="#{i18n['establishmenttoken.label.Token']}" disabled="#{defaultMBean.establishmentSolutionVO.stateDisableTokenTab}">
+						<p:outputPanel style="min-width: 900px;">
+								<ui:include src="tabs/establishmentTabToken.xhtml" />
+						</p:outputPanel>
+					</p:tab>
+					<!-- TAB - INSCRIÇÃO ESTADUAL -->
+					<p:tab id="ngIE" title="#{i18n['establishment.label.ie.placeholder']}"	disabled="#{defaultMBean.establishmentSolutionVO.stateDisableIETab}">
+							<ui:include src="tabs/establishmentTabInscrEstad.xhtml" />
+					</p:tab>
+					<!-- TAB - AUDITOR NFE -->
+					<p:tab id="ngNfeAudit" 
+							title="#{i18n['establishment.label.nfeAuditor.placeholder']}" 
+							disabled="#{sec:areNotGranted('ROLE_SUPPORT') or defaultMBean.establishmentSolutionVO.stateDisableAuditorNfeTab}">
+							<ui:include src="tabs/establishmentTabNFeAuditor.xhtml" />
+								
+					</p:tab>
+	</p:tabView>
+</ui:composition>

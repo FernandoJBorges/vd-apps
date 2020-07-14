@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search">
+	<ui:param name="defaultMBean" value="#{couponMBean}" />
+	<h:outputStylesheet name="highlight.css" library="css" />
+	<ng:ngDetails titleView="#{i18n['cfe.label.titleDetails']}" hasChildren="false" />
+	<p:tabView id="ngTabview">
+		<p:tab id="ngBasic" title="#{i18n.ngTabBasic}">
+			<p:panelGrid id="ng-panel-search" columnClasses="column1,column2,column3,column4" columns="2">
+				<p:outputLabel for="documentoIni" styleClass="fontBold" value="#{i18n['cfe.label.docidentifier']}:" />
+				<p:outputLabel id="documentoIni" value="#{defaultMBean.entity.docIdentifier}" />
+				<p:outputLabel for="serie" value="#{i18n['cfe.label.cfecode']}:" styleClass="fontBold" />
+				<p:outputLabel id="serie" value="#{defaultMBean.entity.cfeCode}" />
+				<p:outputLabel for="serie" value="#{i18n['cfe.label.layout']}:" styleClass="fontBold" />
+			</p:panelGrid>
+			<pre class="ng-document">
+				  <code class="xml">#{defaultMBean.documentAsText}</code>
+			</pre>
+		</p:tab>
+	</p:tabView>
+	<h:outputScript library="common" name="js/highlight/highlight.min.js" />
+	<h:outputScript library="common" name="js/beautify/vkbeautify.0.99.00.beta.js" />
+	<script>
+		$(document).ready(function() {
+			var xmlElement = $('.ng-document')[0];
+			var xmlText = $(xmlElement).text();
+			$(xmlElement).text(vkbeautify.xml(xmlText));
+			hljs.highlightBlock(xmlElement);
+		});
+	</script>
+</ui:composition>

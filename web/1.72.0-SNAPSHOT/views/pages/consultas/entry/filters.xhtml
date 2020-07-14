@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+	<div class="ui-g-12">
+		<ui:include src="../document/filters/calendarInitial.xhtml" />
+		<ui:include src="../document/filters/calendarFinal.xhtml" />
+		<ui:include src="filters/docidentifier.xhtml" />
+		<ui:include src="filters/cnpj.xhtml" />
+	</div>
+	<div class="ui-g-12">
+		<ui:include src="filters/dateOf.xhtml" />
+		<ui:include src="../document/filters/datePeriodSelector.xhtml" />
+		<p:outputPanel styleClass="ui-g-4">
+			<ui:include src="filters/entryUID.xhtml" />
+			<ui:include src="filters/messageTypes.xhtml" />
+		</p:outputPanel>
+		<ui:include src="filters/status.xhtml" />
+	</div>
+</ui:composition>

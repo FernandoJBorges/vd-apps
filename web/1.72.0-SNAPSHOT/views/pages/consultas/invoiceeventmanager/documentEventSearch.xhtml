@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	template="/common/templates/search/ngSearchTemplate.xhtml">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{documentEventMBean}" />
+	<ui:param name="documentSearchFilters" value="#{defaultMBean.documentSearchFilters}" />
+	<!-- bloco de pesquisa -->
+	<ui:define name="searchlistBlock">
+    <h:outputStylesheet>
+    #ng-form\:ng-search-comp\:ng-tabview-search\:ocorrencia_panel > div > ul > li {
+      overflow: hidden
+    }
+    </h:outputStylesheet>
+        <ng:ngViewSearch id="ng-search-comp" titleView="#{i18n['ocorrencia.label.title']}">
+			<p:tabView id="ng-tabview-search">
+				<p:tab id="ng-tab-basic" title="#{i18n.ngTabBasic}">
+					<p:outputPanel  style="width: 100%;">
+						<ui:include src="documentEventFilters.xhtml" />
+					</p:outputPanel> 
+				</p:tab>
+			</p:tabView>
+		</ng:ngViewSearch>
+		<ng:ngSelectedActions id="ng-selected-actions" />
+		<ng:ngDataTable id="ng-detail-dataTable">
+				<ui:include src="documentEventTable.xhtml" />
+		</ng:ngDataTable>
+	</ui:define>
+	<!-- bloco de detalhes -->
+	<ui:define name="searchViewDetailsBlock">
+		<ui:include src="details/documentEventDetails.xhtml" />
+	</ui:define>
+</ui:composition>

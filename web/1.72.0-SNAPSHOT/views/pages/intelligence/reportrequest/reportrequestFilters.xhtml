@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{reportRequestMB}" />
+	<h:outputStylesheet library="css" name="fix-responsive.css" />
+				<div class="ui-g ui-fluid">
+						<div class="ui-g-2">
+								<p:outputLabel for="initialrequestdate" value="#{i18n['ng.label.date.initial']}:" />
+								<p:calendar id="initialrequestdate"
+					                        value="#{defaultMBean.filterVO.initialDate}" locale="pt"
+					                        showOn="button" pattern="#{defaultMBean.layouts.DATE.format}"
+					                        mindate="#{defaultMBean.minDateFilter}"
+					                        maxdate="#{defaultMBean.maxDateFilter}"
+					                        a:autofocus="true">
+					                        <f:attribute name="minDate" value="#{defaultMBean.minDateFilter}" />
+					                        <f:validator binding="#{minDateValidator}" />
+               					</p:calendar>
+						</div>
+						<div class="ui-g-2">
+							
+								<p:outputLabel for="finalrequestdate" value="#{i18n['ng.label.date.final']}:" />
+								<p:calendar id="finalrequestdate"
+					                        value="#{defaultMBean.filterVO.finalDate}" locale="pt"
+					                        showOn="button" pattern="#{defaultMBean.layouts.DATE.format}"
+					                        mindate="#{defaultMBean.minDateFilter}"
+					                        maxdate="#{defaultMBean.maxDateFilter}"/>	    
+							
+						</div>
+						<div class="ui-g-2">
+								 <p:outputLabel for="status" value="#{i18n['reportrequest.label.status']}:" />
+								 <p:selectOneMenu id="status"
+					                			  value="#{defaultMBean.filterVO.status}">
+								                <f:selectItem itemValue="#{null}" itemLabel="#{i18n['lbl_all']}"/>
+								                <f:selectItems value="#{defaultMBean.getReportStatusTypes()}" 
+								                    var="type"
+								                    itemValue="#{type}" 
+								                    itemLabel="#{type.description}" />
+					            </p:selectOneMenu>
+							
+						</div>
+				</div>
+</ui:composition>

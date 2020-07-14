@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component">
+	<ui:param name="defaultMBean" value="#{establishmentMB}" />	
+		<style type="text/css">
+	       	.column1{width: 170px;height:auto}
+	    </style>
+			  <p:panelGrid id="panelCertificate" columns="2" columnClasses="column1,column2">
+					<p:outputLabel for="signature" value="#{i18n['establishment.label.signature']}:" />
+	   			 	<p:selectOneMenu id="signature" value="#{buCertificateMB.certificateRepos.certificateReposUID}" valueChangeListener="#{buCertificateMB.rerenderSignatureType}" style="min-width:180px" panelStyle="min-width:100px" >
+						 <f:selectItems value="#{buCertificateMB.certificateReposes}" var="certificateRepos" itemLabel="#{certificateRepos.name}" itemValue="#{certificateRepos.certificateReposUID}" />
+						 <p:ajax event="change" update=":ng-form:ngFormEdit:ngTabview:ng-panel-certificate :ng-form:ngFormEdit:ngTabview:panelSoftware :ng-form:ngFormEdit:ngTabview:tabPanelCertFocus" resetValues="true" imediate="true" />
+					</p:selectOneMenu>
+					<p:outputLabel for="type" value="#{i18n['establishment.label.type']}:" />
+					<p:outputLabel id="type" value="#{buCertificateMB.certificateRepos.type}" readonly="true" size="30" maxlength="60" >
+								<f:converter converterId="signatureTypeEnumConverter" />
+					</p:outputLabel>
+			</p:panelGrid>
+			<p:focus id="tabCertFocus" context="panelCertificate" />
+			<p:outputPanel id="panelSoftware">
+			<p:panelGrid id="panelSoft" columns="2" rendered="#{buCertificateMB.isSignatureType('SOFTWARE')}" columnClasses="column1,column2">
+						<p:outputLabel for="schem" value="#{i18n['establishment.label.schema']}:" />
+						<p:inputText id="schem" value="#{buCertificateMB.buCertificate.privateKey}"  maxlength="60"  required="#{!defaultMBean.entity.dadCertificate}" requiredMessage="#{i18n['establishment.input.required.schemCert']}" style="min-width:173px" 	/>
+						<p:outputLabel for="passschem" value="#{i18n['establishment.label.pass.schema']}:" />
+						<p:inputText type="password" id="passschem"  value="#{buCertificateMB.buCertificate.privateKeyPwd}" maxlength="35" required="#{!defaultMBean.entity.dadCertificate}" requiredMessage="#{i18n['establishment.input.required.passschemCert']}" style="min-width:173px" />
+						<p:outputLabel for="autentic" value="#{i18n['establishment.label.autentic']}:"   />
+						<h:panelGroup>
+							<p:selectBooleanCheckbox id="autentic" value="#{buCertificateMB.buCertificate.mutualAuth}" valueChangeListener="#{defaultMBean.showInfoMutualAuth}" styleClass="ng-float-left">
+								<p:ajax event="change" immediate="true" />
+							</p:selectBooleanCheckbox>
+							<ngComp:ngHelp messageHelp="#{i18n['establishmentcert.msg.help.autenmutua']}" style="margin:1px;float:left" />
+						</h:panelGroup>
+				</p:panelGrid>
+				<p:panelGrid id="panelHard" columns="2" rendered="#{buCertificateMB.isSignatureType('HARDWARE_TRUE_ACCESS')}"  columnClasses="column1">
+						<p:outputLabel for="keyPrivate" value="#{i18n['establishment.label.key.private']}:"/>
+						<p:inputText id="keyPrivate" value="#{buCertificateMB.buCertificate.privateKey}" maxlength="26" required="#{!defaultMBean.entity.dadCertificate}" style="min-width:173px" requiredMessage="#{i18n['establishment.input.required.privatekey']}">
+							<f:validateLength maximum="26" />
+						</p:inputText>
+						<p:outputLabel for="keyPublic" value="#{i18n['establishment.label.key.public']}:" />
+						<p:inputText id="keyPublic" value="#{buCertificateMB.buCertificate.publicKey}" maxlength="31"  required="#{!defaultMBean.entity.dadCertificate}" style="min-width:173px" requiredMessage="#{i18n['establishment.input.required.publickey']}">
+							<f:validateLength maximum="31" />
+						</p:inputText>
+						<p:outputLabel for="autenticHard" value="#{i18n['establishment.label.autentic']}:"   />
+						<h:panelGroup>
+							<p:selectBooleanCheckbox id="autenticHard" value="#{buCertificateMB.buCertificate.mutualAuth}" valueChangeListener="#{defaultMBean.showInfoMutualAuth}" styleClass="ng-float-left"> 
+									<p:ajax event="change" immediate="true" />
+							</p:selectBooleanCheckbox>
+							<ngComp:ngHelp messageHelp="#{i18n['establishmentcert.msg.help.autenmutua']}" style="margin:1px;float:left" />
+						</h:panelGroup>
+				</p:panelGrid>
+				<p:panelGrid id="panelJce" columns="2" rendered="#{buCertificateMB.isSignatureType('JCE_HSM')}"  columnClasses="column1">
+							<p:outputLabel for="keyAlias" value="#{i18n['establishment.label.Key.alias']}:"  />
+							<p:inputText id="keyAlias" value="#{buCertificateMB.buCertificate.privateKey}" maxlength="60" required="#{!defaultMBean.entity.dadCertificate}" style="min-width:173px" 	 requiredMessage="#{i18n['establishment.input.required.aliaskey']}" />
+							<p:outputLabel for="keypass" value="#{i18n['establishment.label.pass.key']}:"   />
+							<p:inputText type="password" id="keypass" value="#{buCertificateMB.buCertificate.privateKeyPwd}" maxlength="35" required="#{!defaultMBean.entity.dadCertificate}"  style="min-width:173px" 	 requiredMessage="#{i18n['establishment.input.required.passkey']}" />
+							<p:outputLabel for="certAlias" value="#{i18n['establishment.label.alias.cert']}:" />
+							<p:inputText id="certAlias" value="#{buCertificateMB.buCertificate.publicKey}" maxlength="60" required="#{!defaultMBean.entity.dadCertificate}" style="min-width:173px" 	 requiredMessage="#{i18n['establishment.input.required.certkey']}"  />
+				</p:panelGrid>
+				<p:panelGrid id="panelpkc" columns="2" rendered="#{buCertificateMB.isSignatureType('PKCS11_HSM')}"  columnClasses="column1">
+							<p:outputLabel for="keyAliaspk" value="#{i18n['establishment.label.Key.alias']}:"  />
+							<p:inputText id="keyAliaspk" value="#{buCertificateMB.buCertificate.privateKey}" maxlength="60" required="#{!defaultMBean.entity.dadCertificate}" style="min-width:173px" 	 requiredMessage="#{i18n['establishment.input.required.aliaskey']}" />
+							<p:outputLabel for="keypasspk" value="#{i18n['establishment.label.pass.key']}:"   />
+							<p:inputText type="password" id="keypasspk" value="#{buCertificateMB.buCertificate.privateKeyPwd}" maxlength="35" required="#{!defaultMBean.entity.dadCertificate}" style="min-width:173px" 	 requiredMessage="#{i18n['establishment.input.required.passkey']}" />
+							<p:outputLabel for="certAliaspk" value="#{i18n['establishment.label.alias.cert']}:" />
+							<p:inputText id="certAliaspk" value="#{buCertificateMB.buCertificate.publicKey}" maxlength="60" required="#{!defaultMBean.entity.dadCertificate}" style="min-width:173px" 	 requiredMessage="#{i18n['establishment.input.required.certkey']}" />
+				</p:panelGrid>
+			</p:outputPanel>
+			<p:focus id="tabPanelCertFocus" context="panelSoftware" />
+				<ngComp:ngSubTitleView title="Informações do Certificado"></ngComp:ngSubTitleView>	 
+				<ngComp:ngHelp messageHelp="#{i18n['establishment.help.msg.infocert']}" style="margin:1px" />
+			 <p:panelGrid id="panelCertificate2" columns="2" columnClasses="column1,column2" style="margin-top:15px">
+					<p:outputLabel for="begin" value="#{i18n['establishment.label.date.begin']}:" />
+					<p:inputText id="begin" value="#{buCertificateMB.buCertificate.notBefore}" disabled="true" size="12">
+						 <f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:inputText>
+					<p:outputLabel for="final" value="#{i18n['establishment.label.date.final']}:" />
+					<p:inputText id="final" value="#{buCertificateMB.buCertificate.notAfter}" disabled="true" size="12">
+					 	<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:inputText>
+					<p:outputLabel for="modify" value="#{i18n['establishment.label.date.modify']}:" />
+					<p:inputText id="modify" value="#{buCertificateMB.buCertificate.notifyDate}" disabled="true" size="12">
+					 	<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:inputText>
+			</p:panelGrid>
+</ui:composition>

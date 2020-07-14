@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:remoteCommand name="loadTabData" action="#{defaultMBean.loadTabData(defaultMBean.xmlDataTab)}"
+		update="@(.xml-panel) @(.ng-nfe-buttons)" oncomplete="onLoadData()" />
+
+	<p:remoteCommand name="updateMessages" update=":messages" global="false" />
+	
+	<p:outputPanel styleClass="ui-g-12 ng-nfe-buttons">
+		<p:commandButton id="btn-download-invoice-xml" ajax="false"
+				icon="icon-download-file ng-button"
+				styleClass="ng-ui-button ng-float-right"
+				value="#{i18n['nfelayouttype.xml']}"
+				onclick="updateMessages()"
+				action="#{defaultMBean.actionEvent('dowloadXML')}"/>
+	</p:outputPanel>
+	
+	<p:outputPanel id="panelGrid" styleClass="xml-panel">
+		<pre class="ng-document">
+			<code class="xml">#{defaultMBean.detailData.xmlData}</code>
+		</pre>
+	</p:outputPanel>
+
+	<h:outputScript library="js" name="ondemand-loaddata.js"></h:outputScript>
+	
+</ui:composition>

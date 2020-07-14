@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<div class="ui-g-12 document-detail-column">
+	<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['eventsefaz.disagreement.service.label.marker']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.indDesacordoOper}" />
+		</div>
+		<!-- Justificativa -->
+		<div class="ui-g-12 document-additional-information">
+			<p:outputLabel value="#{i18n['eventsefaz.disagreement.service.label.obs.taker']}:" />
+			<h:inputTextarea rows="7" readonly="true" value="#{defaultMBean.detailData.generalData.event.getXObs()}" />
+		</div>
+	</div>
+</ui:composition>

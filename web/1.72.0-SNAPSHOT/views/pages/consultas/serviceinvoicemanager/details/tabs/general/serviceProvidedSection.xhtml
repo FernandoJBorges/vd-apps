@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/table"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ng:ngSimpleDataTable value="#{items}" emptyMessage="Nenhum item encontrado">
+		<p:column headerText="#{i18n['nfse.label.details.service.provided.code']}">
+			<h:outputText value="#{row.itemListaServ}" />
+		</p:column>
+		<p:column headerText="#{i18n['nfse.label.details.service.provided.cna']}">
+			<h:outputText value="#{row.cnae}" />
+		</p:column>
+		<p:column headerText="#{i18n['nfse.label.details.service.provided.tax.code']}">
+			<h:outputText value="#{row.tributMunicip}" />
+		</p:column>
+		<p:column headerText="#{i18n['nfse.label.details.service.provided.city.code']}">
+			<h:outputText value="#{row.cityCode}" />
+		</p:column>
+		<p:column headerText="#{i18n['nfse.label.details.service.provided.tax.description']}">
+			<h:outputText value="#{row.tribut}" />
+		</p:column>		
+	</ng:ngSimpleDataTable>
+
+</ui:composition>

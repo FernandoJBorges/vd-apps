@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/crud">
+	<p:importEnum type="com.neogrid.sped.enums.DocType"/>
+	<ui:param name="tabDoctype" value="#{DocType.NFE}" />
+	<ui:param name="queueVO" value="#{defaultMBean.addressePersonVO.getAddresseQueuesVO()}" />
+	<ui:param name="tabMessagePrefix" value="#{defaultMBean.getTabMessagePrefix(tabDoctype)}" />
+	<div class="ui-fluid ui-g">
+			<div class="ui-g-12">
+				<ui:include src="fields/disponibilizationConfig.xhtml" >
+					<ui:param name="tabDoctype" value="#{tabDoctype}" />
+					<ui:param name="disponibConfigValue" value="#{defaultMBean.entity.dadAddressePropNfe}" />
+				</ui:include> 
+		 		<ui:include src="fields/ruleTreeTable.xhtml">
+					<ui:param name="tabDoctype" value="#{tabDoctype}" />
+					<ui:param name="treeTableMB" value="#{defaultMBean.entity.dadAddressePropNfe ? dadAddresseTreeTableMB : addresseTreeTableMB}" />
+					<ui:param name="rendererEditButton" value="#{!defaultMBean.entity.dadAddressePropNfe}" />
+				</ui:include>
+				<div class="ui-g-12">
+					<p:outputLabel for="mail-addresse" value="#{i18n['addresse.label.generic-email']}" styleClass="ng-subtitle" />
+				</div>
+				<ui:include src="fields/addresseMail.xhtml">
+					<ui:param name="id" value="mail-addresse" />
+					<ui:param name="value" value="#{defaultMBean.entity.email}" />
+					<ui:param name="labelMessage" value="#{defaultMBean.getMailMessageLabel('invoice.label.addresse')}" />
+					<ui:param name="tabMessagePrefix" value="#{tabMessagePrefix}" />
+				</ui:include>
+				<ui:include src="fields/addresseMail.xhtml">
+					<ui:param name="id" value="mail-carrier" />
+					<ui:param name="value" value="#{defaultMBean.entity.carrierMail}" />
+					<ui:param name="labelMessage" value="#{defaultMBean.getMailMessageLabel('invoice.label.carrier')}" />
+					<ui:param name="tabMessagePrefix" value="#{tabMessagePrefix}" />
+				</ui:include>
+				<div class="ui-g-12">
+					<p:outputLabel for="queue-name-#{tabDoctype}" value="#{i18n['addresse.label.generic-edi']}" styleClass="ng-subtitle" />
+				</div>
+		 		<ui:include src="fields/ediQueue.xhtml">
+					<ui:param name="tabDoctype" value="#{tabDoctype}" />
+					<ui:param name="useDadConfig" value="#{defaultMBean.entity.dadAddressePropNfe}" />
+					<ui:param name="addresseQueueName" value="#{queueVO.nfeQueueName}" />
+				</ui:include>  
+				<div class="ui-g-12">
+					<p:outputLabel for="nfe-provide-portal" value="#{i18n['addresse.label.generic-portal']}:" styleClass="ng-subtitle" />
+				</div>
+				<div class="ui-g-10">
+					<p:outputLabel for="nfe-provide-portal" value="#{i18n['addresse.label.disponibilization-by-portal']}" style="margin-right:10px" />
+					<p:selectBooleanCheckbox id="nfe-provide-portal" disabled="#{!defaultMBean.isNfeProvideToPortal()}" value="#{defaultMBean.isNfeProvideToPortal()}" />
+				</div>
+			</div>
+	</div>
+</ui:composition>

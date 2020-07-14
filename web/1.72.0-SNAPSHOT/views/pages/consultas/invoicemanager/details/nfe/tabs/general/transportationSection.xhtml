@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/table"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div class="ui-g-12 document-detail-column">
+		<!-- Modalidade de Frete -->
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['invoice.label.detail.transportation.model']}:" /><br/>
+			<h:outputText value="#{transportation.freight}" />
+		</div>
+
+		<!-- Nome / Razão Social do Transportador -->
+		<div class="ui-g-4">
+			<p:outputLabel value="#{i18n['invoice.label.detail.transportation.razao.social']}:" /><br/>
+			<h:outputText value="#{transportation.name}" />
+		</div>
+
+		<!-- CNPJ -->
+		<div class="ui-g-5">
+			<p:outputLabel value="#{i18n['usr.label.cnpj']}:" /><br/>
+			<h:outputText value="#{transportation.cnpj}" />
+		</div>
+	</div>
+
+	<div class="ui-g-12">
+		<div class="ui-g-12">
+			<ng:ngSimpleDataTable value="#{transportation.volumes}" emptyMessage="Nenhum item encontrado">
+				<p:column headerText="#{i18n['invoice.label.details.transp.volume']}">
+					<h:outputText value="#{row.volume}" />
+				</p:column>
+				<p:column headerText="#{i18n['invoice.label.details.quantity']}">
+					<h:outputText value="#{row.quantity}" />
+				</p:column>
+				<p:column headerText="#{i18n['invoice.label.details.transp.especia']}">
+					<h:outputText value="#{row.especie}" />
+				</p:column>
+				<p:column headerText="#{i18n['invoice.label.details.transp.marca']}">
+					<h:outputText value="#{row.marca}" />
+				</p:column>
+				<p:column headerText="#{i18n['invoice.label.details.transp.numeracao']}">
+					<h:outputText value="#{row.numeracao}" />
+				</p:column>
+				<p:column headerText="#{i18n['invoice.label.details.transp.peso.liq']}">
+					<h:outputText value="#{row.pesoLiquido}" />
+				</p:column>
+				<p:column headerText="#{i18n['invoice.label.details.transp.peso.bruto']}">
+					<h:outputText value="#{row.pesoBruto}" />
+				</p:column>
+			</ng:ngSimpleDataTable>
+		</div>
+	</div>
+
+</ui:composition>

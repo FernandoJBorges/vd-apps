@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="ui-g ui-fluid">
+		<div class="ui-g-5">
+			<p:outputLabel for="name" value="#{i18n['signature.label.name']}:" />
+			<p:inputText id="name" maxlength="128"
+				value="#{defaultMBean.filters.name}" />
+		</div>
+		<div class="ui-g-2">
+			<p:outputLabel for="signature-type" value="#{i18n['signature.label.type']}:" />
+			<p:selectOneMenu id="signature-type" value="#{defaultMBean.filters.type}">
+				<f:selectItem itemLabel="#{i18n['signature.label.all']}" />
+				<f:selectItems value="#{defaultMBean.types}" var="type"
+					itemLabel="#{type.i18n}" itemValue="#{type.type}" />
+			</p:selectOneMenu>
+		</div>
+	</div>
+
+</ui:composition>

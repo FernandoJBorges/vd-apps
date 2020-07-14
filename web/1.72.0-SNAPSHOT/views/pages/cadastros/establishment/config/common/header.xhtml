@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component">
+	<div class="tabcontainner">
+		<p:outputPanel rendered="#{messageValidadeDadRendered}">
+			<ngComp:ngContextMessages id="ng-context-messages" message="#{messageValidadeDad}" />
+		</p:outputPanel>
+		<p:panelGrid id="ng-panel-sea" columns="2">
+			<p:outputLabel for="estab-cnpj" value="#{i18n['establishment.label.cnpj']}/#{i18n['establishment.label.personType.cpf']}:" />
+			<h:outputFormat id="estab-cnpj" value="#{establishmentMB.entity.establishmentID}">
+				<f:converter converterId="CnpjCpfConverter" />
+			</h:outputFormat>
+			<p:outputLabel for="estab-name" value="#{i18n['establishment.label.name']}:" />
+			<h:outputFormat id="estab-name" value="#{establishmentMB.entity.name}" />
+		</p:panelGrid>
+	</div>
+</ui:composition>

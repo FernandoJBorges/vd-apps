@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+	<!-- passa parâmetro para o template -->
+	<!-- bloco de pesquisa -->
+	<div class="ui-g-12 document-column-adv">
+		<div class="ui-g-6 document-column-adv-6">
+			<ui:include src="../document/filters/accessKey.xhtml"></ui:include>
+		</div>
+		<div class="ui-g-2">
+			<p:outputLabel for="cnpjcarrier" value="#{i18n['invoice.label.cnpjcarrier']}:" />
+			<p:inputMask id="cnpjcarrier" 
+						label="#{i18n['invoice.label.cnpjcarrier']}"
+						value="#{defaultFilterMBean.filterVO.carrierID}"
+						mask="#{defaultMBean.layouts.CNPJ.searchMask}" 
+						autoClear="false">
+						<f:validator binding="#{cnpjFilterValidator}" />
+			</p:inputMask>
+		</div>
+		<div class="ui-g-2">
+			<p:outputPanel styleClass="update-component">
+				<ui:include src="../document/filters/emissionType.xhtml"></ui:include>
+			</p:outputPanel>
+		</div>
+		<div class="ui-g-2">
+			<p:outputPanel styleClass="update-component">
+				<ui:include src="../document/filters/lot.xhtml">
+					<ui:param name="classlotinit" value="ng-lot-ini" />
+				</ui:include>
+			</p:outputPanel>
+		</div>
+	</div>
+	<div class="ui-g-12 document-column-adv">
+		<div class="ui-g-6 document-column-adv-6 document-check">
+			<p:outputPanel styleClass="update-component document-check-panel">
+				<h:panelGrid columns="1">
+					<ui:include src="../document/filters/showOnlyStoppedDocuments.xhtml">
+						<ui:param name="itemLabel" value="#{i18n['invoice.label.invoicestop']}" />
+					</ui:include>
+				</h:panelGrid>
+			</p:outputPanel>
+		</div>
+		<p:outputPanel styleClass="update-component">
+			<p:outputPanel>
+				<div class="ui-g-2">
+					<ui:include src="../document/filters/originMsg.xhtml"></ui:include>
+				</div>
+			</p:outputPanel>
+		</p:outputPanel>
+</div>
+<div class="ui-fluid">
+		<ui:include src="../document/filters/fileUploaded.xhtml"></ui:include>
+</div>
+</ui:composition>

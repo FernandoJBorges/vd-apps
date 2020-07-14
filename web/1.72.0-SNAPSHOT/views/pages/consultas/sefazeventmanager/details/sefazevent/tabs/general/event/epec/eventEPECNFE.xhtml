@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<div class="ui-g-12 document-detail-column">
+		<!-- CNPJ/CPF/ID Destinatário -->
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['eventsefaz.label.details.cnpj.cpf.id']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.eventAddresseIDDet}" />
+		</div>
+		<!-- UF Destinatário -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['eventsefaz.label.details.uf.dest']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.eventUFDestDet}" />
+		</div>
+		<!-- Inscrição Estadual -->
+		<div class="ui-g-7">
+			<p:outputLabel value="#{i18n['eventsefaz.label.details.isnc.dest']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.eventIEDestDet}" />
+		</div>
+	</div>
+	<div class="ui-g-12 document-detail-column">
+		<!-- CNPJ/CPF/ID Destinatário -->
+		<!-- Valor Total da NF-e -->
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['eventsefaz.label.details.value.total.nfe']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.eventVNFDestDet}" />
+		</div>
+		<!-- Valor Total do ICMS -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['eventsefaz.label.details.icms']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.eventVICMSDestDet}" />
+		</div>
+		<!-- Valor Total do ICMS de Substituição Tributária -->
+		<div class="ui-g-7">
+			<p:outputLabel value="#{i18n['eventsefaz.label.details.icms.tribut']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.eventVSTDestDet}" />
+		</div>
+	</div>
+
+</ui:composition>
+

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:dialog="http://java.sun.com/jsf/composite/common/component/dialog"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/custom">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{queueMB}" />
+	<!-- bloco de criacao edicao -->
+<h:form id="ng-form-est-queue" prependId="false">
+	<p:outputPanel id="ng-create-edit-queue" rendered="#{defaultMBean.stateQueue}" styleClass="ng-panel-class">
+	<h:outputStylesheet library="css" name="queue.css" />
+		<ng:ngFormSearch id="ng-form-search-queue" 
+						 idView="ng-form-search-queue" 
+						 update=":ng-form-est-queue :ng-create-edit-queue"
+						 titleView="#{i18n['establishment.queue.title']}">
+				<!-- TAB ESTABLISHMENT -->
+				<ui:include src="../common/header.xhtml">
+				   <ui:param name="messageValidadeDad" value="#{i18n['establishment.queue.warn.dad']}" />
+				   <ui:param name="messageValidadeDadRendered" value="#{establishmentMB.entity.dadQueue}" />
+				</ui:include>
+				<p:tabView id="ng-tabview-queue-doctype" widgetVar="widgetVarTabQueue">
+						<!-- TAB NFE -->
+						<p:tab id="tab-nfe-queue" title="#{i18n['docType.label.NFE']}" disabled="#{!defaultMBean.enablePopupSoluctions('NFE')}">
+								<p:dataTable id="ng-data-table-nfe-queue" 
+											var="row" 
+											reflow="true"
+											resizableColumns="true"
+											value="#{defaultMBean.notifications[DocType.NFE]}"
+											>
+											<ui:include src="columns.xhtml" />
+								</p:dataTable>
+						</p:tab>
+						<!-- TAB CTE -->
+						<p:tab id="tab-cte-queue" title="#{i18n['docType.label.CTE']}" disabled="#{!defaultMBean.enablePopupSoluctions('CTE')}">
+							<p:dataTable id="ng-data-table-cte-queue" 
+											var="row" 
+											reflow="true" 
+											resizableColumns="true"
+											value="#{defaultMBean.notifications[DocType.CTE]}" 
+											>
+											<ui:include src="columns.xhtml" />
+							</p:dataTable>
+						</p:tab>
+						<!-- TAB NFSE -->
+						<p:tab id="tab-nfse-queue" title="#{i18n['docType.label.NFSE']}" disabled="#{!defaultMBean.enablePopupSoluctions('NFSE')}">
+							<p:dataTable id="ng-data-table-nfse-queue" 
+											var="row" 
+											reflow="true" 
+											resizableColumns="true"
+											value="#{defaultMBean.notifications[DocType.NFSE]}" 
+											>
+											<ui:include src="columns.xhtml" />
+							</p:dataTable>
+						</p:tab>
+						<!-- TAB MDFE -->
+						<p:tab id="tab-mdfe-queue" title="#{i18n['docType.label.MDFE']}" disabled="#{!defaultMBean.enablePopupSoluctions('MDFE')}">
+							<p:dataTable id="ng-data-table-mdfe-queue" 
+											var="row" 
+											reflow="true" 
+											resizableColumns="true"
+											value="#{defaultMBean.notifications[DocType.MDFE]}" 
+											>
+											<ui:include src="columns.xhtml" />
+							</p:dataTable>
+						</p:tab>
+						<!-- TAB NFCE -->
+						<p:tab id="tab-nfce-queue" title="#{i18n['docType.label.NFCE']}" disabled="#{!defaultMBean.enablePopupSoluctions('NFCE')}">
+							<p:dataTable id="ng-data-table-nfce-queue" 
+												var="row" 
+												reflow="true" 
+												resizableColumns="true"
+												value="#{defaultMBean.notifications[DocType.NFCE]}" 
+												>
+												<ui:include src="columns.xhtml" />
+							</p:dataTable>
+						</p:tab>
+			</p:tabView>
+			</ng:ngFormSearch>
+			<!-- DIALOG CONFIR REMOVE QueueVALUES -->
+			<dialog:ngDialogMessageGlobal id="ng-confir-delete-queuevalue" 
+									header="#{i18n['popup.msg.info']}" 
+									widgetVar="confirmDeletequeueValueVar" 
+									width="300"  
+									updateGrid=":ng-form-search-queue:ng-tabview-queue-doctype"
+									titleBtn="#{i18n['btn_action_yes']}" 
+									titleBtnCancel="#{i18n['btn_action_no']}"
+			 						btnActionConfirm="#{queueMB.deleteQueueValues}">
+			 						<p:outputLabel value="#{i18n['msg.info.remove.questions']}" />
+			</dialog:ngDialogMessageGlobal>
+	</p:outputPanel>
+</h:form>
+</ui:composition>

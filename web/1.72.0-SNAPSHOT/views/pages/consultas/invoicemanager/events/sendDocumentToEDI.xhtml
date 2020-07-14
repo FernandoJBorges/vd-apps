@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"		
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/custom">
+
+	<h:form id="form-doc-send-edi" prependId="false">
+		<ui:param name="defaultMBean" value="#{invoiceMB.sendDocumentToEDIMB}" />
+		<p:outputPanel rendered="#{invoiceMB.getSendDocumentToEDIMB().isStateSendToEDI()}">
+			<ng:ngFormEdit id="view-doc-send-edi"				
+				labelSubmit="#{i18n['btn_action_send']}"
+				titleView="#{i18n['sendtoedi.label.title.view']}"
+				titleViewBegin="#{i18n['sendtoedi.label.title.view.begin']}"
+				mbean="#{invoiceMB.sendDocumentToEDIMB}"
+				actionSubmit="sendToEDI"
+				actionGoBack="goBack"
+				icon="ng-button icon-sendEDI"
+				update=":ng-form :ng-panel-crud-dialog :messages :view-doc-send-edi:panel-doc-send-edi :form-doc-send-edi">
+				<p:outputPanel id="panel-doc-send-edi"
+					styleClass="ng-containner ng-containner-details">
+					<div class="ui-fluid">
+						<div class="ui-g">
+							<div class="ui-g-12 ui-g-nopad">
+								<p:outputLabel id="lb-resume-message" value="#{defaultMBean.getDocumentsMessage()}" styleClass="lb-resume-message" />
+							</div>
+							<div class="ui-g-12 ui-g-nopad">
+								<p:outputLabel id="title-addressee" value="#{i18n['sendtoedi.label.addressee']}" styleClass="ng-subtitle ng-float-left" />
+							</div>
+							<div class="ui-g-12 container-textarea">
+								<div class="ui-g-12">									
+									<p:selectBooleanCheckbox id="checkbox-addressee" styleClass="ng-float-left ng-font-weight-bold checkboxTitle" 
+										value="#{defaultMBean.sendToEDIParamsVO.addresseeChecked}"
+										itemLabel="#{i18n['sendtoedi.label.checkbox.addressee']}"										
+										disabled="#{defaultMBean.sendToEDIParamsVO.addresseeDisabled}"/>
+								</div>
+								<div class="ui-g-12">
+									<p:inputTextarea id="text-area-addressee" 
+													rows="1"
+													autoResize="true"
+													styleClass="queue-name-info"
+													value="#{defaultMBean.sendToEDIParamsVO.addresseeQueueName}"
+													readonly="true"
+													rendered="#{defaultMBean.sendToEDIParamsVO.showQueues}"
+													disabled="#{defaultMBean.sendToEDIParamsVO.addresseeDisabled}">
+									</p:inputTextarea>
+								</div>								
+							</div>
+							
+							<div class="ui-g-12 ui-g-nopad">
+								<p:outputLabel id="title-carrier" value="#{i18n['sendtoedi.label.carrier']}" styleClass="ng-subtitle ng-float-left" />
+							</div>
+							<div class="ui-g-12 container-textarea">
+								<div class="ui-g-12">
+									<p:selectBooleanCheckbox id="checkbox-carrier" styleClass="ng-float-left ng-font-weight-bold checkboxTitle" 
+										value="#{defaultMBean.sendToEDIParamsVO.carrierChecked}" 
+										itemLabel="#{i18n['sendtoedi.label.checkbox.carrier']}"
+										disabled="#{defaultMBean.sendToEDIParamsVO.carrierDisabled}"/>
+								</div>
+								<div class="ui-g-12">
+									<p:inputTextarea id="text-area-carrier" 
+													rows="1"
+													autoResize="true"
+													styleClass="queue-name-info"
+													readonly="true"
+													value="#{defaultMBean.sendToEDIParamsVO.carrierQueueName}"
+													rendered="#{defaultMBean.sendToEDIParamsVO.showQueues}"
+													disabled="#{defaultMBean.sendToEDIParamsVO.carrierDisabled}">
+									</p:inputTextarea>										
+								</div>
+							</div>
+						</div>
+					</div>
+				</p:outputPanel>
+			</ng:ngFormEdit>
+		</p:outputPanel>
+	</h:form>
+</ui:composition>

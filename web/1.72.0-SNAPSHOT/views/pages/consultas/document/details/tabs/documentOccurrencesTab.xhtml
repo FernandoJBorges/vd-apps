@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/table"
+	xmlns:dialog="http://java.sun.com/jsf/composite/common/component/dialog">
+
+	<p:remoteCommand name="loadTabData" action="#{defaultMBean.loadTabData(defaultMBean.occurrencesTab)}"  update="occurrencesPanel" />
+
+	<p:outputPanel id="occurrencesPanel">
+		<ng:ngSimpleDataTable id="occurrencesTable" value="#{defaultMBean.detailData.documentOccurrences}" rows="0"
+				emptyMessage="#{i18n['invoice.label.details.occurrences.notfound']}">
+			<p:column
+				headerText="#{i18n['invoice.label.details.occurence']}">
+				<h:outputText converter="documentOccurrenceTypeConverter" value="#{row.eventType}" />
+			</p:column>
+			<p:column
+				headerText="#{i18n['ocorrencia.label.count']}">
+				<h:outputText value="#{row.quantity}" />
+			</p:column>
+			<p:column headerText="#{i18n['invoice.label.details.occurence.first.occur']}" styleClass="doc-occurr-column-header-first-occurr-date">
+				<h:outputText value="#{row.firstOccurrDate}">
+					<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" locale="pt_BR"/>
+				</h:outputText>
+			</p:column>
+			<p:column headerText="#{i18n['invoice.label.details.occurence.last.occur']}" styleClass="doc-occurr-column-header-last-occurr">
+				<h:outputText value="#{row.lastOccurrDate}">
+					<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" locale="pt_BR"/>
+				</h:outputText>
+			</p:column>
+			<p:column headerText="#{i18n['invoice.label.details.occurence.situation']}">
+				<h:outputText value="#{row.situation}" />
+			</p:column>
+			<p:column headerText="#{i18n['invoice.label.details.occurence.login']}" styleClass="doc-occurr-column-header-message-origin">
+				<h:outputText value="#{row.login}" />
+			</p:column>
+			<p:column headerText="#{i18n['invoice.label.details.occurence.id.message.origin']}" styleClass="doc-occurr-column-header-message-origin">
+				<h:outputText value="#{row.originMessageID}" />
+			</p:column>
+			<p:column>
+				<p:commandLink id="btn-viewDetails-Occurrences"
+						action="#{defaultMBean.showOccurrenceDetailsAction(row.documentEventUID, row.eventType)}"
+						styleClass="ng-float-right"
+						global="false"
+						update="@widgetVar(viewOccurrenceDetailsAction)">
+					<span title="#{i18n['tooltip.commandLink.view.details.occurr']}"
+						class="icon-viewDetails ng-icon" />
+				</p:commandLink>
+			</p:column>
+		</ng:ngSimpleDataTable>
+	</p:outputPanel>
+
+	<dialog:ngDialogWarn id="occurrenceDetailDialog"
+			widgetVar="viewOccurrenceDetailsAction"
+			header="#{defaultMBean.occurrenceEventDetailsTitle}"
+			width="750">
+		<ng:ngSimpleDataTable id="occurrenceEventDetails" value="#{defaultMBean.occurrenceEventDetails}"
+				emptyMessage="#{i18n['invoice.label.details.occurrence.detail.notfound']}">
+			<p:column headerText="Tipo">
+				<h:outputText converter="#{documentOccurrenceDetailTypeConverter}" value="#{row.eventType}"/>
+			</p:column>
+			<p:column headerText="#{i18n['ocorrencia.label.statusdescription']}">
+				<h:outputText value="#{row.situation}"/>
+			</p:column>
+		</ng:ngSimpleDataTable>
+	</dialog:ngDialogWarn>
+	<h:outputScript library="js" name="ondemand-loaddata.js"></h:outputScript>
+
+</ui:composition>

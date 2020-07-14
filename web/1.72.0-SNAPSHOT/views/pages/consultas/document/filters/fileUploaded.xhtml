@@ -1,0 +1,46 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component">
+	<div class="ui-g-12 document-column-adv">
+		<div class="ui-g-6 document-column-adv-6">
+			<p:outputLabel for="fileUploadID" value="#{i18n['document.label.accesskeys']} do Arquivo:" />
+			<p:outputPanel id="ng-btn-remove-fileUploaded">
+					<p:outputPanel rendered="#{defaultFilterMBean.fileUploaded != null}">
+						<h:outputText id="fileNameID" value="#{defaultFilterMBean.fileUploaded.getFileName()}" />
+						<p:commandLink	ajax="true" 
+										update="ng-btn-remove-fileUploaded"
+										title="#{i18n['reportrequest.label.discard.file']}"
+										actionListener="#{defaultFilterMBean.deleteFileUploaded()}"
+										styleClass="fa fa-times outputLinkCommons outputLinkCommonsColors" />
+					</p:outputPanel>
+					<p:outputPanel rendered="#{defaultFilterMBean.fileUploaded == null}">
+						<p:fileUpload 
+							id="fileUploadID" 
+							auto="true" 
+							mode="advanced"
+							multiple="false" 
+							widgetVar="upload" 
+							showButtons="false"
+							uploadLabel="Upload" styleClass="ng-file-upload"
+							process="fileUploadID" sizeLimit="#{40*1024*1024}"
+							allowTypes="/(\.|\/)(csv|txt)$/"
+							update="ng-btn-remove-fileUploaded :messages"
+							label="#{i18n['uploadDocument.label.chooseFile']}"
+							fileUploadListener="#{defaultFilterMBean.handleFileUpload}"
+							title="#{i18n['uploadDocument.label.selectUploadFile.toolTip']}"
+							invalidFileMessage="#{i18n['invoice.upload.msg.error.wrongfileType']}"
+							invalidSizeMessage="#{i18n['uploadDocument.msg.error.maxfileSize']}." />
+							<ngComp:ngHelp messageHelp="#{i18n['invoice.help.advFilter.uploadKeys']}" style="float:left;margin-top:6px" />
+					</p:outputPanel>
+			</p:outputPanel>
+		</div>
+	</div>
+	<!-- script injeta attritube accept no input=file -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(':input[type=file]').attr('accept', '.csv,.txt');
+		});
+	</script>
+</ui:fragment>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:outputPanel styleClass="ui-g-12 document-detail-column">
+		<!-- Chave de Acesso -->
+		<p:outputPanel styleClass="ui-g-4">
+			<p:outputLabel value="#{i18n['eventsefaz.label.details.accesskey']}:" />
+			<h:outputText id="detailsGeneralDataAccessKey"
+				value="#{defaultMBean.detailData.generalData.accessKey}" />
+		</p:outputPanel>
+
+		<!-- Número -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['eventsefaz.label.details.number']}:" />
+			<h:outputText id="number" value="#{defaultMBean.detailData.generalData.number}" />
+		</p:outputPanel>
+
+		<!-- Serie -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['eventsefaz.label.details.serie']}:" />
+			<h:outputText id="serialNumber"
+				value="#{defaultMBean.detailData.generalData.serialNumber}" />
+		</p:outputPanel>
+
+		<!-- Data de Emissão -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['eventsefaz.label.details.emission']}" />
+			<ngComp:ngDateTimeFormatteWithGMT id="processingDate" value="#{defaultMBean.detailData.generalData.emissionDate}" />
+		</p:outputPanel>
+
+		<!-- Versão -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['eventsefaz.label.details.version']}" />
+			<h:outputText id="version" value="#{defaultMBean.detailData.generalData.version}" />
+		</p:outputPanel>
+
+	</p:outputPanel>
+
+	<p:outputPanel styleClass="ui-g-12 document-detail-column">
+		<!-- Tipo do evento -->
+		<p:outputPanel styleClass="ui-g-4">
+			<h:outputLabel value="#{i18n['eventsefaz.label.details.typeevent']}" />
+			<h:outputText id="eventType"
+				value="#{i18n[utils:getEnumQualifiedName(defaultMBean.detailData.generalData.eventType).concat('.eventRow')]}" />
+		</p:outputPanel>
+
+		<!-- Finalidade -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['eventsefaz.label.details.codigotypeevent']}" />
+			<h:outputText id="codEventType" value="#{defaultMBean.detailData.generalData.codEventType}" />
+		</p:outputPanel>
+
+		<!-- sequencia -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['eventsefaz.label.details.sequency']}" />
+			<h:outputText id="sequence" value="#{defaultMBean.detailData.generalData.sequence}" />
+		</p:outputPanel>
+
+		<!-- Fim da Prestação -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['eventsefaz.label.details.idevent']}" />
+			<h:outputText id="eventID" value="#{defaultMBean.detailData.generalData.eventID}" />
+		</p:outputPanel>
+	</p:outputPanel>
+</ui:composition>

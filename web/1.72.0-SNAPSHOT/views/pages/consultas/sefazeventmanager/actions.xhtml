@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui">
+				<p:menuitem id="dowloadXmlAction" 
+							global="false"
+							action="#{defaultMBean.actionEvent('downloadZIP')}"
+							ajax="false"
+							immediate="true"
+							onclick="updateMessages()"
+							icon="icon-download-alt"
+							styleClass="ng-context-menu-item" 
+							value="#{i18n['document.label.action.downloads']}" 
+							rendered="#{defaultMBean.downloadXML.rendered}"
+							disabled="#{defaultMBean.getDownloadXML().isDisabled(defaultMBean.lazyModelSelection)}"
+							/>
+
+				<p:menuitem id="sendEmailAction" 	
+							immediate="true"
+							global="false" 
+							icon="icon-sendToEmail"
+							styleClass="ng-context-menu-item"
+							value="#{i18n['document.label.action.emails']}" 
+							rendered="#{defaultMBean.functionalityHelper.sendMailRendered}" 
+							disabled="#{defaultMBean.disabledButtonSendMail}"
+							action="#{defaultMBean.documentSendMailMB.loadSendEmail}"
+							update=":ng-form :ng-panel-crud-dialog :ng-form:ng-panel-crud :messages">
+					<p:resetInput target=":view-send-email:panel-send-email" />
+				</p:menuitem>
+				<p:menuitem id="resendErpAction" 
+							ajax="false"
+							global="false" 
+							immediate="true" 
+							icon="icon-sendERP"
+							update=":messages"
+							styleClass="ng-linkEvent ng-link-invoice-erp"
+							value="#{i18n['document.label.action.doctoerp']}" 
+							action="#{defaultMBean.actionEvent('sendDocToERP')}"
+							disabled="#{defaultMBean.getSentToERP().isDisabled(defaultMBean.lazyModelSelection)}"
+							rendered="#{defaultMBean.sentToERP.rendered}"
+							/>
+				<p:menuitem id="sendToSefaz" 
+							immediate="true"
+							global="false" 
+							icon="icon-reenviarSEFAZ"
+							update=":messages"
+							styleClass="ng-linkEvent ng-link-invoice-erp"
+							value="#{i18n['document.label.action.resendsefaz']}" 
+							action="#{defaultMBean.actionEvent('dialogReprocessEvents')}"
+							rendered="#{defaultMBean.functionalityHelper.sendToSefazRendered}" 
+							disabled="#{defaultMBean.filters.actiondisabledreprocessemission}"
+							/>
+				<p:menuitem id="reprocessAction" 
+							immediate="true" 
+							update=":messages"
+							global="false" 
+							icon="icon-reprocessNFE"
+							value="#{i18n['document.label.action.reprocess.selection']}" 
+							action="#{defaultMBean.actionEvent('dialogReprocessEvents')}"
+							rendered="#{defaultMBean.functionalityHelper.reprocessRendered}" 
+							disabled="#{defaultMBean.filters.actiondisabledreprocessreceived}"
+							/>
+							
+</ui:composition>

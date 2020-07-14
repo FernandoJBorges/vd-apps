@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions" 
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/crud"
+	xmlns:ngCommon="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	template="/common/templates/crud/ngCrudTemplate.xhtml">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{ngConfigurationMBean}" />
+	<!-- bloco de pesquisa -->
+	<ui:define name="searchlistBlock">
+		<ng:ngCrudSearch id="ng-search-comp" titleView="#{i18n['config.label.title']}">
+		<div class="ui-g ui-fluid">
+						<div class="ui-g-3">
+								<p:outputLabel for="key" value="#{i18n['config.label.key']}:" />
+								<p:inputText id="key" value="#{defaultMBean.filters.key}"  size="70" maxlength="64"/>
+						</div>
+		</div>
+		</ng:ngCrudSearch>
+		<ngCommon:ngSelectedActions id="ng-selected-actions" />
+		<ng:ngDetailDataTable id="ng-detail-dataTable"  btnRenderEdit="false">
+				<p:column headerText="#{i18n['label.title.exporter.actions']}" exportable="false" toggleable="false" style="width:30px">
+							<ng:ngColumnActions btnDisabledEdit="#{!defaultMBean.isEditableRow(row)}" /> 
+				</p:column>
+				<p:column id="key" headerText="#{i18n['config.label.key']}" sortBy="#{row.key}" style="width:250px">
+					<h:outputText value="#{row.key}" />
+				</p:column>
+				<p:column styleClass="ng-truncate-column" id="value" headerText="#{i18n['config.label.value']}" sortBy="#{row.value}" style="max-width:350px">
+					<h:outputText value="${!defaultMBean.isSecret(row) ? row.value :'*****'}" title="#{!defaultMBean.isSecret(row) ? row.value :'*****'}" styleClass="ng-truncate-output" />
+				</p:column>
+				<p:column id="description" headerText="#{i18n['config.label.description']}">
+					<h:outputText value="#{row.key}" converter="#{ngConfigurationConverter}" escape="false"/>
+				</p:column>
+		</ng:ngDetailDataTable>
+	</ui:define>
+	<!-- bloco de criacao edicao -->
+	<ui:define name="addUpdateBlock">
+		<ui:param name="defaultMBean" value="#{ngConfigurationMBean}" />
+    <ng:ngFormEdit id="ngFormEdit" titleView="#{i18n['config.label.title']}">
+				<p:tabView id="ngTabview">
+					<p:tab id="ngBasic" title="#{i18n.ngTabBasic}">
+							<p:panelGrid id="panelGridForm">
+							<p:row>
+									<p:column width="10%" style="text-align: right">
+										<p:outputLabel id="keyLabel" value="#{i18n['config.label.key']}:" />
+									</p:column>
+									<p:column width="90%" colspan="5">
+										<p:outputLabel id="key" value="#{defaultMBean.entity.key}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column width="10%" style="text-align: right">
+										<p:outputLabel id="descriptionLabel" value="#{i18n['config.label.description']}:" />
+									</p:column>
+									<p:column width="90%" colspan="5">
+										<p:outputLabel id="description" value="#{defaultMBean.entity.key}" converter="#{ngConfigurationConverter}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column width="10%" style="text-align: right">
+										<p:outputLabel for="configTextArea" value="#{i18n['config.label.value']}:" rendered="#{defaultMBean.entity.converter != 'boolean' and defaultMBean.entity.converter != 'secret' and defaultMBean.entity.converter != 'secret_encrypted' and defaultMBean.entity.converter != 'integer' and defaultMBean.entity.key != 'certificate.validation.time' and defaultMBean.entity.key != 'certificate.type'}" />
+										<p:outputLabel for="configInput" value="#{i18n['config.label.value']}:" rendered="#{defaultMBean.entity.converter eq 'integer' and defaultMBean.entity.key != 'execution.environment'  and defaultMBean.entity.key != 'sefaz.messages.storage.type'}" />
+										<p:outputLabel for="configInputMask" value="#{i18n['config.label.value']}:" rendered="#{defaultMBean.entity.key eq 'certificate.validation.time'}" />
+										<p:outputLabel for="booleanValue" value="#{i18n['config.label.value']}:" rendered="#{defaultMBean.entity.converter == 'boolean'}" />
+										<p:outputLabel for="secretValue" value="#{i18n['config.label.value']}:" rendered="#{defaultMBean.entity.converter eq 'secret' or defaultMBean.entity.converter eq 'secret_encrypted'}" />
+									</p:column>
+									<p:column width="89%" colspan="5">
+										<p:inputText id="configInput" value="#{defaultMBean.entity.value}" maxlength="1000" required="true" rendered="#{defaultMBean.entity.converter eq 'integer' and defaultMBean.entity.key != 'execution.environment'  and defaultMBean.entity.key != 'sefaz.messages.storage.type'}" validatorMessage="#{i18n['ngconfiguration.validator.number.positive']}">
+											<f:validateRegex pattern="[0-9]+" disabled="#{defaultMBean.entity.key eq 'history.month.before'}" />
+										</p:inputText>
+										<p:inputTextarea id="configTextArea" rows="5" cols="100"
+											value="#{defaultMBean.entity.value}"
+											counter="remainingCounter" maxlength="1000"
+											counterTemplate="{0} caracteres restantes."
+											autoResize="false" required="true" 
+											rendered="#{defaultMBean.entity.converter != 'boolean' and defaultMBean.entity.converter != 'secret' and defaultMBean.entity.converter != 'secret_encrypted' and defaultMBean.entity.converter != 'integer' and defaultMBean.entity.key != 'certificate.validation.time' and defaultMBean.entity.key != 'certificate.type'}" style="resize:none"/>
+											<p:inputMask id="configInputMask" mask="99:99" value="#{defaultMBean.entity.value}" size="4" required="true" rendered="#{defaultMBean.entity.key eq 'certificate.validation.time'}" validatorMessage="#{i18n['ngconfiguration.validator.time.format']}" >
+												<f:validateRegex pattern="^([0-1][0-9]|[2][0-3]):([0-5][0-9])$"></f:validateRegex>
+											</p:inputMask>
+											<!-- Certificate Type -->
+											<p:selectOneMenu id="certificateType" value="#{defaultMBean.entity.value}" style="width:125px"  
+															 rendered="#{defaultMBean.entity.key eq 'certificate.type'}">
+									            <f:selectItem itemLabel="#{i18n['certificate.type.nome']}" itemValue="NONE" />
+									            <f:selectItem itemLabel="#{i18n['certificate.type.file']}" itemValue="FILE" />
+									            <f:selectItem itemLabel="#{i18n['certificate.type.jce']}" itemValue="JCE" />
+									            <f:selectItem itemLabel="#{i18n['certificate.type.pkcs']}" itemValue="PKCS" />
+									        </p:selectOneMenu>
+											<!-- Execution Environment -->
+											<p:selectOneMenu id="executionEnvironment" value="#{defaultMBean.entity.value}" style="width:125px"  
+															 rendered="#{defaultMBean.entity.key eq 'execution.environment'}">
+									            <f:selectItem itemLabel="#{i18n['executionenvironment.prod']}" itemValue="1" />
+									            <f:selectItem itemLabel="#{i18n['executionenvironment.homo']}" itemValue="2" />
+									            <f:selectItem itemLabel="#{i18n['executionenvironment.simu']}" itemValue="3" />
+									        </p:selectOneMenu>
+									        <!-- Storage Type -->
+											<p:selectOneMenu id="storageType" value="#{defaultMBean.entity.value}" style="width:155px"  
+															 rendered="#{defaultMBean.entity.key eq 'sefaz.messages.storage.type'}">
+									            <f:selectItem itemLabel="#{i18n['storagetype.bd']}" itemValue="0" />
+									            <f:selectItem itemLabel="#{i18n['storagetype.file']}" itemValue="1" />
+									            <f:selectItem itemLabel="#{i18n['storagetype.nsn']}" itemValue="2" />
+									        </p:selectOneMenu>
+									        <h:panelGroup>
+											<p:selectBooleanCheckbox id="booleanValue" value="#{defaultMBean.entity.value}"	required="true" rendered="#{defaultMBean.entity.converter == 'boolean'}"  disabled="#{defaultMBean.disableCheck}" />
+									        <h:panelGroup rendered="#{defaultMBean.disableCheck}">
+													<ngComp:ngHelp id="ng-help" messageHelp="#{defaultMBean.entity.key eq 'enable.nsn.storage' ? i18n['ngconfiguration.help.disable.nsn'] : i18n['ngconfiguration.help.enabled.nsn']}" />
+									        </h:panelGroup>
+									        </h:panelGroup> 
+											
+											<p:password id="secretValue" value="#{defaultMBean.entity.value}"
+												match="secretValueConfirm" feedback="true"
+												promptLabel="#{i18n['config.label.password']}"
+												weakLabel="#{i18n['config.label.password.weakLabel']}"
+												goodLabel="#{i18n['config.label.password.goodLabel']}"
+												strongLabel="#{i18n['config.label.password.strongLabel']}"
+												required="true"
+												maxlength="100"
+												rendered="#{defaultMBean.entity.converter eq 'secret' or defaultMBean.entity.converter eq 'secret_encrypted'}" />
+												<p:keyFilter for="configInput" mask="num"/>
+									</p:column>
+									<p:column width="1%"></p:column>
+									<p:column width="1%"></p:column>
+								</p:row>
+								<p:row>
+									<p:column width="10%" style="text-align: right">
+										<p:outputLabel for="secretValueConfirm" value="#{i18n['config.label.password.confirm']}:" rendered="#{defaultMBean.entity.converter eq 'secret' or defaultMBean.entity.converter eq 'secret_encrypted'}" />
+									</p:column>
+									<p:column width="89%" colspan="5"
+										rendered="#{defaultMBean.entity.converter eq 'secret' or defaultMBean.entity.converter eq 'secret_encrypted'}">
+										<p:password id="secretValueConfirm" value="#{defaultMBean.entity.value}" required="true" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column width="10%"></p:column>
+									<p:column width="90%" colspan="6">
+										<h:outputText id="remainingCounter" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column colspan="6">
+										<p:spacer height="0" />
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+							<p:focus context="panelGridForm	" />
+					</p:tab>
+				</p:tabView>
+			</ng:ngFormEdit>
+     		</ui:define>
+</ui:composition>

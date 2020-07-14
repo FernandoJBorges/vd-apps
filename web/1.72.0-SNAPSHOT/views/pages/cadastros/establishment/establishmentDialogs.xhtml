@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:dialog="http://java.sun.com/jsf/composite/common/component/dialog"
+	xmlns:ngCommon="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:dialogEstab="http://java.sun.com/jsf/composite/dialog"
+	>
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{establishmentMB}" />
+		<!-- DIALOG - ESTABELECIMENTO MATRIZ -->
+		<dialogEstab:dialogEstablishment id="zoomEstUser" 
+										defaultMBs="#{establishmentMB}" 
+										updateField=":zoomEstUser:zoomEstUserForm:zoomEstUsertbStabelecimento" 
+										enabledSelectionMode="false" 
+										renderBtnSelectAll="false" />
+			
+		<h:form id="ng-form-select-cte" prependId="false">
+			<!-- DIALOG - CERTIFICATE -->
+			<dialog:ngDialogWarn id="showInfoAutenticMutua" 
+								header="#{i18n['popup.msg.warn']}"
+								widgetVar="showInfoAutenticMutua">
+								<p:outputLabel value="#{i18n['establishment.msg.warn.autentic.mutua']}" />
+			</dialog:ngDialogWarn>
+			<!-- DIALOG - CTE -->
+			<dialog:ngDialogConfirm 
+									id="confirmDeselectCTe"
+									enableBtnAction="true"
+									header="#{i18n['popup.msg.warn']}"
+									widgetVar="confirmDeselectCTe"
+									titleBtn="#{i18n['btn_action_yes']}"
+									titleBtnCancel="#{i18n['btn_action_cancel']}"
+									btnActionConfirm="#{establishmentSolutionMB.confirmDeselectCTe('CONFIRM')}"
+									btnActionCancel="#{establishmentSolutionMB.confirmDeselectCTe('CANCEL')}"
+									>
+									<p:outputLabel value="#{i18n['establishment.msg.popup.deselectcte']}" />
+			</dialog:ngDialogConfirm>
+			<!-- DIALOG - NFE -->
+			<dialog:ngDialogConfirm id="confirmDeselectNfe"
+									header="#{i18n['popup.msg.warn']}"
+									widgetVar="confirmDeselectNfe"
+									enableBtnAction="true"
+									titleBtn="#{i18n['btn_action_yes']}"
+									titleBtnCancel="#{i18n['btn_action_cancel']}"
+									btnActionConfirm="#{establishmentSolutionMB.confirmDeselectNFE('CONFIRM')}"
+									btnActionCancel="#{establishmentSolutionMB.confirmDeselectNFE('CANCEL')}"
+									>
+									<p:outputLabel value="#{i18n['establishment.msg.popup.deselectnfe']}" />
+			</dialog:ngDialogConfirm>
+			<!-- DIALOG - MDFE -->
+			<dialog:ngDialogConfirm id="confirmDeselectMdfe" 
+									header="#{i18n['popup.msg.warn']}" 
+									widgetVar="confirmDeselectMdfe" 
+									enableBtnAction="true"
+									titleBtn="#{i18n['btn_action_yes']}"
+									titleBtnCancel="#{i18n['btn_action_cancel']}"
+									btnActionConfirm="#{establishmentSolutionMB.confirmDeselectMDFE('CONFIRM')}"
+									btnActionCancel="#{establishmentSolutionMB.confirmDeselectMDFE('CANCEL')}"
+									>
+									<p:outputLabel value="#{i18n['establishment.msg.popup.deselectmdfe']}" />
+			</dialog:ngDialogConfirm>
+			<!-- DIALOG - NFCE -->
+			<dialog:ngDialogConfirm id="confirmDeselectNfce"
+									header="#{i18n['popup.msg.warn']}" 
+									widgetVar="confirmDeselectNfce"
+									 
+									enableBtnAction="true"
+									titleBtn="#{i18n['btn_action_yes']}"
+									titleBtnCancel="#{i18n['btn_action_cancel']}"
+									btnActionConfirm="#{establishmentSolutionMB.confirmDeselectNFCE('CONFIRM')}"
+									btnActionCancel="#{establishmentSolutionMB.confirmDeselectNFCE('CANCEL')}"
+									>
+									<p:outputLabel value="#{i18n['establishment.msg.popup.deselectnfce']}" />
+			</dialog:ngDialogConfirm>
+			<!-- DIALOG - CONFIRM UPLOAD XSL -->
+			<dialog:ngDialogConfirm id="confirmUploadXSL"
+									header="#{i18n['popup.msg.warn']}" 
+									widgetVar="confirmUploadXSL"
+									 
+									enableBtnAction="true"
+									titleBtn="#{i18n['btn_action_yes']}"
+									titleBtnCancel="#{i18n['btn_action_cancel']}"
+									btnActionConfirm="#{queueMB.overideUploadXSL('CONFIRM')}"
+									btnActionCancel="#{queueMB.overideUploadXSL('CANCEL')}"
+									>
+									<p:outputLabel value="#{i18n['establishment.queue.msg.popup.uploadxsl']}" />
+			</dialog:ngDialogConfirm>
+
+			<!-- DIALOG - CONFIRM UPLOAD TCL -->
+			<dialog:ngDialogConfirm id="confirmUploadTCL"
+									header="#{i18n['popup.msg.warn']}" 
+									widgetVar="confirmUploadTCL"
+									 
+									enableBtnAction="true"
+									titleBtn="#{i18n['btn_action_yes']}"
+									titleBtnCancel="#{i18n['btn_action_cancel']}"
+									btnActionConfirm="#{queueMB.overideUploadTCL('CONFIRM')}"
+									btnActionCancel="#{queueMB.overideUploadTCL('CANCEL')}"
+									>
+									<p:outputLabel value="#{i18n['establishment.queue.msg.popup.uploadtcl']}" />
+			</dialog:ngDialogConfirm>
+			<dialog:ngDialogConfirm id="dlConfirmRemoveRegister"
+									header="#{i18n['popup.msg.warn']}" 
+									widgetVar="dlConfirmRemoveRegister" 
+									width="280"  titleBtn="#{i18n['btn_action_yes']}"
+		 							btnActionConfirm="#{establishmentIETabMB.removeInsEst}"
+		 							>
+									<p:outputLabel value="#{i18n['establishment.inscricao.estadual.msg.delete']}" />
+		 	</dialog:ngDialogConfirm>
+		 						
+		 	<!-- disable regras matriz - Ao desmarcar essa solução a opção de utilização de 'Regras, Notificações e Filas' da Matriz também foram desmarcadas. -->
+			<dialog:ngDialogConfirm 
+									 
+									id="roleMatrizWidgetVar"
+									widgetVar="roleMatrizWidgetVar"
+									enableBtnAction="true"
+									header="#{i18n['popup.msg.warn']}"
+									titleBtn="#{i18n['btn_action_yes']}"
+									titleBtnCancel="#{i18n['btn_action_cancel']}"
+									btnActionConfirm="#{establishmentMatrizMB.cancelEnableNotifyRuleQueueMatriz('CONFIRM')}"
+									btnActionCancel="#{establishmentMatrizMB.cancelEnableNotifyRuleQueueMatriz('CANCEL')}"
+									>
+									<p:outputLabel value="#{establishmentMB.establishmentSolutionVO.msgDialog}" />
+			</dialog:ngDialogConfirm>
+			<dialog:ngDialogConfirm 
+									 
+									id="solucitonMatrizWidgetVar"
+									widgetVar="solucitonMatrizWidgetVar"
+									enableBtnAction="true"
+									header="#{i18n['popup.msg.warn']}"
+									titleBtn="#{i18n['btn_action_yes']}"
+									titleBtnCancel="#{i18n['btn_action_cancel']}"
+									btnActionConfirm="#{establishmentMatrizMB.cancelEnableSoluctionsMatriz('CONFIRM')}"
+									btnActionCancel="#{establishmentMatrizMB.cancelEnableSoluctionsMatriz('CANCEL')}"
+									>
+									<p:outputLabel value="#{establishmentMB.establishmentSolutionVO.msgDialog}" />
+			</dialog:ngDialogConfirm>
+			<dialog:ngDialog id="showInfoAuditorNfe" 
+								widgetVar="showInfoAuditorNfe" 
+								registerButtonAction="#{establishmentMB.nfeAuditorTab.selectNfeAuditor}"
+		 					 	header="#{i18n['popup.msg.warn']}" 
+		 					 	update=":ng-form:ngFormEdit:ngTabview:nfeAuditorServicePanel" 
+		 					 	titleBtn="#{i18n['btn_action_ok']}">
+									<p:outputLabel value="#{i18n['establishment.msg.nfeAuditor.popup.matrixWithoutNfeAuditorService']}" />
+		 	</dialog:ngDialog>
+			
+		</h:form>
+		<script type="text/javascript">
+			function start() {
+				PF('statusDialog').show();
+			}
+
+			function stop() {
+				PF('statusDialog').hide();
+			}
+		</script>
+</ui:composition>

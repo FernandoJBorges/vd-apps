@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:p="http://primefaces.org/ui">
+	<p:importEnum type="com.neogrid.sped.enums.DocType"/>
+	<ui:param name="defaultMB" value="#{addresseMB}" />
+	<div id="rule-tree-#{tabDoctype}" class="ui-g-12" >
+     	<p:treeTable id="sorted-#{tabDoctype}" value="#{treeTableMB.getTreeNode(tabDoctype)}" var="row" nodeVar="node" class="ng-treetable" editable="true">
+		<p:ajax event="rowEdit" listener="#{defaultMBean.onRowEdit}"  onsuccess="PrimeFaces.scrollTo('ng-page-content')" />
+		<p:ajax event="rowEditCancel" update=":messages" />
+		<p:column headerText="#{i18n['establishment.rules.title']}" class="row-rules">
+			<h:outputText value="#{row.name}" />
+			<ngComp:ngHelp messageHelp="#{row.description}"
+				rendered="#{treeTableMB.dadIsNotNull(row.ruleDadUID)}"
+				styleClass="rule-edit-fa-question" />
+		</p:column>
+		<p:column headerText="#{i18n['establishment.rules.process']}" id="column-process">
+			<h:outputText id="processType" value="#{row.ruleUID}">
+				<f:converter converterId="ruleProcessTypeConverter" />
+				<f:attribute name="docType" value="#{row.docType}" />
+				<f:attribute name="ruleDadUID" value="#{row.ruleDadUID}" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="#{i18n['establishment.rules.value']}">
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{(row.booleanValue ne null ? row.booleanValue : row.defaultValue) eq false ? i18n['lbl_no'] : i18n['lbl_yes']}"
+						rendered="#{row.type eq 1}" />
+					<h:outputText value="#{row.integerValue ne null ? row.integerValue : row.defaultValue}"
+						rendered="#{row.type eq 2}" />
+					<h:outputText value="#{row.stringValue ne null ? row.stringValue : row.defaultValue}"
+						rendered="#{row.type eq 3}" />
+				</f:facet>
+				<f:facet name="input">
+					<p:selectBooleanCheckbox rendered="#{row.type eq 1}" value="#{row.booleanValue}" 
+							valueChangeListener="#{defaultMBean.setBooleanRowEdit(row)}" />
+					<p:inputText rendered="#{row.type ne 1}" value="#{row.defaultValue}" />
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+		<p:column headerText="#{i18n['establishment.rules.type']}">
+			<h:outputText value="#{row.unit}" />
+		</p:column>
+		<p:column class="row-editor">
+			<p:rowEditor rendered="#{rendererEditButton and treeTableMB.dadIsNotNull(row.ruleDadUID)}" />
+		</p:column>
+	</p:treeTable>
+	</div>
+</ui:composition>

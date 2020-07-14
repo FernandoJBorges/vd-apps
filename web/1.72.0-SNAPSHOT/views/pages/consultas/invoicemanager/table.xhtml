@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+	<ui:param name="defaultMBean" value="#{invoiceMB}" />
+	<ui:param name="documentListMBean" value="#{invoiceListMB}" />
+	<ui:param name="icon" value=".icon" />
+	<ui:param name="tooltip" value=".tooltip" />
+	<ui:include src="../document/columns/emissionType.xhtml" />
+	<p:column id="columnManifestType" styleClass="ng-column-tma"
+		exportable="false" toggleable="false"
+		rendered="#{documentListMBean.renderedManifestTypeColumn()}">
+		<f:facet name="header">
+			<h:outputText value="#{i18n['invoice.label.column.header.manifest']}"
+				title="#{i18n['invoice.label.column.header.title.manifest']}"
+				styleClass="ng-cursor-pointer" />
+		</f:facet>
+		<li id="manifestType"
+			class="#{documentListMBean.getManifestTypeIconOrTooltip(row.sitConf, icon)} ng-tma-font-size"
+			style="cursor: default"
+			title="#{documentListMBean.getManifestTypeIconOrTooltip(row.sitConf, tooltip)}">
+		</li>
+	</p:column>
+	<p:column id="columnFiscalValidationResult" styleClass="ng-column-tma"
+		exportable="false" toggleable="false"
+		rendered="#{documentListMBean.renderedFiscalAuditColumn()}">
+		<f:facet name="header">
+			<h:outputText value="#{i18n['invoice.label.column.header.audit']}"
+				title="#{i18n['invoice.label.column.header.title.audit']}"
+				styleClass="ng-cursor-pointer" />
+		</f:facet>
+		<p:commandLink id="fiscalValidationResult"
+			styleClass="#{documentListMBean.getFiscalValidationOccurrTypeIconOrTooltip(row.fiscalValidationResult, icon)} ng-tma-font-size #{row.fiscalValidationResult}"
+			title="#{documentListMBean.getFiscalValidationOccurrTypeIconOrTooltip(row.fiscalValidationResult, tooltip)}"
+			action="#{documentListMBean.handleFiscalValid(row)}">
+			<f:setPropertyActionListener target="#{defaultMBean.entity}"
+				value="#{row}" />
+		</p:commandLink>
+	</p:column>
+	<ui:include src="../document/columns/serialNumber.xhtml" />
+	<ui:include src="../document/columns/documentNumber.xhtml" />
+	<ui:include src="../document/columns/issueDate.xhtml" />
+	<ui:include src="../document/columns/processingDate.xhtml" />
+	<ui:include src="../document/columns/statusDescription.xhtml" />
+	<ui:include src="../document/columns/drawerState.xhtml" />
+	<ui:include src="../document/columns/drawer.xhtml" />
+	<ui:include src="../document/columns/addresse.xhtml">
+		<ui:param name="headerAddresse" value="#{i18n['invoice.label.addresse']}"></ui:param>
+		<ui:param name="addresseName" value="#{row.addresse.name}" />
+		<ui:param name="addresseID" value="#{row.addresse.establishmentID}" />
+	</ui:include>
+	
+	<p:column id="columnCarrierName"
+			headerText="#{i18n['invoice.label.carrier']}"
+			styleClass="ng-truncate-column document-carrier-column" 
+			priority="6">
+			<h:outputText id="carrierName" 
+						value="#{row.carrier.name}" 
+						title="#{row.carrier.establishmentID}" 
+						styleClass="ng-truncate-output" />
+	</p:column>
+	<ui:include src="../document/columns/details.xhtml" />
+	<p:column id="columnDANFE" 
+			styleClass="ng-column-action"
+			exportable="false" 
+			toggleable="false"
+			rendered="#{documentListMBean.renderedPrintColumn()}">
+			<p:commandLink id="auxiliaryDocument"
+					action="#{defaultMBean.actionEvent('downloadDA')}"
+					global="false" 
+					ajax="false"
+					disabled="#{!documentListMBean.isPrintEnabled(row)}"
+					immediate="true">
+					<span title="#{i18n['invoice.label.danfe']}" class="icon-print ng-icon"></span>
+					<f:setPropertyActionListener target="#{defaultMBean.entity}" value="#{row}" />
+			</p:commandLink>
+	</p:column>	
+	<p:column id="columnXML" 
+			styleClass="ng-column-action"
+			exportable="false" 
+			toggleable="false"
+			rendered="#{documentListMBean.renderedDownloadXmlColumn()}">
+			<p:commandLink id="XML"
+					action="#{defaultMBean.prepareDocumentDownload(row)}"
+					disabled="#{!row.xmlAssociate}"
+					ajax="false"
+					onclick="updateMessages()"
+					update=":messages :ng-form:ng-detail-dataTable:ng-data-table :ng-form :ng-panel-crud-dialog"
+					immediate="true">
+					<span title="#{i18n['document.tooltip.download.xml']}" class="icon-download-file ng-icon"></span>					
+			</p:commandLink>
+	</p:column>	
+</ui:composition>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/table"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+
+	<div class="ui-g-12 document-detail-column">
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['mdfe.label.modal']}:" /><br/>
+			<h:outputText value="#{i18n[utils:getEnumQualifiedName(detail.modal)]}" />
+		</div>
+
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['mdfe.label.modal.rntrc']}:" /><br/>
+			<h:outputText value="#{detail.rntrc}" />
+		</div>
+	</div>
+
+	<div class="ui-g-12">
+		<ng:ngSimpleDataTable value="#{detail.tractionVehicles}" rendered="#{!detail.tractionVehicles.isEmpty()}" emptyMessage="Nenhum item encontrado">
+			<p:column headerText="#{i18n['mdfe.label.modal.traction.license']}">
+				<h:outputText value="#{row.license}" />
+			</p:column>
+			<p:column headerText="#{i18n['mdfe.label.modal.traction.tare']}">
+				<h:outputText value="#{row.tare}" />
+			</p:column>
+			<p:column headerText="#{i18n['mdfe.label.modal.traction.wheel']}">
+				<h:outputText value="#{i18n[utils:getEnumQualifiedName(row.wheel).concat('.code')]}" />
+			</p:column>
+			<p:column headerText="#{i18n['mdfe.label.modal.traction.body']}">
+				<h:outputText value="#{i18n[utils:getEnumQualifiedName(row.body).concat('.code')]}" />
+			</p:column>
+			<p:column headerText="#{i18n['mdfe.label.modal.traction.state']}">
+				<h:outputText value="#{row.state}" />
+			</p:column>
+			<p:column headerText="#{i18n['mdfe.label.modal.vehicle.ownerid']}">
+				<h:outputText value="#{row.ownerID}" />
+			</p:column>
+			<p:column headerText="#{i18n['mdfe.label.modal.vehicle.ownername']}">
+				<h:outputText value="#{row.ownerName}" />
+			</p:column>
+		</ng:ngSimpleDataTable>
+	</div>
+	
+	<div class="ui-g-12">
+		<ng:ngSimpleDataTable value="#{detail.drivers}" rendered="#{!detail.drivers.isEmpty()}" emptyMessage="Nenhum item encontrado">
+			<p:column headerText="#{i18n['mdfe.label.modal.driver.id']}">
+				<h:outputText value="#{row.id}" />
+			</p:column>
+			<p:column headerText="#{i18n['mdfe.label.modal.driver.name']}">
+				<h:outputText value="#{row.name}" />
+			</p:column>
+		</ng:ngSimpleDataTable>
+	</div>
+	
+	<div class="ui-g-12">
+		<ng:ngSimpleDataTable value="#{detail.tows}" rendered="#{!detail.tows.isEmpty()}" emptyMessage="Nenhum item encontrado">
+			<p:column headerText="#{i18n['mdfe.label.modal.tow.license']}">
+				<h:outputText value="#{row.license}" />
+			</p:column>
+			<p:column headerText="#{i18n['mdfe.label.modal.tow.tare']}">
+				<h:outputText value="#{row.tare}" />
+			</p:column>
+			<p:column headerText="#{i18n['mdfe.label.modal.tow.body']}">
+				<h:outputText value="#{i18n[utils:getEnumQualifiedName(row.body).concat('.code')]}" />
+			</p:column>
+			<p:column headerText="#{i18n['mdfe.label.modal.tow.state']}">
+				<h:outputText value="#{row.state}" />
+			</p:column>
+			<p:column headerText="#{i18n['mdfe.label.modal.vehicle.ownerid']}">
+				<h:outputText value="#{row.ownerID}" />
+			</p:column>
+			<p:column headerText="#{i18n['mdfe.label.modal.vehicle.ownername']}">
+				<h:outputText value="#{row.ownerName}" />
+			</p:column>
+		</ng:ngSimpleDataTable>
+	</div>
+
+</ui:composition>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/crud">
+	<ui:param name="defaultMBean" value="#{establishmentIETabMB}" />	
+	
+	
+	<p:outputPanel id="panelIEst">
+			<div class="ng-dialgo-btn">
+				<p:commandButton 	id="btn-render-ie" 
+									icon="fa fa-plus"  
+									action="#{defaultMBean.enableAddIEHandle}" 
+									value="#{i18n['establishmenttoken.label.btn.newie']}" 
+									styleClass="ng-ui-button" process="@this" 
+									update=":ng-form:ngFormEdit:ngTabview:panelIEst :ng-form:ngFormEdit:ngTabview:panelEstabAquaTb" 
+									rendered="#{!establishmentMB.establishmentSolutionVO.enableAddIE}" 
+				/>
+			</div>
+	
+		<p:panelGrid id="inscrEstdPanel" columns="2" columnClasses="column1,column2"  rendered="#{establishmentMB.establishmentSolutionVO.enableAddIE}">
+			<p:outputLabel for="sefazCteAq" value="#{i18n['establishment.label.sefaz']}" />
+			<p:selectOneMenu id="sefazCteAq" value="#{defaultMBean.establishmentInscEst.sefazUID}"  style="min-width:180px" panelStyle="min-width:100px" >
+				<f:selectItem itemValue="" itemLabel="Selecionar" />
+				<f:selectItems value="#{establishmentMB.establishmentSolutionVO.sefazInscEstList}" var="cte" itemValue="#{cte.sefazUID}" itemLabel="#{cte.sefazID}" />
+			</p:selectOneMenu>
+				<p:outputLabel for="inscEstAqua" value="#{i18n['establishment.label.ie.placeholder']}" />
+				<h:panelGroup>
+						<p:inputText id="inscEstAqua" value="#{defaultMBean.establishmentInscEst.stateInscription}" maxlength="14" style="min-width:173px" />
+						<p:keyFilter for="inscEstAqua" mask="num" />
+				</h:panelGroup>
+				<p:spacer></p:spacer>
+				<h:panelGroup>
+				<p:commandButton id="ng-btn-add-ie" 
+								partialSubmit="true" 
+								icon="fa fa-plus" 
+								styleClass="ng-ui-button" 
+								value="#{i18n['btn_action_include']}"
+								action="#{defaultMBean.addInsEst}" 
+								process=":ng-form:ngFormEdit:ngTabview:inscrEstdPanel"
+								update=":ng-form:ngFormEdit:ngTabview:panelEstabAquaTb :ng-form:ngFormEdit:ngTabview:panelIEst :messages" 
+								/>
+				<p:commandButton id="btn-close-ie" 
+								icon="fa fa-power-off"  
+								action="#{defaultMBean.enableAddIEHandle}"
+								value="#{i18n['btn_action_cancel']}" 
+								styleClass="ng-ui-button" 
+								process="@this" 
+								update=":ng-form:ngFormEdit:ngTabview:panelIEst :messages" />
+				</h:panelGroup>
+		</p:panelGrid>
+		<p:focus id="inscrEstdFocus" context="inscrEstdPanel" />
+		
+	</p:outputPanel>
+		<p:outputPanel id="panelEstabAquaTb">
+			<p:outputPanel styleClass="ng-emptyList clearfix" rendered="#{!establishmentMB.establishmentSolutionVO.enableAddIE and empty establishmentMB.sefazIeRelBOs}">
+				<p:graphicImage library="common" name="img/icons/lbl-pageWarning.png" /> 
+				#{i18n['establishmentie.list.empty']}
+			</p:outputPanel>
+			<h:outputStylesheet id="dynaFormCSS">  
+			.ngSelect .ui-selectonemenu-trigger{display:none}
+			.panelStyleClass .ui-selectonemenu-items-wrapper{overflow-y: scroll};
+			</h:outputStylesheet>
+			<p:dataTable id="estabAquaTb" value="#{establishmentMB.sefazIeRelBOs}" var="row" editable="true" rendered="#{not empty establishmentMB.sefazIeRelBOs}">
+				<p:column  headerText="#{i18n['establishment.label.sefaz']}" >  
+		            <p:cellEditor>  
+		                <f:facet name="output">  
+			                <p:selectOneMenu id="sefazOut" value="#{row.sefazUID}" disabled="true" styleClass="ngSelect" style="background:transparent;border:0px;opacity: 100;">
+								<f:selectItem itemValue="" itemLabel="Selecionar" />
+								<f:selectItems value="#{establishmentMB.establishmentSolutionVO.sefazInscEstList}" var="cte" itemValue="#{cte.sefazUID}" itemLabel="#{cte.sefazID}" />
+							</p:selectOneMenu>
+		                </f:facet>  
+		                <f:facet name="input">  
+			                <p:selectOneMenu id="sefazIn" value="#{row.sefazUID}" disabled="#{sec:areNotGranted('ROLE_SYSTEM_ADMIN, ROLE_SUPPORT')}" style="min-width: 150px" panelStyleClass="panelStyleClass">
+								<f:selectItem itemValue="" itemLabel="Selecionar" />
+								<f:selectItems value="#{establishmentMB.establishmentSolutionVO.sefazInscEstList}" var="cte" itemValue="#{cte.sefazUID}" itemLabel="#{cte.sefazID}" />
+							</p:selectOneMenu>
+		                </f:facet>  
+		            </p:cellEditor>  
+		        </p:column>  
+			        
+				<p:column  headerText="#{i18n['establishment.label.ie.placeholder']}" >  
+		            <p:cellEditor>  
+		                <f:facet name="output">  
+		                    <h:outputText value="#{row.stateInscription}" /> 
+		                </f:facet>  
+		                <f:facet name="input">  
+		                    <p:inputText id="inscEstAquaTb" value="#{row.stateInscription}" required="true" maxlength="14" />
+		                    <p:keyFilter for="inscEstAquaTb" mask="num" />
+		                </f:facet>  
+		            </p:cellEditor>  
+		        </p:column>  
+				<p:column style="width:32px">
+					  <p:rowEditor />
+				</p:column>
+				<p:column style="width:30px">
+		 			<p:commandLink id="ng-btn-remove-insc" styleClass="ng-page-footer"  onclick="PF('dlConfirmRemoveRegister').show();" title="#{i18n['tooltip.commandLink.delete']}" update=":ng-form:ngFormEdit:ngTabview:estabAquaTb" immediate="true">
+						<i class="fa fa-times-circle"></i>
+					<f:setPropertyActionListener value="#{row}" target="#{defaultMBean.establishmentInscEst}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</p:outputPanel>
+				
+</ui:composition>

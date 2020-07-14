@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div class="ui-g-12 document-detail-column">
+		<!-- Formato de Impressão do DANFE -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['invoice.label.details.danfe.print.format']}:" /><br/>
+			<h:outputText converter="#{printFormatConverter}" value="#{additionalInformation.printFormat}" />
+		</div>
+	</div>
+
+	<div class="ui-g-12 document-detail-column">
+		<!-- Informações Complementares de Interesse do Contribuinte -->
+		<div class="ui-g-12 document-additional-information">
+			<p:outputLabel value="#{i18n['invoice.label.details.danfe.additional.information.cont']}:" /><br/>
+			<h:inputTextarea rows="5" cols="100" readonly="true" value="#{additionalInformation.description}" />
+		</div>
+	</div>
+
+	<div class="ui-g-12 document-detail-column">
+		<!-- Chaves de Acesso de EPEC Não Conciliados -->
+		<div class="ui-g-12 document-additional-information">
+			<p:outputLabel value="#{i18n['invoice.label.details.danfe.additional.information.epec']}:" /><br/>
+			<h:inputTextarea rows="5" cols="100" readonly="true" value="#{additionalInformation.pendingAccessKeys}" />
+		</div>
+	</div>
+
+</ui:composition>

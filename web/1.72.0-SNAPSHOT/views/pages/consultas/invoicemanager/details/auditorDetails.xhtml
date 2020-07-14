@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:ngDataTable="http://java.sun.com/jsf/composite/common/component/view/table">
+	<ui:param name="defaultMBean" value="#{invoiceMB}" />
+	<ui:param name="serialNumber" value="#{defaultMBean.entity.serialNumber}" />
+	<ui:param name="documentNumber" value="#{defaultMBean.entity.documentNumber}" />
+	<ui:param name="titleView" value="#{i18n['docFiscalValid.label.title.view.details']}" />
+	<ui:param name="iconClass" value="#{invoiceListMB.getFiscalValidationOccurrTypeIconOrTooltip(defaultMBean.entity.fiscalValidationResult, '.icon')}" />
+	<ng:ngDetails id="ng-header-details" titleView="#{titleView} #{serialNumber} / #{documentNumber}" renderedActions="true">
+		<ngDataTable:ngSimpleDataTable id="ng-datatable-details"
+			iconClass="#{iconClass}"
+			pageBean="#{invoiceMB}"
+			value="#{invoiceMB.nfeAuditorOccurrences}"
+			emptyMessage="#{defaultMBean.eventDescriptionAuditorOccurrences}">
+			
+			<p:column style="width:16px">
+				<p:rowToggler />
+			</p:column>
+			
+			
+			<p:column id="typeOccurrence" headerText="Tipo de Ocorrência">
+				<h:outputText
+					value="#{invoiceListMB.getFiscalValidationOccurrTypeDescription(row.occurrType, '.shortname')}" />
+			</p:column>
+			<p:column headerText="Número #{i18n['docFiscalValid.label.item']}">
+				<h:outputText value="#{row.occurrItem}" />
+			</p:column>
+			<p:column headerText="Categoria" styleClass="ng-truncate-column"
+				style="max-width:20ex">
+				<h:outputText value="#{row.occurrCode}"
+					styleClass="ng-truncate-output" />
+			</p:column>
+			<p:column headerText="#{i18n['docFiscalValid.label.ocorrencia']}"
+				styleClass="ng-truncate-column" style="max-width:20ex">
+				<h:outputText value="#{row.occurrName}" title="#{row.occurrName}"
+					styleClass="ng-truncate-output" />
+			</p:column>
+			<p:column headerText="#{i18n['docFiscalValid.label.xml']}"
+				styleClass="ng-truncate-column" style="max-width:20ex">
+				<h:outputText value="#{row.occurrInfo}" title="#{row.occurrInfo}"
+					styleClass="ng-truncate-output" />
+			</p:column>
+			<p:column headerText="#{i18n['docFiscalValid.label.processo']}"
+				style="width:100px">
+				<h:outputText value="#{row.occurrDate}">
+					<f:convertDateTime type="date"
+						pattern="#{defaultMBean.layouts.DATE.format}" />
+				</h:outputText>
+			</p:column>
+			<p:rowExpansion>
+				<p:panelGrid columnClasses="column1" styleClass="ng-subtable"
+					style="width:100%;">
+					<p:column style="padding-top: 10px !important">
+						<p:outputLabel for="infoxml"
+							value="#{i18n['docFiscalValid.label.xml']}: "
+							styleClass="ng-font-weight-bold" />
+					</p:column>
+					<p:row />
+					<p:column>
+						<h:outputText id="infoxml" value="#{row.occurrInfo}"
+							title="#{row.occurrInfo}" />
+					</p:column>
+					<p:row />
+					<p:column style="padding-top: 10px !important">
+						<p:outputLabel value="#{i18n['docFiscalValid.label.descricao']}:"
+							styleClass="ng-font-weight-bold" />
+					</p:column>
+					<p:column>
+						<ui:repeat var="sug"
+							value="#{defaultMBean.occurrDescriptionDetail}">
+							<p:row>
+								<p:column>
+									<h:outputText value="#{sug}" />
+								</p:column>
+							</p:row>
+						</ui:repeat>
+					</p:column>
+					<p:column />
+				</p:panelGrid>
+			</p:rowExpansion>
+		</ngDataTable:ngSimpleDataTable>
+	</ng:ngDetails>
+</ui:composition>

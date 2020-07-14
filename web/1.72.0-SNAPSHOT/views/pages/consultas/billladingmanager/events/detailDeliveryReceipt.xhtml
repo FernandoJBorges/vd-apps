@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:comp="http://java.sun.com/jsf/composite/component"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:ngTabView="http://java.sun.com/jsf/composite/common/component/view/tabview"
+	xmlns:ngTab="http://java.sun.com/jsf/composite/common/component/view/table"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/custom">
+	<ui:param name="deliveryReceiptDetailMB" value="#{defaultMBean.getCTeDeliveryReceiptDetailMB()}" />
+	<ui:param name="deliveryReceiptDetailVO" value="#{defaultMBean.getCTeDeliveryReceiptDetailMB().getCteDeliveryReceiptDetailVO()}" />
+	<h:form id="delivery-receipt" prependId="true">
+		<p:outputPanel id="ng-cte-delivery-receipt-detail" rendered="#{deliveryReceiptDetailMB.isStateDeliveryReceipt()}">
+				<ng:ngFormEdit id="form-delivery-receipt"
+							titleView="#{i18n['document.delivery.receipt.label.title.view']} #{deliveryReceiptDetailVO.getSerialNumber().concat('/').concat(deliveryReceiptDetailVO.getDocumentNumber())}"
+							titleViewBegin="Visualizar "
+							mbean="#{deliveryReceiptDetailMB}" 
+							actionGoBack="goBackBillladingManagerSearch" 
+							update=":ng-form :ng-panel-crud-dialog :messages"
+							renderedSubmit="false">
+							<p:outputPanel id="panel-delivery-receipt" styleClass="ng-containner ng-containner-details">
+								<ui:include src="detailDeliveryReceipt/deliveryReceiptTab.xhtml" />
+							</p:outputPanel> 
+				</ng:ngFormEdit>  
+		</p:outputPanel>
+	</h:form>
+</ui:composition>

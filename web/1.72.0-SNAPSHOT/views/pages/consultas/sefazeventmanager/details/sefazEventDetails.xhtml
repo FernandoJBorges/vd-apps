@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component"
+	xmlns:ngTab="http://java.sun.com/jsf/composite/common/component/view/tabview"
+	template="/common/templates/blank/blank.xhtml">
+	<ui:param name="defaultMBean" value="#{SefazEventDetailsMB}" />
+	<ui:define name="content">
+		<h:outputStylesheet name="sefazeventdetails.css" library="css" />
+		<h:form id="documentDetailsForm" prependId="false">
+			<ng:ngTitleView id="nfeDetailsTitle" titleView="#{i18n['document.details.title']} #{defaultMBean.getTitleView()}" />
+			<ui:param name="tabViewOnDemand" value="#{defaultMBean.tabview}" />
+			<h:outputStylesheet name="highlight.css" library="css" />
+			<h:outputScript library="common" name="js/highlight/highlight.min.js" />
+			<h:outputScript library="common"  name="js/beautify/vkbeautify.0.99.00.beta.js" />
+			<ngTab:ngTabViewOnDemand id="ng-tabview-search" additionalUpdate=":messages">
+				<p:tab id="ng-tab-basic" title="#{i18n['invoice.label.general.info']}">
+					<ui:include src="sefazevent/tabs/general/generalDataTab.xhtml" />
+				</p:tab>
+				<p:tab id="ng-tab-xml" title="#{i18n['nfelayouttype.xml']}" rendered="#{defaultMBean.isXMLTabRendered()}">
+					<ui:include src="../../document/details/tabs/xmlMessageTab.xhtml" />
+ 				</p:tab>
+				<p:tab id="ng-tab-document-occurrences" title="#{i18n['invoice.label.details.occurences']}" rendered="true">
+					<ui:include src="../../document/details/tabs/documentOccurrencesTab.xhtml" />
+				</p:tab>
+			</ngTab:ngTabViewOnDemand>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:dialog="http://java.sun.com/jsf/composite/common/component/dialog"
+	template="/common/templates/search/ngSearchTemplate.xhtml">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{couponMBean}" />
+	<!-- bloco de pesquisa -->
+	<ui:define name="searchlistBlock">
+	<ng:ngViewSearch id="ng-search-comp" titleView="#{i18n['cfe.label.title']}">
+		<ui:include src="couponFilters.xhtml" id="ng-tabview-search" />
+	</ng:ngViewSearch>
+		<ng:ngSelectedActions id="ng-selected-actions">
+			<p:menuitem value="#{i18n['cfe.document.label.download']}"
+						icon="ng-btn-actions-select fa fa-download"
+						action="#{defaultMBean.actionEvent('DialogDownloadDocument')}"
+						update=":messages"
+						disabled="#{defaultMBean.filters.enableButtonActionSelected}" 
+						immediate="true" >
+			</p:menuitem>
+			<p:menuitem value="#{i18n['document.label.action.emails']}"
+						icon="ng-btn-actions-select fa fa-envelope" title="Em desenvolvimento"
+						action="#{defaultMBean.actionEvent('dlConfirmSendEmail')}"
+						styleClass="ng-linkEvent ng-link-invoice-erp"
+						disabled="#{defaultMBean.filters.enableButtonActionSelected}"  
+						update=":messages"
+						immediate="true" >
+			</p:menuitem>			
+		</ng:ngSelectedActions>		
+		<ng:ngDataTable id="ng-detail-dataTable" btnRenderSelection="true" customAction="true">
+				<ui:include src="couponTable.xhtml" />
+		</ng:ngDataTable>
+	</ui:define>
+	
+	<!-- bloco de detalhes -->
+	<ui:define name="searchViewDetailsBlock">
+		<ui:include src="details/couponDetails.xhtml" />
+	</ui:define>
+	
+	<ui:define name="addDialogBlock">
+		<h:form id="ng-download" prependId="true">
+			 <dialog:ngDialogConfirmDownload id="dialogDownloadDocument"
+	           width="350" 
+	           updateGrid=":messages :ng-form:ng-detail-dataTable:ng-data-table"
+	           widgetVar="DialogDownloadDocument" 
+	           header="#{i18n['cfe.label.download.dialog.title']}">
+	           			<p:outputLabel value="#{i18n['cfe.label.download.hint']}" />	
+	           </dialog:ngDialogConfirmDownload>
+		</h:form>
+		
+		
+		
+		<h:form id="ng-send-email" prependId="true">
+			<dialog:ngDialogConfirm 
+			id="dlConfirmSend" 
+			header="#{i18n['popup.msg.email.send']}" 
+			widgetVar="dlConfirmSendEmail" 
+			width="500"  
+			titleBtnConfirm="#{i18n['btn_action_confirm']}" 
+			titleBtnCancel="#{i18n['btn_action_cancel']}"
+		 	btnActionConfirm="#{couponMBean.sendEmail()}" 
+		 	updateGrid=":ng-form:ng-detail-dataTable:ng-panel-datatable">
+		 	<p:outputLabel value="#{i18n['cfe.info.sendEmail']}" />	
+			<p:panelGrid id="panelGridDialog" columns="2" columnClasses="column1,column2">
+					<p:outputLabel for="adresses" value="#{i18n['cfe.label.email']}:" />
+					<p:inputTextarea id="adresses" rows="4" cols="60" 
+									value="#{defaultMBean.mailAdresses}"
+									autoResize="false" required="true" 
+									style="resize:none">
+									<f:attribute name="inputName" value="#{i18n['cfe.label.email']}" /> 
+									<f:validator binding="#{mailValidator}" />
+					
+					</p:inputTextarea>
+					<p:spacer/>
+					<p:panelGrid id="panelGridDialo2" columns="6">
+							<p:outputLabel  value="Anexos:" />
+							<p:spacer/>
+							<p:outputLabel for="sendXml" value="#{i18n['cfe.label.attachXml']}" />
+							<p:selectBooleanCheckbox id="sendXml" value="#{defaultMBean.toSendXml}"/>
+							<p:outputLabel for="sendCupomSat" value="#{i18n['cfe.label.attachCupomSat']}"/>
+							<p:selectBooleanCheckbox id="sendCupomSat" value="#{defaultMBean.toSendDocAux}"/>						
+					</p:panelGrid>
+				</p:panelGrid>	
+				<p:focus id="dlConfirmSendEmailFocus" context="panelGridDialog" />				
+			</dialog:ngDialogConfirm>
+		</h:form>		
+	</ui:define>
+</ui:composition>

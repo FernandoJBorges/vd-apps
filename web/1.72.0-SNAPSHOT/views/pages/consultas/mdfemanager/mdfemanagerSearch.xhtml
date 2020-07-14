@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:ngTab="http://java.sun.com/jsf/composite/common/component/view/tabview"
+	xmlns:ngDialog="http://java.sun.com/jsf/composite/common/component/dialog"
+	xmlns:dialog="http://java.sun.com/jsf/composite/dialog"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:comp="http://java.sun.com/jsf/composite/component"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	template="/common/templates/search/ngSearchTemplate.xhtml">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{mdfeMB}" />
+	<ui:param name="documentListMBean" value="#{defaultMBean.mdfeListMB}" />
+	<!-- bloco de pesquisa -->
+	
+	<ui:define name="searchlistBlock">
+		<ngTab:ngViewSearch id="ng-search-comp" titleView="#{i18n['mdfe.label.title']}">
+		<!-- Filtro da tela de MDFe -->
+			<ui:include src="../mdfemanager/filterTabView.xhtml">
+				<ui:param name="defaultFilterMBean" value="#{defaultMBean.mdfeFilterMB}" />
+				<ui:param name="includeFilterAdvanced" value="../mdfemanager/advancedFilters.xhtml" />			
+				<ui:param name="labelTextCNPJAndCPFAdressee" value="#{i18n['invoice.label.cnpjcpfforeignadressee']}" />
+				<ui:param name="labelTextHelpFindMDFeReceiver" value="#{i18n['mdfe.label.find.receiver.help']}" />
+				<ui:param name="labelTextReceivedFor" value="#{i18n['mdfe.label.received.for']}" />
+				<ui:param name="maxlengthCNPJAndCPFAdressee" value="20" />
+				<ui:param name="maxlengthCNPJAndCPF" value="14" />
+				<ui:param name="maskValueCNPJAndCPF" value="#{defaultMBean.layouts.CNPJ.searchMask}"/>
+				<ui:param name="validatorCNPJAndCPFAdresseeDisabled" value="false" />
+				<ui:param name="docType" value="MDFE" />
+				<ui:param name="receivedForType" value="#{defaultFilterMBean.filterVO.receivedForType}" />
+			</ui:include>
+		</ngTab:ngViewSearch>
+		<!-- componente de ações para multipla selecoes -->
+		<ng:ngSelectedActions id="ng-selected-actions" showLegend="true" showActionsButton="false" />
+		<ngComp:fileDownloadStatus />
+		<ngComp:ngToolbar id="ng-toolbar" showLegend="false" showActionsButton="false" hasExport="true">
+			<ui:include src="actions.xhtml">
+				<ui:param name="defaultFilterMBean" value="#{defaultMBean.mdfeFilterMB}" />
+			</ui:include>
+		</ngComp:ngToolbar>
+		<!-- listagem de nfes -->
+		<ng:ngDataTable id="ng-detail-dataTable" btnRenderSelection="true"
+			customAction="true">
+			<ui:include src="table.xhtml" />
+		</ng:ngDataTable>
+		<p:outputPanel rendered="#{releaseNoteMB.isMDFE()}">
+			<ui:include src="../../releaseNotes.xhtml"></ui:include>
+		</p:outputPanel>
+	</ui:define>
+	
+	
+	<!-- bloco de detalhes -->
+	<ui:define name="addDialogBlock">
+		<ui:include src="../document/dialog/emissionType.xhtml" />
+		<dialog:dialogDocumentLegend width="380" />
+		<h:form prependId="false">
+			<dialog:dialogResendErp id="resend-to-erp" defaultMBean="#{defaultMBean}" />
+		</h:form>
+		<ui:include src="../document/events/sendContingency.xhtml">
+			<ui:param name="i18nMessageTypeSuffix" value="#{'.tooltip.'.concat(mdfeContingencyMB.docType)}" />
+			<ui:param name="documentContingencyMB" value="#{defaultMBean.mdfeContingencyMB}" />
+		</ui:include>
+	</ui:define>
+</ui:composition>

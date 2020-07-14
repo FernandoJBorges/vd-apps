@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/crud">
+
+	<ng:ngFormEdit id="ngFormEdit"
+		titleView="#{i18n['signature.label.title.create']}">
+		<p:outputPanel id="ngTabview">
+			<p:outputPanel
+				class="ui-fluid document-filter-panel ui-tabs-panels tabcontainner">
+				<p:outputPanel class="ui-g">
+
+					<div class="ui-g-12">
+						<div class="ui-g-12 ui-g-nopad">
+							<p:outputLabel for="name"
+								value="#{i18n['signature.label.name']}:" />
+						</div>
+						<div class="ui-g-3 ui-g-nopad">
+							<p:inputText id="name" value="#{defaultMBean.entity.name}"
+								maxlength="128" required="true"
+								disabled="#{defaultMBean.stateUpdate}">
+								<f:validator binding="#{signatureNameValidator}" />
+							</p:inputText>
+						</div>
+					</div>
+
+					<div class="ui-g-12">
+						<div class="ui-g-12 ui-g-nopad">
+							<p:outputLabel for="signature-type"
+								value="#{i18n['signature.label.type']}:" />
+						</div>
+						<div class="ui-g-2 ui-g-nopad">
+							<p:selectOneMenu id="signature-type" value="#{defaultMBean.entity.type}"
+								disabled="#{defaultMBean.stateUpdate}">
+								<f:selectItems value="#{defaultMBean.types}" var="types"
+									itemLabel="#{types.i18n}" itemValue="#{types}" />
+								<p:ajax event="itemSelect" update="changeTypeProperties"
+									resetValues="true" imediate="true"  global="false" />
+							</p:selectOneMenu>
+						</div>
+					</div>
+
+					<div class="ui-g-12">
+						<div class="ui-g-12 ui-g-nopad">
+							<p:outputLabel for="default"
+								value="#{i18n['signature.label.default']}:" />
+						</div>
+						<div class="ui-g-2 ui-g-nopad">
+							<p:selectBooleanCheckbox id="default"
+								value="#{defaultMBean.entity.defaultRepos}" />
+						</div>
+					</div>
+
+					<div class="ui-g-12" style="margin-bottom: 5px">
+						<p:separator styleClass="line-separator" />
+					</div>
+
+					<div class="ui-g-12">
+						<p:outputPanel id="changeTypeProperties">
+							<p:outputPanel id="hardwareTrueAccessPanel" class="ui-g"
+								rendered="#{defaultMBean.hardwareTrueAccessSelected}">
+								<ui:include src="typesPanels/hardwareTrueAccess.xhtml" />
+							</p:outputPanel>
+							<p:outputPanel id="softwarePanel" class="ui-g"
+								rendered="#{defaultMBean.softwareSelected}">
+								<ui:include src="typesPanels/software.xhtml" />
+							</p:outputPanel>
+							<p:outputPanel id="pkcs11HsmPanel" class="ui-g"
+								rendered="#{defaultMBean.pkcs11HsmSelected}">
+								<ui:include src="typesPanels/pkcs11Hsm.xhtml" />
+							</p:outputPanel>
+							<p:outputPanel id="jceHsmPanel" class="ui-g"
+								rendered="#{defaultMBean.jceHsmSelected}">
+								<ui:include src="typesPanels/jceHsm.xhtml" />
+							</p:outputPanel>
+						</p:outputPanel>
+					</div>
+
+				</p:outputPanel>
+			</p:outputPanel>
+		</p:outputPanel>
+	</ng:ngFormEdit>
+
+</ui:composition>

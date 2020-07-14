@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	template="/common/templates/ngs/responsive.xhtml">
+
+	<ui:define name="content">
+		<h:outputStylesheet library="css" name="preferences.css" />
+		<h:form id="ng-form" prependId="true" enctype="multipart/form-data">
+			<ngComp:ngTitleView id="ngTitleView"
+				titleView="#{i18n['preferences.label.title']}" />
+			<p:outputPanel id="panelUsername" class="pf-subtitle">
+				<p:outputPanel class="ui-g-12">
+					<p:outputLabel id="username" value="#{preferencesMB.username}" />
+				</p:outputPanel>
+			</p:outputPanel>
+			<p:outputPanel id="ngPanelBtn" class="ng-panel-btn">
+				<p:autoUpdate />
+				<script>
+					//javascript function which scroll to the first message in page
+					function scrollToFirstMessage() {
+						$("html, body").animate({
+							scrollTop : 0
+						}, "slow");
+					}
+				</script>
+				<p:commandButton id="btn-save" widgetVar="btnSaveButton"
+					action="#{preferencesMB.save}" update=":ng-form :messages"
+					value="#{i18n['btn_action_save']}" styleClass="ng-ui-button"
+					oncomplete="scrollToFirstMessage()" icon="fa fa-save" />
+			</p:outputPanel>
+			<p:tabView id="ngTabview" styleClass="pf-tabview">
+				<p:tab id="ngBasic" title="#{i18n.ngTabBasic}">
+					<div class="ui-fluid ui-g">
+						<div class="ui-g-2 ui-g-nopad">
+							<p:outputLabel for="operation"
+								value="#{i18n['preferences.label.operation']}:" />
+							<p:selectOneMenu id="operation"
+								value="#{preferencesMB.userPreference.defaultOperation}">
+								<f:selectItem itemValue="#{null}" itemLabel="" />
+								<f:selectItems value="#{preferencesMB.operations}"
+									var="operation" itemValue="#{operation.id}"
+									itemLabel="#{operation.desc}" />
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-1">
+							<ngComp:ngHelp
+								messageHelp="#{i18n['preferences.help.operation']}" />
+						</div>
+						<div class="ui-g-2 ui-g-nopad ">
+							<p:outputLabel for="booleanStatus"
+								value="#{i18n['preferences.label.filter']}:" />
+							<p:selectOneMenu id="booleanStatus"
+								value="#{preferencesMB.userPreference.disabledFilter}">
+								<f:selectItems value="#{preferencesMB.types}"
+									var="booleanStatusType" itemValue="#{booleanStatusType.type}"
+									itemLabel="#{i18n[utils:getEnumQualifiedName(booleanStatusType)]}" />
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-1">
+							<ngComp:ngHelp messageHelp="#{i18n['preferences.help.filter']}" />
+						</div>
+					</div>
+				</p:tab>
+			</p:tabView>
+		</h:form>
+	</ui:define>
+</ui:composition>

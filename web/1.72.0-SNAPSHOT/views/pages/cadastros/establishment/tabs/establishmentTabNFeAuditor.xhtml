@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	>
+
+	<c:if test="#{establishmentMB.nfeAuditorTab.errorMsg != null}">
+		<ngComp:ngMessage message="#{establishmentMB.nfeAuditorTab.errorMsg}" messageType="warn" />
+	</c:if>	
+	<p:panelGrid id="panelGridNFeAuditorForm" columns="2" columnClasses="column1,column2">
+		<p:outputPanel id="nfeAuditorServicePanel">
+			<p:panelGrid columns="3" columnClasses="column1,column2,column2">
+				<p:outputLabel for="nfeAuditorService" value="#{i18n['establishment.label.nfeAuditor.startNfeAuditorService']}:" />
+				<p:selectBooleanCheckbox id="nfeAuditorService" value="#{defaultMBean.establishmentSolutionVO.auditorNfeCheck}" valueChangeListener="#{establishmentMB.nfeAuditorTab.selectNfeAuditor}" >
+					<p:ajax event="change"  />
+				</p:selectBooleanCheckbox>			
+				<ngComp:ngHelp messageHelp="#{i18n['establishment.help.filter.startNfeAuditorService']}" style="margin-left: -12px" />
+			</p:panelGrid>
+		</p:outputPanel>
+		
+		<p:panelGrid id="evalutionPanel" columns="3" >
+			<p:outputLabel for="evalution" value="#{i18n['establishment.label.nfeAuditor.startEvalution']}:"  style="margin-left:32px"/>
+			<p:selectBooleanCheckbox id="evalution" value="#{defaultMBean.nfeAuditorTab.nfeAuditConfigBO.evalution}" disabled="#{defaultMBean.nfeAuditorTab.isToDisableEvalutionOption() || !defaultMBean.establishmentSolutionVO.nfeCheck}">
+					<p:ajax event="change"  update="taxationType"/>
+				</p:selectBooleanCheckbox>			
+			<ngComp:ngHelp messageHelp="#{i18n['establishment.help.filter.startEvalution']}" style="margin-left: -11px;" />
+		</p:panelGrid>
+
+		<p:outputLabel for="taxationType" value="#{i18n['establishment.label.nfeAuditor.taxationType']}:" style="float:left; margin-left:32px"/>
+		<p:selectOneMenu id="taxationType" 
+			value="#{defaultMBean.nfeAuditorTab.nfeAuditConfigBO.taxationType}" 
+			style="width:120px;float:left; margin-left:-41px"  
+			disabled="#{!defaultMBean.nfeAuditorTab.isTaxationTypeChangeAllowed()}" required="#{defaultMBean.establishmentSolutionVO.auditorNfeCheck or defaultMBean.nfeAuditorTab.nfeAuditConfigBO.evalution}" requiredMessage="#{i18n['establishment.validate.msg.error.taxation.type.required']}">
+			<f:selectItem itemLabel="#{i18n['lbl_empty']}" itemValue="#{null}" />
+			<f:selectItems value="#{defaultMBean.nfeAuditorTab.listTaxationTypeNames()}" var="taxationType" itemLabel="#{i18n['TaxationType.'.concat(taxationType)]}" itemValue="#{taxationType}" />
+		</p:selectOneMenu>
+
+		<p:focus  id="tabNFeAuditBasicFocus" context="panelGridNFeAuditorForm" />
+		
+	</p:panelGrid>
+
+	<p:outputPanel styleClass="ng-spacer" style="width:100%"></p:outputPanel>
+	<p:panelGrid id="establishmentStatus" columns="3" >
+		<p:outputLabel for="establishmentStatus" value="#{i18n['establishment.label.nfeAuditor.statusRegister']}:" style="margin-left:20px"/>
+		<h:panelGroup>
+			<p:inputTextarea value="#{defaultMBean.nfeAuditorTab.statusMsg}" disabled="true" rows="3" cols="88" style="float:left" />
+			<ngComp:ngHelp messageHelp="#{i18n['establishment.help.filter.statusRegister']}" style="float:left"/>
+		</h:panelGroup>
+		
+	</p:panelGrid>
+	
+	
+		
+		
+</ui:composition>

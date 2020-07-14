@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:p="http://primefaces.org/ui">
+	<p:importEnum type="com.neogrid.sped.enums.DocType" />
+	<p:treeTable value="#{ruleTreeTableMB.getTreeNode(tabDoctype)}"
+		var="row" nodeVar="node" styleClass="ng-treetable" editable="true"
+		reflow="true">
+		<ui:param name="defaultMBean" value="#{ruleMB}" />
+		<p:ajax event="rowEdit" listener="#{defaultMBean.onRowEdit}"
+			update=":messages @(.tab-content)" onsuccess="PrimeFaces.scrollTo('ng-page-content')" />
+		<p:ajax event="rowEditCancel" update=":messages" />
+		<p:column headerText="#{i18n['establishment.rules.title']}"
+			styleClass="row-rules">
+			<h:outputText value="#{row.name}" />
+			<ngComp:ngHelp messageHelp="#{row.description}"
+				rendered="#{ruleTreeTableMBean.dadIsNotNull(row.ruleDadUID)}"
+				style="margin-top:1px; margin-left: 2px;" />
+		</p:column>
+		<p:column headerText="#{i18n['establishment.rules.process']}"
+			id="column-process">
+			<h:outputText id="processType" value="#{row.ruleUID}">
+				<f:converter converterId="ruleProcessTypeConverter" />
+				<f:attribute name="docType" value="#{row.docType}"/>
+				<f:attribute name="ruleDadUID" value="#{row.ruleDadUID}"/>
+			</h:outputText>
+		</p:column>
+		<p:column headerText="#{i18n['establishment.rules.value']}">
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText
+						value="#{(row.booleanValue ne null ? row.booleanValue : row.defaultValue) eq false ? i18n['lbl_no'] : i18n['lbl_yes']}"
+						rendered="#{row.type eq 1}" />
+					<h:outputText
+						value="#{row.integerValue ne null ? row.integerValue : row.defaultValue}"
+						rendered="#{row.type eq 2}" />
+					<h:outputText
+						value="#{row.stringValue ne null ? row.stringValue : row.defaultValue}"
+						rendered="#{row.type eq 3 or row.type eq 5}" />
+				</f:facet>
+				<f:facet name="input">
+					<p:selectBooleanCheckbox rendered="#{row.type eq 1}" value="#{row.booleanValue}" 
+						valueChangeListener="#{defaultMBean.setBooleanRowEdit(row.booleanValue)}"   />
+					<p:inputText rendered="#{row.type ne 1}" value="#{defaultMBean.defaultValue}" />
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+		<p:column headerText="#{i18n['establishment.rules.type']}">
+			<h:outputText value="#{row.unit}" />
+		</p:column>
+		<p:column styleClass="row-editor"
+			rendered="#{!establishmentMB.entity.dadRules}">
+			<p:rowEditor disabled="#{establishmentMB.entity.dadNotify}" rendered="#{ruleTreeTableMB.dadIsNotNull(row.ruleDadUID)}" />
+		</p:column>
+	</p:treeTable>
+</ui:composition>

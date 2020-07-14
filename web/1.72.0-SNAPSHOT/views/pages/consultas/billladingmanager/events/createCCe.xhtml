@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:comp="http://java.sun.com/jsf/composite/component"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:param name="createEventMBean" value="#{defaultMBean.getCreateCCEMB()}" />
+	<p:outputPanel id="ng-invoice-cce-panel" rendered="#{createEventMBean.isStateCreateEvent()}">
+		<comp:createEventSefazComponent id="createCCeComponent"
+			title="#{i18n['document.create.cce.title.cte']}"
+			establishment="#{createEventMBean.eventVO.document.addresse}"
+			establishmentLabel="#{i18n['document.create.event.cce.label.taker']}:"
+			termsUse="#{i18n['document.create.cce.cte.condition.user.description']}:"
+			titleView="#{i18n['document.create.event.cce.title']}"
+			dataTitle="#{i18n['invoice.manifest.cce.data.title']}"
+			createEventMBean="#{createEventMBean}">
+			<!-- button add cce  -->
+			<p:outputPanel id="cceComplementButton">
+				<ui:include src="cce/cceComplementButton.xhtml"></ui:include>
+			</p:outputPanel>
+			<!-- listagem cce  -->
+			<p:outputPanel id="cceComplementList">
+				<ui:include src="cce/cceComplementList.xhtml"></ui:include>
+			</p:outputPanel>
+			<!-- cadastro cce  -->
+			<p:outputPanel id="cceComplementForm">
+				<h:outputScript library="js" name="createCCE.js" />
+				<ui:include src="cce/cceComplementForm.xhtml"></ui:include>
+			</p:outputPanel>
+		</comp:createEventSefazComponent>
+	</p:outputPanel>
+</ui:composition>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:utils="http://www.neogrid.com/functions/utils" xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:include src="../document/columns/serialNumber.xhtml" />
+	<p:column headerText="#{i18n['nfse.label.rpsnumber']}" styleClass="column-number-rps" sortBy="#{row.documentNumber}">
+		<h:outputText value="#{row.documentNumber}" />
+	</p:column>
+	<p:column headerText="#{i18n['nfse.label.nfsenumber']}" styleClass="column-number-nfse" sortBy="#{row.nfseNr}">
+		<h:outputText value="#{row.nfseNr}" />
+	</p:column>
+	<ui:include src="../document/columns/issueDate.xhtml" />
+	<ui:include src="../document/columns/processingDate.xhtml" />
+	<ui:include src="../document/columns/statusDescription.xhtml" />
+	<p:column headerText="#{i18n['nfse.label.city']}" styleClass="ng-truncate-column column-city" >
+		<h:outputText value="#{row.nfseCityDesc}" title="#{row.nfseCityDesc}" styleClass="ng-truncate-output" />
+	</p:column>
+	<p:column id="columnDrawerName" headerText="#{i18n['nfse.label.colunm.drawer']}" priority="4" styleClass="ng-truncate-column document-drawer-column" sortBy="#{row.drawer.name}">
+		<h:outputText id="drawerName" value="#{row.drawer.name}" title="#{row.drawer.establishmentID}" styleClass="ng-truncate-output" />
+	</p:column>
+	<p:column id="columnAddresseNameReceiving" headerText="#{i18n['nfse.label.colunm.taker']}" priority="5" styleClass="ng-truncate-column document-addresse-column"
+		sortBy="#{row.addresse.name}">
+		<h:outputText id="addresseNameRed" value="#{row.addresse.name}" title="#{row.addresse.establishmentID}" styleClass="ng-truncate-output" />
+	</p:column>
+	<p:column id="columnDetails"
+		styleClass="ng-column-action"
+		exportable="false"
+		disabled="#{defaultListMBean.isDetailsDisabled()}">
+		    <p:commandLink id="docDetails"
+		update="@(.ng-containner-dialog)"
+		action="#{defaultMBean.actionEvent('openDocumentDetail', row)}"
+		global="false">
+	        <f:setPropertyActionListener target="#{defaultMBean.entity}" value="#{row}" />
+        <span title="#{i18n['tooltip.commandLink.view.details.doc']}" class="icon-viewDetails ng-icon"></span>
+    	</p:commandLink>
+	</p:column>
+	<p:column id="columnDANFSE" styleClass="ng-column-action" exportable="false" toggleable="false" rendered="#{defaultListMBean.isProcessTypeEmission()}">
+		<p:commandLink id="auxiliaryDocument" global="false" immediate="true"
+			action="#{defaultMBean.actionEvent('downloadDA', row)}"
+			disabled="#{defaultMBean.actionDownloadDANFSE.isDisabled(utils:singletonList(row))}">
+			<span title="#{i18n['nfse.label.action.danfse']}" class="icon-print ng-icon"></span>
+			<f:setPropertyActionListener target="#{defaultMBean.entity}" value="#{row}" />
+		</p:commandLink>
+	</p:column>
+	<p:column id="columnDARPS" styleClass="ng-column-action" exportable="false" toggleable="false" rendered="#{defaultListMBean.isProcessTypeEmission()}">
+		<p:commandLink id="linkDARPS" global="false" immediate="true"
+			action="#{defaultMBean.actionEvent('downloadRPS', row)}"
+			disabled="#{defaultMBean.actionDownloadRPS.isDisabled(utils:singletonList(row))}">
+			<span title="#{i18n['nfse.label.action.darps']}" class="icon-print ng-icon"></span>
+			<f:setPropertyActionListener target="#{defaultMBean.entity}" value="#{row}" />
+		</p:commandLink>
+	</p:column>
+	<p:column id="columnXML"
+		styleClass="ng-column-action"
+		exportable="false"
+		toggleable="false">
+		<p:commandLink id="XML"
+				ajax="false"
+				immediate="true"
+				onclick="updateMessages()"
+				action="#{defaultMBean.actionEvent('dowloadXML', row)}"
+				update=":messages :ng-form:ng-detail-dataTable:ng-data-table :ng-form :ng-panel-crud-dialog">
+			<span title="#{i18n['document.tooltip.download.xml']}" class="icon-download-file ng-icon"/>
+		</p:commandLink>
+	</p:column>
+</ui:composition>

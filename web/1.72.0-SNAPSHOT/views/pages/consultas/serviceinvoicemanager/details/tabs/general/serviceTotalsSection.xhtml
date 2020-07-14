@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:outputPanel styleClass="ui-g-12 document-detail-column">
+		<!-- Valor Líquido da NFS-e -->
+		<p:outputPanel styleClass="ui-g-2">
+			<p:outputLabel value="#{i18n['nfse.label.details.totals.liquid']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{totalsValues.vliquiNFSe}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Valor das Deduções -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.totals.deductions']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{totalsValues.vlDeducoes}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Valor do PIS -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.totals.pis']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{totalsValues.vlPIS}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Valor do COFINS -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.totals.cofins']}:"/>
+			<p:outputPanel>
+				<h:outputText value="#{totalsValues.vlCOFINS}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Valor do INSS -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.totals.inss']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{totalsValues.vlINSS}" />
+			</p:outputPanel>
+		</p:outputPanel>
+	</p:outputPanel>
+	
+	<p:outputPanel styleClass="ui-g-12 document-detail-column">
+		<!-- Valor do IR -->
+		<p:outputPanel styleClass="ui-g-2">
+			<p:outputLabel value="#{i18n['nfse.label.details.totals.ir']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{totalsValues.vlIR}" />
+			</p:outputPanel>
+		</p:outputPanel>
+		<!-- Valor do CSLL -->
+		<p:outputPanel styleClass="ui-g-2">
+			<p:outputLabel value="#{i18n['nfse.label.details.totals.csll']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{totalsValues.vlCSLL}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- ISS Retido -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.totals.iss.withholding']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{totalsValues.issRet}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Valor do ISS -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.totals.iss']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{totalsValues.vlISS}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Valor do ISS Retido -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.totals.iss.withholding.value']}:"/>
+			<p:outputPanel>
+				<h:outputText value="#{totalsValues.vlISSRet}" />
+			</p:outputPanel>
+		</p:outputPanel>
+		
+	</p:outputPanel>
+	
+	<p:outputPanel styleClass="ui-g-12 document-detail-column">
+		<!-- Valor de Outras Retenções -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.totals.others.withholding']}:"/>
+			<p:outputPanel>
+				<h:outputText value="#{totalsValues.outrasRet}" />
+			</p:outputPanel>
+		</p:outputPanel>
+		<!-- Valor da Base de Cálculo -->
+		<p:outputPanel styleClass="ui-g-2">
+			<p:outputLabel value="#{i18n['nfse.label.details.totals.base.calc']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{totalsValues.baseCalculo}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Valor Percentual da Alíquota -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.totals.aliquot.percentage']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{totalsValues.alISS}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Valor do Desconto Condicionado -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.totals.conditioned.discount']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{totalsValues.desCond}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Valor do Desconto Incondicionado-->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.totals.unconditioned.discount']}:"/>
+			<p:outputPanel>
+				<h:outputText value="#{totalsValues.desIncond}" />
+			</p:outputPanel>
+		</p:outputPanel>
+	</p:outputPanel>
+	
+	<p:outputPanel styleClass="ui-g-12 document-detail-column">
+		<!-- Alíquota PIS -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.totals.pis.aliquot']}:"/>
+			<p:outputPanel>
+				<h:outputText value="#{totalsValues.alPIS}" />
+			</p:outputPanel>
+		</p:outputPanel>
+	
+		<!-- Alíquota COFINS -->
+		<p:outputPanel styleClass="ui-g-2">
+			<p:outputLabel value="#{i18n['nfse.label.details.totals.cofins.aliquot']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{totalsValues.alCOFINS}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Alíquota INSS -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.totals.inss.aliquot']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{totalsValues.alINSS}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Alíquota IR -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.totals.ir.aliquot']}:" />
+			<p:outputPanel>
+				<h:outputText value="#{totalsValues.alIR}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Alíquota CSLL -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.totals.csll.aliquot']}:"/>
+			<p:outputPanel>
+				<h:outputText value="#{totalsValues.alCSLL}" />
+			</p:outputPanel>
+		</p:outputPanel>
+	</p:outputPanel>
+
+</ui:composition>

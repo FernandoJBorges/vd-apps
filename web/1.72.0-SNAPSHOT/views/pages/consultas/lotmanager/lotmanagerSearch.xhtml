@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ngTab="http://java.sun.com/jsf/composite/common/component/view/tabview"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	template="/common/templates/search/ngSearchTemplate.xhtml">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{lotMB}" />
+	<ui:define name="searchlistBlock">
+	<h:outputStylesheet library="css" name="lot.css" />
+		<ngTab:ngViewSearch id="ng-search-comp"
+			titleView="#{i18n['lotmanager.title.view']}">
+			<ngTab:ngTabView id="ng-tabview-search"
+				additionalUpdate="ng-form:ng-toolbar:toolbarContainer">
+				<p:outputPanel class="ui-fluid">
+					<p:outputPanel class="ui-g">
+						<ngTab:ngTabViewBasic id="ng-tabview-basic">
+							<ui:include src="lotmanagerFilters.xhtml" />
+						</ngTab:ngTabViewBasic>
+					</p:outputPanel>
+				</p:outputPanel>
+			</ngTab:ngTabView>
+		</ngTab:ngViewSearch>
+		<ng:ngSelectedActions id="ng-selected-actions" showLegend="false" showActionsButton="false" />
+		<ngComp:ngToolbar id="ng-toolbar" hasExport="true">
+			<ui:include src="actions.xhtml" />
+		</ngComp:ngToolbar>
+		<ng:ngDataTable id="ng-detail-dataTable" btnRenderSelection="true" customAction="true">
+			<ui:include src="lotmanagerTable.xhtml" />
+		</ng:ngDataTable>
+	</ui:define>
+	<ui:define name="addDialogBlock">
+		<ui:include src="dialogCloseLot.xhtml" />
+	</ui:define>
+</ui:composition> 

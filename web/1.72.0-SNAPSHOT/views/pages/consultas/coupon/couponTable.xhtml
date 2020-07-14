@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+				<ui:param name="defaultMBean" value="#{couponMBean}" />
+
+				<!-- serie, numero, emissao, processamento, situacao, forma, UF, emitente, destinatario, transportador -->
+
+				<p:column headerText="#{i18n['label.title.exporter.actions']}" exportable="false" toggleable="false">
+					<ng:ngColumnActions>
+						<p:menuitem	value="#{i18n['cfe.label.download']}" ajax="false" actionListener="#{defaultMBean.prepareDocumentDownload(row)}"
+							update=":messages :ng-form:ng-detail-dataTable:ng-data-table :ng-form :ng-panel-crud-dialog" 
+							icon="fa fa-download"
+							styleClass="ng-context-menu-item"
+							onclick="PrimeFaces.monitorDownload(start, stop);" 
+							immediate="true">
+							<p:fileDownload value="#{defaultMBean.documentXML}" />
+						</p:menuitem>
+						<p:menuitem immediate="true" icon="fa fa-print"
+							styleClass="ng-context-menu-item" ajax="false" global="false"
+							action="#{defaultMBean.downloadCupomSAT()}"
+							value="#{i18n['cfe.document.label.print']}">
+							<f:setPropertyActionListener target="#{defaultMBean.entity}" value="#{row}" />
+						</p:menuitem>							
+					</ng:ngColumnActions>	
+				</p:column>
+
+				<p:column headerText="#{i18n['cfe.label.docidentifier']}" sortBy="#{row.docIdentifier}" >
+					<h:outputText value="#{row.docIdentifier}" />
+				</p:column> 
+
+				<p:column headerText="#{i18n['cfe.label.satid']}" sortBy="#{row.satID}" >
+					<h:outputText value="#{row.satID}" />
+				</p:column>
+
+				<p:column headerText="#{i18n['cfe.label.cfecode']}" sortBy="#{row.cfeCode}" >
+					<h:outputText value="#{row.cfeCode}" />
+				</p:column>
+
+				<p:column headerText="#{i18n['cfe.label.emission']}"  sortBy="#{row.emission}">
+					<h:outputText  value="#{row.emission}" >
+						<f:convertDateTime type="date" pattern="#{defaultMBean.layouts.DATE_SHORT.format}"/>
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="#{i18n['cfe.label.importdate']}" sortBy="#{row.importDate}" > 
+					<h:outputText value="#{row.importDate}" >
+						<f:convertDateTime type="date" pattern="#{defaultMBean.layouts.DATE.format}"/>
+					</h:outputText>
+				</p:column>
+</ui:composition>

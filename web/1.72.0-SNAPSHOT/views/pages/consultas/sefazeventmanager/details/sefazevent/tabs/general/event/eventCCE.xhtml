@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:importEnum type="com.neogrid.sped.enums.DocType" />
+	<c:choose>
+		<c:when test="#{defaultMBean.getMainDocType() == DocType.CTE}">
+			<ui:include src="cce/eventCCECTe.xhtml" />
+		</c:when>
+		<c:otherwise>
+			<ui:include src="cce/eventCCENFe.xhtml" />
+		</c:otherwise>
+	</c:choose>
+</ui:composition>

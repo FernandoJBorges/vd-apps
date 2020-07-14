@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:ngTab="http://java.sun.com/jsf/composite/common/component/view/tabview"
+	xmlns:dialog="http://java.sun.com/jsf/composite/dialog"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	template="/common/templates/search/ngSearchTemplate.xhtml">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{nfseMB}" />
+	<ui:param name="defaultListMBean" value="#{defaultMBean.listMB}" />
+	<ui:param name="defaultFilterMBean" value="#{defaultMBean.filterMB}" />
+	<!-- bloco de pesquisa -->
+	<ui:define name="searchlistBlock">
+		<f:facet name="last">
+			<h:outputStylesheet library="css" name="serviceinvoicemanager.css" />
+		</f:facet>
+		<ngTab:ngViewSearch id="ng-search-comp"
+			titleView="#{i18n['nfse.label.title']}">
+			<ui:include src="./filterTabView.xhtml">
+				<ui:param name="defaultFilterMBean" value="#{defaultMBean.filterMB}" />
+				<ui:param name="docType" value="NFSE" />
+			</ui:include>
+		</ngTab:ngViewSearch>
+		<ng:ngSelectedActions id="ng-selected-actions" showLegend="false" showActionsButton="false" />
+		<ngComp:fileDownloadStatus />
+		<ngComp:ngToolbar id="ng-toolbar" hasExport="true">
+			<ui:include src="actions.xhtml" />
+		</ngComp:ngToolbar>
+		<ng:ngDataTable id="ng-detail-dataTable" btnRenderSelection="true"
+			customAction="true">
+			<ui:include src="table.xhtml" />
+		</ng:ngDataTable>
+		<p:outputPanel rendered="#{releaseNoteMB.isNFSE()}">
+			<ui:include src="../../releaseNotes.xhtml"></ui:include>
+		</p:outputPanel>
+	</ui:define>
+	<ui:define name="addDialogBlock">
+	</ui:define>
+</ui:composition>

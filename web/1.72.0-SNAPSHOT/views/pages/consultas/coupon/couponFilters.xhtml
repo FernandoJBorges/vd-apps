@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{couponMBean}" />
+	<!-- bloco de pesquisa -->
+	<p:panelGrid id="ng-panel-search" columns="4" columnClasses="column1,column2,column3,column4">
+		<p:outputLabel for="emissionini" value="#{i18n['cfe.label.emission']}:" />
+		<h:panelGroup>
+		<p:calendar id="emissionini"
+					value="#{defaultMBean.filters.initialEmissionDate}"
+					locale="pt" 
+					showOn="button" 
+					pattern="#{defaultMBean.layouts.DATE.format}"
+					styleClass="dateTimeField">
+					<p:ajax event="dateSelect" update=":ng-form:ng-search-comp:ng-tabview-search:emissionend" listener="#{defaultMBean.updateFinalEmissionDate(defaultMBean.filters.initialEmissionDate)}" />
+		</p:calendar>
+		<h:outputLabel style="margin:5px">a</h:outputLabel>
+		<p:calendar id="emissionend"
+					value="#{defaultMBean.filters.finalEmissionDate}"
+					locale="pt" 
+					showOn="button" 
+					pattern="#{defaultMBean.layouts.DATE.format}"
+					styleClass="dateTimeField"
+					mindate="#{defaultMBean.filters.initialEmissionDate}"
+					maxdate="#{defaultMBean.filters.maxEmissionDate}">
+					<p:ajax event="dateSelect" update=":ng-form:ng-search-comp:ng-tabview-search:emissionend" listener="#{defaultMBean.setFinalEmissionDate(defaultMBean.filters.finalEmissionDate)}"/>
+		</p:calendar>
+		</h:panelGroup>
+		<p:outputLabel for="importdateini" value="#{i18n['cfe.label.importdate']}:" />
+		<h:panelGroup>
+		<p:calendar id="importdateini"
+					value="#{defaultMBean.filters.initialImportDate}"
+					locale="pt" 
+					showOn="button" 
+					pattern="#{defaultMBean.layouts.DATE.format}"
+					styleClass="dateTimeField">
+					<p:ajax event="dateSelect" update=":ng-form:ng-search-comp:ng-tabview-search:importdateend" listener="#{defaultMBean.updateFinalImportDate(defaultMBean.filters.initialImportDate)}" />
+		</p:calendar>
+		<h:outputLabel style="margin:5px">a</h:outputLabel>
+		<p:calendar id="importdateend"
+					value="#{defaultMBean.filters.finalImportDate}"
+					locale="pt" 
+					showOn="button" 
+					pattern="#{defaultMBean.layouts.DATE.format}"
+					styleClass="dateTimeField"
+					mindate="#{defaultMBean.filters.initialImportDate}"
+					maxdate="#{defaultMBean.filters.maxImportDate}">
+					<p:ajax event="dateSelect" update=":ng-form:ng-search-comp:ng-tabview-search:importdateend" listener="#{defaultMBean.setFinalImportDate(defaultMBean.filters.finalImportDate)}"/>
+		</p:calendar>
+		</h:panelGroup>
+		
+		<p:outputLabel for="satid" value="#{i18n['cfe.label.satid']}:"  />
+		<h:panelGroup>
+			<p:inputText id="satid" value="#{defaultMBean.filters.satId}" maxlength="9" style="width: 140px;"/>
+			<ngComp:ngHelp messageHelp="#{i18n['cfe.title.satid']}" style="margin-top:6px;"/>
+		</h:panelGroup>
+		
+		<p:outputLabel for="cfecode" value="#{i18n['cfe.label.cfecode']}:"  />
+		<h:panelGroup>
+			<p:inputText id="cfecode" value="#{defaultMBean.filters.cfeCode}" maxlength="6" style="width: 140px;"/>
+		</h:panelGroup>
+		
+		<p:outputLabel for="docidentifier" value="#{i18n['cfe.label.docidentifier']}:" />
+		<p:inputText id="docidentifier"  value="#{defaultMBean.filters.docIdentifier}" style="width: 323px;" maxlength="44" converterMessage="#{i18n['document.msg.error.accessKeyNotNumber']}">
+			<f:convertNumber integerOnly="true" type="number" />
+		</p:inputText>
+
+	</p:panelGrid>
+
+
+	<script type="text/javascript">
+		function start() {
+			PF('statusDialog').show();
+		}
+
+		function stop() {
+			PF('statusDialog').hide();
+		}
+	</script>
+	<p:keyFilter for="satid" mask="num"/>
+	<p:keyFilter for="cfecode" mask="num"/>
+</ui:composition>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/table">
+	<p:outputLabel value="#{i18n['eventsefaz.cte.deliveryreceipt.label']}:" />
+	<ui:param name="deliveryReceipt" value="#{defaultMBean.detailData.generalData.event.deliveryReceipt}" />
+	<div class="ui-g-12 document-detail-column">
+		<div class="ui-g-4">
+			<p:outputLabel value="#{i18n['eventsefaz.cte.deliveryreceipt.nDoc.label']}:" />
+			<h:outputText value="#{deliveryReceipt.NDoc}" />
+		</div>
+		<div class="ui-g-4">
+			<p:outputLabel value="#{i18n['eventsefaz.cte.deliveryreceipt.xNome.label']}:" />
+			<h:outputText value="#{deliveryReceipt.XNome}" />
+		</div>
+	</div>
+	<div class="ui-g-12 document-detail-column">
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['eventsefaz.cte.deliveryreceipt.nProt.label']}:" />
+			<h:outputText value="#{deliveryReceipt.NProt}" />
+		</div>
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['eventsefaz.cte.deliveryreceipt.dhEntrega.label']}:" />
+			<h:outputText value="#{deliveryReceipt.dhEntrega}">
+				<f:convertDateTime type="date" pattern="dd/MM/yyyy HH:mm:ssXXX" />
+			</h:outputText>
+		</div>
+		<div class="ui-g-1">
+			<p:outputLabel value="#{i18n['eventsefaz.cte.deliveryreceipt.latitude.label']}:" />
+			<h:outputText value="#{deliveryReceipt.latitude}" />
+		</div>
+		<div class="ui-g-1">
+			<p:outputLabel value="#{i18n['eventsefaz.cte.deliveryreceipt.longitude.label']}:" />
+			<h:outputText value="#{deliveryReceipt.longitude}" />
+		</div>
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['eventsefaz.cte.deliveryreceipt.dhHashEntrega.label']}:" />
+			<h:outputText value="#{deliveryReceipt.dhHashEntrega}">
+				<f:convertDateTime type="date" pattern="dd/MM/yyyy HH:mm:ssXXX" />
+			</h:outputText>
+		</div>
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['eventsefaz.cte.deliveryreceipt.hashEntrega.label']}:" />
+			<h:outputText value="#{deliveryReceipt.hashEntrega}" />
+		</div>
+	</div>
+	<div class="ui-g-12 document-detail-column">
+		<ng:ngSimpleDataTable id="delivery-receipt-accesskeys"		
+			value="#{deliveryReceipt.accesskeys}"
+			emptyMessage="#{i18n['invoice.label.details.related.event.notfound']}">
+			<p:column headerText="#{i18n['eventsefaz.cte.deliveryreceipt.accesskeys.label']}" styleClass="ui-g-3">
+				<h:outputText value="#{row}" />
+			</p:column>
+		</ng:ngSimpleDataTable>
+	</div>
+</ui:composition>

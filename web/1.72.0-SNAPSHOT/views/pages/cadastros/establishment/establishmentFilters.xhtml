@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{establishmentMB}" />
+			<p:outputPanel style="width: 100%;">
+						<p:panelGrid id="ng-panel-search" columns="4" columnClasses="column1,column2,column3,column4,column5,column6">
+							<p:outputLabel for="cnpj" value="#{i18n['establishment.label.cnpj']}/#{i18n['establishment.label.personType.cpf']} :" />
+							<p:inputMask id="cnpj" 
+										value="#{defaultMBean.filters.establishmentID}" 
+										mask="#{defaultMBean.layouts.CNPJ.searchMask}" 
+										style="width:122px"
+										/>
+							<p:outputLabel for="name" value="#{i18n['establishment.label.name']}:" />
+							<p:inputText id="name" value="#{defaultMBean.filters.name}" maxlength="120" style="width:160px" />
+							<p:outputLabel for="cnpjMatrix" value="#{i18n['establishment.label.cnpjMatrix']}:" />
+							<p:inputMask id="cnpjMatrix" style="width:122px"
+										value="#{defaultMBean.filters.establishmentMatrixID}" 
+										mask="#{defaultMBean.layouts.CNPJ.searchMask}" 
+										/>
+							<p:outputLabel for="matrixName" value="#{i18n['establishment.label.matrixName']}:" />
+							<p:inputText id="matrixName" value="#{defaultMBean.filters.matrixName}" maxlength="120"  style="width:160px" />
+							<p:outputLabel for="certIniVal" value="#{i18n['establishment.label.certificateValidation']}:" />
+							<h:panelGroup>
+								<p:calendar id="certIniVal" 
+											label="#{i18n['establishment.label.certificateValidation']}"
+											value="#{defaultMBean.filters.dtIniCertificate}" locale="pt"
+											showOn="button" 
+											pattern="dd/MM/yyyy"
+											styleClass="dateTimeField"
+											mask="true">
+											<p:ajax event="dateSelect" update=":ng-form:ng-search-comp:ng-tabview-search:certEndVal" />
+								</p:calendar>
+								<p:outputLabel for="certIniVal" value="a" style="margin-left: 6px;margin-right:10px" />
+								<p:calendar id="certEndVal" 
+											label="#{i18n['establishment.label.certificateValidation']}" 
+											value="#{defaultMBean.filters.dtEndCertificate}"
+											mindate="#{defaultMBean.filters.dtIniCertificate}" 
+											locale="pt"
+											mask="true"
+											styleClass="dateTimeField"
+											showOn="button"
+											
+											pattern="dd/MM/yyyy">
+								</p:calendar>
+							</h:panelGroup>	
+							<p:outputLabel for="state" value="#{i18n['establishment.label.uf']}:" />
+							<p:selectOneMenu id="state" value="#{defaultMBean.filters.state}" style="width:65px">
+								<f:selectItem itemLabel="#{i18n['lbl_all_states']}" itemValue=""/>
+								<f:selectItems value="#{defaultMBean.states}" var="state" itemLabel="#{state}" itemValue="#{state}" />
+							</p:selectOneMenu> 
+							<h:outputLabel for="solutions" value="#{i18n['establishment.label.solutions']}:" />
+							<h:panelGroup>
+							<p:selectManyCheckbox id="solutions" value="#{defaultMBean.filters.solutions}" layout="grid" columns="6"  style="float: left" >
+								<f:selectItems value="#{defaultMBean.establishmentSolutionVO.solutions}" var="entry"  itemValue="#{entry.solutionID}" itemLabel="#{entry.solutionName}" />
+							</p:selectManyCheckbox>
+							<ngComp:ngHelp messageHelp="#{i18n['establishment.help.filter.soluction']}" style="float: left;;margin-left: -8px;margin-top: 5px;" />
+							</h:panelGroup>
+							<h:outputLabel for="nfeAuditorEnabled" value="#{i18n['establishment.label.nfeAuditorEvalution']}:" />
+							<p:selectBooleanCheckbox id="nfeAuditorEnabled" value="#{defaultMBean.filters.nfeAuditorEvalution}" />
+						</p:panelGrid>
+						<p:focus context="ng-panel-search" />
+			</p:outputPanel>
+</ui:composition>

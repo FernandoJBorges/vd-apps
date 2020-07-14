@@ -1,0 +1,40 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+	<p:outputPanel styleClass="ui-g-2">
+		<p:outputPanel styleClass="ui-g">
+			<p:outputPanel styleClass="ui-g-3 ui-g-nopad">
+				<p:outputLabel for="serie" value="#{i18n['document.label.serie']}:" />
+				<p:inputNumber id="serie" value="#{defaultFilterMBean.filterVO.serial}" decimalPlaces="0" thousandSeparator="" maxValue="999" minValue="0" />
+			</p:outputPanel>
+			<p:outputPanel styleClass="ui-g-4 ui-g-nopad" style="padding-left:10px">
+				<p:outputLabel for="documentFim" value="#{i18n['document.label.documentnumber']}:" />
+				<p:inputNumber id="documentIni" 
+							maxValue="999999999"
+							minValue="0"
+							value="#{defaultFilterMBean.filterVO.initialNumber}"
+							decimalPlaces="0" 
+							thousandSeparator="">
+							<p:ajax global="false" />
+				</p:inputNumber>
+			</p:outputPanel>
+			<p:outputPanel styleClass="ui-g-1 ui-g-nopad ng-label-to">
+				<p:outputLabel>a</p:outputLabel>
+			</p:outputPanel>
+			<p:outputPanel styleClass="ui-g-4 ui-g-nopad">
+				<p:spacer></p:spacer>
+				<p:inputNumber id="documentFim" 
+							maxValue="999999999"
+							minValue="0"
+							value="#{defaultFilterMBean.filterVO.finalNumber}"
+							decimalPlaces="0" 
+							thousandSeparator="">
+								<f:validator binding="#{rangeNumbersValidator}" />
+								<f:attribute name="initialNumber" value="#{defaultFilterMBean.filterVO.initialNumber}" />
+								<f:attribute name="tab" value="document.tab.basic" />
+				</p:inputNumber>
+			</p:outputPanel>
+		</p:outputPanel>
+	</p:outputPanel>
+</ui:fragment>

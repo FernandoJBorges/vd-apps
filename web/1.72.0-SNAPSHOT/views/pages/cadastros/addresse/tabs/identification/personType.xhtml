@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:p="http://primefaces.org/ui">
+	<p:outputPanel class="ui-fluid document-filter-panel ui-g-8">
+			<p:outputPanel styleClass="ui-g-2">
+				<p:outputLabel for="personType" class="ui-outputlabel ui-widget" value="#{i18n['establishment.label.type']}:" />
+				<p:selectOneMenu id="personType" value="#{defaultMBean.addressePersonVO.personType}" disabled="true" >
+					<f:selectItems var="personType"
+								value="#{defaultMBean.personType}"
+								itemValue="#{personType.ordinal()}"
+								itemLabel="#{i18n[utils:getEnumQualifiedName(personType)]}" />
+	
+				</p:selectOneMenu>
+			</p:outputPanel>
+	</p:outputPanel>
+</ui:composition>

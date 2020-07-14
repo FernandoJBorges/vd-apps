@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/table">
+	
+	<ng:ngSimpleDataTable value="#{cargoDocuments}" emptyMessage="Nenhum item encontrado">
+		<p:column headerText="#{i18n['cte.label.cargo.document.type']}">
+			<h:outputText value="#{row.documentType}" />
+		</p:column>
+		<p:column headerText="#{i18n['cte.label.cargo.document.serie']}">
+			<h:outputText value="#{row.serie}" />
+		</p:column>
+		<p:column headerText="#{i18n['cte.label.cargo.document.number']}">
+			<h:outputText value="#{row.documentNumber}" />
+		</p:column>
+		<p:column headerText="#{i18n['cte.label.cargo.document.access.key']}">
+			<h:outputText value="#{row.accessKey}" />
+		</p:column>
+	</ng:ngSimpleDataTable>
+	
+</ui:composition>

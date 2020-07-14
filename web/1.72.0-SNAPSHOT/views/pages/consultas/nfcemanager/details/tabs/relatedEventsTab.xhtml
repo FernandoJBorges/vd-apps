@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/table">
+
+	<p:remoteCommand name="loadTabData"
+		action="#{defaultMBean.loadTabData(defaultMBean.relatedEventsTab)}"
+		update="relatedEventsPanel" />
+
+	<p:outputPanel id="relatedEventsPanel">
+		<ng:ngSimpleDataTable id="relatedEventsTable"
+			value="#{defaultMBean.detailData.relatedEvents}"
+			emptyMessage="#{i18n['invoice.label.details.related.event.notfound']}">
+			<p:column
+				headerText="#{i18n['invoice.label.details.relevent.event.type']}"
+				styleClass="rel-event-column-header-event-type">
+				<h:outputText
+					value="#{i18n[utils:getEnumQualifiedName(row.eventType).concat('.eventRow')]}" />
+			</p:column>
+			<p:column
+				headerText="#{i18n['invoice.label.details.relevent.event.sequence']}">
+				<h:outputText value="#{row.sequence}" />
+			</p:column>
+			<p:column headerText="#{i18n['invoice.label.emissionDate']}"
+				styleClass="rel-event-column-header-emission-date">
+				<h:outputText value="#{row.emissionDate}">
+					<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" locale="pt_BR" />
+				</h:outputText>
+			</p:column>
+			<p:column
+				headerText="#{i18n['invoice.label.details.relevent.event.process.date']}"
+				styleClass="rel-event-column-header-processed-date">
+				<h:outputText value="#{row.processedDate}">
+					<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" locale="pt_BR" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="#{i18n['document.label.status']}">
+				<h:outputText value="#{row.situation}" />
+			</p:column>
+			<p:column styleClass="ng-truncate-column" headerText="#{i18n['document.label.event.drawer']}" style="max-width:60px">
+					<h:outputText id="drawerName" value="#{row.drawerName}" styleClass="ng-truncate-output" title="#{row.establishmentID}" >
+								<f:converter converterId="com.neogrid.sped.converter.FiscoConverter"  />
+			  					<f:attribute name="docTypeEvent" value="#{row.eventType}" />
+			  					<f:attribute name="cnpj" value="#{row.establishmentID}" />
+					</h:outputText>
+			</p:column>
+			<p:column id="columnDetails" styleClass="ng-column-action"
+				exportable="false" toggleable="false"
+				style="max-width:60px; width:20px">
+				<p:commandLink id="docDetails" update="@(.ng-containner-dialog)" action="#{defaultMBean.documentDetailLinkHelper.validateAndOpenDocumentDetailRelatedEvent(row.event.accessKey, row.event.documentUID)}" global="false">
+					<span title="#{i18n['eventsefaz.tooltip.details']}" class="icon-viewDetails ng-icon"></span>
+				</p:commandLink>
+			</p:column>
+			<p:column id="columnXML" styleClass="ng-column-action"
+				exportable="false" toggleable="false"
+				style="max-width:20px; width:20px ">
+				<p:commandLink id="XML"
+					title="#{i18n['document.tooltip.download.xml']}" ajax="false"
+					onclick="updateMessages()" disabled="true" immediate="true">
+					<span title="#{i18n['document.tooltip.download.xml']}"
+						class="icon-download-file ng-icon"></span>
+				</p:commandLink>
+			</p:column>
+		</ng:ngSimpleDataTable>
+	</p:outputPanel>
+
+	<div class="ui-g nfe-detail-related-events">
+		<div class="ui-g-12">
+			<p:link id="openPageEventEmission" outcome="#{defaultMBean.eventSentSefazManagerLink()}" target="_blank" styleClass="ng-float-right ng-link">
+				<span class="icon-external-link icon"></span>
+				<h:outputText value="#{i18n['invoice.label.details.related.event.open.page.sent']}" />
+			</p:link>
+		</div>
+	</div>
+
+	<h:outputScript library="js" name="ondemand-loaddata.js" />
+</ui:composition>

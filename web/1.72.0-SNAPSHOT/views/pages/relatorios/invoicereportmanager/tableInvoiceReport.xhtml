@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{detailedInvoiceReportMB}" />
+	
+	<p:column headerText="#{i18n['document.label.serie']}"  >
+	    <h:outputText value="#{row.ideSerie}" />
+	</p:column> 
+	<p:column  headerText="#{i18n['document.label.documentnumber']}">
+		<h:outputText value="#{row.ideNNF}" />
+	</p:column>
+	<p:column styleClass="ng-truncate-column" headerText="#{i18n['document.label.accesskey']}" style="max-width:200px">
+		<h:outputText value="#{row.ideChaveAcesso}"  title="#{row.ideChaveAcesso}" styleClass="ng-truncate-output"/> 
+	</p:column>
+
+	<p:column styleClass="ng-truncate-column" headerText="#{i18n['document.label.status']}" style="max-width:100px">
+		<h:outputText value="#{row.status} - #{defaultMBean.getStatusDescription(row.status)}" title="#{row.status} - #{defaultMBean.getStatusDescription(row.status)}" styleClass="ng-truncate-output"/>
+	</p:column>
+	
+	<p:column styleClass="ng-truncate-column" headerText="#{i18n['invoice.report.label.processTypeNfe']}" style="width:75px">
+		<h:outputText value="#{row.ideTpNf.toString()}" styleClass="ng-truncate-output"/>
+	</p:column>	
+		
+	<p:column headerText="#{i18n['invoice.report.label.ideTpEmis']}" style="width:70px">
+		<h:outputText value="#{row.ideTpEmis.desc}"/>
+	</p:column>
+	
+	<p:column headerText="#{i18n['document.label.issuedate']}" style="width:50px">
+		<h:outputText value="#{row.ideDhEmi}">
+			<f:convertDateTime type="date" pattern="#{defaultMBean.layouts.DATE_SHORT.format}"/>
+		</h:outputText>
+	</p:column>
+	<p:column styleClass="ng-truncate-column" headerText="#{i18n['document.label.processing']}" style="width:80px"> 
+		<h:outputText value="#{row.processingDate}" styleClass="ng-truncate-output">
+			<f:convertDateTime type="date" pattern="#{defaultMBean.layouts.DATE.format}"/>
+	</h:outputText>
+	</p:column>	
+	<p:column styleClass="ng-truncate-column" headerText="#{i18n['invoice.report.label.emitXNome']}" style="max-width:100px">		
+		<h:outputText value="#{row.emitXNome}" title="#{row.emitCNPJ}" styleClass="ng-truncate-output"/>
+	</p:column>
+		<p:column styleClass="ng-truncate-column" headerText="#{i18n['invoice.report.label.destXNome']}" style="max-width:120px">
+		<h:outputText value="#{row.destXNome}" title="#{row.destCNPJ}" styleClass="ng-truncate-output"/>
+	</p:column>
+</ui:composition>

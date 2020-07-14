@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:ngTab="http://java.sun.com/jsf/composite/common/component/view/tabview"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:dialog="http://java.sun.com/jsf/composite/dialog"
+	template="/common/templates/search/ngSearchTemplate.xhtml">
+	<ui:param name="defaultMBean" value="#{entryMB}" />
+	<ui:param name="defaultFilterMBean" value="#{defaultMBean.filterMB}" />
+	<ui:define name="searchlistBlock">
+	<h:outputStylesheet library="css" name="entry.css" />
+	<ngTab:ngViewSearch id="ng-search-comp" titleView="#{i18n['entry.label.title']}">
+			<ngTab:ngTabView id="ng-tabview-search" additionalUpdate="ng-form:ng-toolbar:toolbarContainer">
+				<p:outputPanel class="ui-fluid ui-g">
+							<ngTab:ngTabViewBasic id="ng-tabview-basic">
+								<ui:include src="filters.xhtml" />
+							</ngTab:ngTabViewBasic>
+							<ngTab:ngTabViewAdvanced id="ng-tabview-advanced">
+								<ui:include src="filtersAdvanced.xhtml" />
+							</ngTab:ngTabViewAdvanced>
+				</p:outputPanel>
+			</ngTab:ngTabView>
+		</ngTab:ngViewSearch>
+		<ng:ngSelectedActions id="ng-selected-actions" showActionsButton="false" />
+		<ngComp:fileDownloadStatus />
+		<ngComp:ngToolbar id="ng-toolbar" hasExport="false">
+			<ui:include src="actions.xhtml" />
+		</ngComp:ngToolbar>
+		<ng:ngDataTable id="ng-detail-dataTable" btnRenderSelection="true" customAction="true">
+			<ui:include src="table.xhtml" />
+		</ng:ngDataTable>
+	</ui:define>
+	<ui:define name="addDialogBlock">
+		<dialog:dialogEntryReprocess id="document-reprocess" defaultMBean="#{defaultMBean}" />
+	</ui:define>
+</ui:composition>

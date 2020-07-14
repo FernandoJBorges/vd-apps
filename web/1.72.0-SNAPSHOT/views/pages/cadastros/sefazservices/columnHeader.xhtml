@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component">
+	<p:row rendered="#{defaultMBean.entity.getDocType() != 0}">
+		<p:column>
+			<p:outputLabel value=" " />
+		</p:column>
+		<p:column>
+			<p:outputLabel value="#{i18n['sefaz.label.services']}" styleClass="ng-font-weight-bold" />
+		</p:column>
+		<p:column>
+			<p:outputLabel value="#{i18n['sefaz.label.methods']}" styleClass="ng-font-weight-bold" />
+			<ngComp:ngHelp messageHelp="#{i18n['sefaz.msg.info.help']}" />
+		</p:column>
+		<p:column>
+			<p:outputLabel value=" " />
+		</p:column>
+		<p:column>
+			<p:outputLabel value="#{i18n['sefaz.label.request.maxtries']}" styleClass="ng-font-weight-bold" />
+			<ngComp:ngHelp messageHelp="#{i18n['sefaz.label.request.maxtries.help']}" />
+		</p:column>
+	</p:row>
+</ui:composition>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<p:outputPanel styleClass="ui-g-5 filter-label-space">
+		<p:outputLabel for="addresseName" value="#{i18n['addresse.label.addresse.name']}:" />
+		<p:inputText id="addresseName" value="#{defaultMBean.filterVO.addresseName}" maxlength="120" />
+	</p:outputPanel>
+</ui:composition>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:dialogEstab="http://java.sun.com/jsf/composite/dialog"
+	xmlns:ngTab="http://java.sun.com/jsf/composite/common/component/view/tabview"
+	template="/common/templates/search/ngSearchTemplate.xhtml">
+	<ui:param name="defaultMBean" value="#{trackingMB}" />
+	<ui:define name="searchlistBlock">
+		<f:facet name="last">
+			<h:outputStylesheet library="css" name="tracking.css" />
+		</f:facet>
+		<ngTab:ngViewSearch id="ng-search-comp" titleView="#{i18n['tracking.label.title']}">
+				<ngTab:ngTabView id="ng-tabview-search" additionalUpdate="ng-form:ng-toolbar:toolbarContainer">
+							<ngTab:ngTabViewBasic id="ng-tabview-basic">
+								<div class="ui-fluid">
+									<div class="ui-g">
+									<ui:include src="trackingmanagerFilters.xhtml" />
+									</div>
+								</div>
+							</ngTab:ngTabViewBasic>
+				</ngTab:ngTabView>
+		</ngTab:ngViewSearch>
+		<ng:ngSelectedActions id="ng-selected-actions" showLegend="false" showActionsButton="false" />
+		<ngComp:ngToolbar id="ng-toolbar" hasExport="true">
+		</ngComp:ngToolbar>
+		<ng:ngDataTable id="ng-detail-dataTable" btnRenderSelection="false" customAction="true">
+			<ui:include src="#{defaultMBean.trackingListMB.consultTypeDetail ? 'tableDetails.xhtml' : 'tableSummary.xhtml'}" />
+		</ng:ngDataTable>
+	</ui:define>
+	
+	<ui:define name="addDialogBlock">
+		<dialogEstab:dialogEstablishment id="zoomEstab"
+										enabledSelectionMode="false"
+										renderBtnSelectAll="false"
+										defaultMBs="#{defaultMBean.trackingFilterMB}"
+										updateField="ng-form:ng-search-comp:ng-tabview-search:ng-tabview-basic:establishment :zoomEstab:zoomEstabForm:zoomEstabtbStabelecimento" />
+	</ui:define>
+</ui:composition>

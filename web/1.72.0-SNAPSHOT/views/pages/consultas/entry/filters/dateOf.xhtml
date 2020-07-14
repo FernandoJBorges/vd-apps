@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+	<p:outputPanel styleClass="ui-g-2">
+		<p:outputLabel for="dateOf" value="#{i18n['document.label.date.of']}:" />
+		<p:selectOneMenu id="dateOf" value="#{defaultFilterMBean.filterVO.dateType}">
+			<f:selectItems value="#{defaultFilterMBean.dateType}" 
+						var="dateType"
+						itemValue="#{dateType}"
+						itemLabel="#{i18n[utils:getEnumQualifiedName(dateType)]}"
+						 />
+		</p:selectOneMenu>
+	</p:outputPanel>
+</ui:composition>

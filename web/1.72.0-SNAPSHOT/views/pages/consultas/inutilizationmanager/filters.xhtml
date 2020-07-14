@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:ngDatePeriod="http://java.sun.com/jsf/composite/common/component/dateperiod">
+	<f:facet name="last">
+		<h:outputStylesheet library="css" name="document.css" />
+	</f:facet>
+	<p:outputPanel styleClass="ui-g-12 document-column">
+		<p:outputPanel styleClass="ui-g-2">
+			<p:outputLabel value="#{i18n['ng.label.date.initial']}:" />
+			<ngDatePeriod:calendarInitial
+				label="#{i18n['ng.label.date.initial']}" id="ngCalendarInitial"
+				finalCalendarId="ngCalendarFinal"
+				selectorId="ng-form:ng-search-comp:ng-tabview-search:ng-tabview-basic:ngDatePeriodSelector"
+				value="#{defaultFilterMBean.filterVO.initialDate}">
+				<f:validator binding="#{nonFutureDateValidator}" />
+			</ngDatePeriod:calendarInitial>
+		</p:outputPanel>
+		<p:outputPanel styleClass="ui-g-2">
+			<p:outputLabel value="#{i18n['ng.label.date.final']}:" />
+			<ngDatePeriod:calendarFinal label="#{i18n['ng.label.date.final']}"
+				id="ngCalendarFinal"
+				selectorId="ng-form:ng-search-comp:ng-tabview-search:ng-tabview-basic:ngDatePeriodSelector"
+				value="#{defaultFilterMBean.filterVO.finalDate}"
+				mindate="#{defaultFilterMBean.filterVO.initialDate}">
+				<f:validator binding="#{periodValidator}" />
+				<f:validator binding="#{nonFutureDateValidator}" />
+			</ngDatePeriod:calendarFinal>
+		</p:outputPanel>
+	</p:outputPanel>
+	<p:outputPanel styleClass="ui-g-12 document-column">
+		<p:outputPanel styleClass="ui-g-2">
+			<p:outputLabel for="dateOf"
+				value="#{i18n['document.label.date.of']}:" />
+			<p:selectOneMenu id="dateOf"
+				value="#{defaultFilterMBean.filterVO.inutilizationDateType}">
+				<f:selectItems value="#{defaultFilterMBean.inutilizationDateType}"
+					var="inutilizationDateType" itemValue="#{inutilizationDateType}"
+					itemLabel="#{inutilizationDateType.desc}" />
+			</p:selectOneMenu>
+		</p:outputPanel>
+		<p:outputPanel styleClass="ui-g-2">
+			<p:outputLabel value="#{i18n['ng.label.date.period']}:" />
+			<ngDatePeriod:selector id="ngDatePeriodSelector" style="width:100%"
+				periods="#{defaultFilterMBean.dateRangeTypes}"
+				initialCalendarId="ng-form:ng-search-comp:ng-tabview-search:ng-tabview-basic:ngCalendarInitial"
+				finalCalendarId="ng-form:ng-search-comp:ng-tabview-search:ng-tabview-basic:ngCalendarFinal"
+				rangeValue="#{defaultFilterMBean.dateRangeValue}" />
+		</p:outputPanel>
+		<p:outputPanel styleClass="ui-g-2">
+			<p:outputPanel styleClass="ui-g">
+				<p:outputPanel styleClass="ui-g-3 ui-g-nopad">
+					<p:outputLabel for="serie" value="#{i18n['document.label.serie']}:" />
+					<p:inputNumber id="serie"
+						value="#{defaultFilterMBean.filterVO.serial}" decimalPlaces="0"
+								thousandSeparator="" maxValue="999" minValue="0" />
+				</p:outputPanel>
+				<p:outputPanel styleClass="ui-g-4 ui-g-nopad"
+					style="padding-left:10px">
+					<p:outputLabel for="documentFim"
+						value="#{i18n['document.label.documentnumber']}:" />
+							<p:inputNumber id="documentIni" maxValue="999999999" minValue="0"
+						value="#{defaultFilterMBean.filterVO.initialNumber}"
+						decimalPlaces="0" thousandSeparator="">
+						<p:ajax global="false" />
+					</p:inputNumber>
+				</p:outputPanel>
+				<p:outputPanel styleClass="ui-g-1 ui-g-nopad ng-label-to">
+					<p:outputLabel>a</p:outputLabel>
+				</p:outputPanel>
+				<p:outputPanel styleClass="ui-g-4 ui-g-nopad">
+					<p:spacer></p:spacer>
+							<p:inputNumber id="documentFim" maxValue="999999999" minValue="0"
+						value="#{defaultFilterMBean.filterVO.finalNumber}"
+						decimalPlaces="0" thousandSeparator="">
+						<f:validator binding="#{rangeNumbersValidator}" />
+						<f:attribute name="initialNumber"
+							value="#{defaultFilterMBean.filterVO.initialNumber}" />
+						<f:attribute name="tab" value="document.tab.basic" />
+					</p:inputNumber>
+				</p:outputPanel>
+			</p:outputPanel>
+		</p:outputPanel>
+		<p:outputPanel styleClass="ui-g-2">
+			<p:outputLabel for="cnpj"
+				value="#{i18n['document.label.cnpj.emitente']}:" />
+			<p:inputMask id="cnpj"
+				value="#{defaultFilterMBean.filterVO.establishmentID}" tabIndex="1"
+				label="#{i18n['document.label.cnpj.emitente']}"
+				mask="#{defaultMBean.layouts.CNPJ.searchMask}" autoClear="false">
+				<f:validator binding="#{cnpjFilterValidator}" />
+			</p:inputMask>
+		</p:outputPanel>
+		<p:outputPanel styleClass="ui-g-2">
+			<p:outputLabel for="operation"
+				value="#{i18n['inutilization.label.operation']}:" />
+			<p:selectOneMenu id="operation"
+				value="#{defaultFilterMBean.filterVO.operation}">
+				<f:selectItems value="#{defaultFilterMBean.operations}" var="type"
+					itemValue="#{type}" itemLabel="#{type.desc}" />
+			</p:selectOneMenu>
+		</p:outputPanel>
+		<p:outputPanel styleClass="ui-g-2">
+			<p:outputLabel for="documentstatus"
+				value="#{i18n['document.label.status']}:" />
+			<p:selectOneMenu id="documentstatus"
+				value="#{defaultFilterMBean.filterVO.inutilizationStatus}">
+				<f:selectItems
+					value="#{defaultFilterMBean.inutilizationStatusTypes}" var="status"
+					itemValue="#{status}" itemLabel="#{status.desc}" />
+			</p:selectOneMenu>
+		</p:outputPanel>
+	</p:outputPanel>
+</ui:composition>

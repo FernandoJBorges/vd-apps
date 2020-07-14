@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/crud">
+	<ng:ngFormEdit id="ngFormEdit"
+		titleView="#{i18n['technicalManager.label.title.create']}">
+		<p:outputPanel id="ngTabview">
+			<p:outputPanel
+				class="ui-fluid document-filter-panel ui-tabs-panels tabcontainner">
+				<p:outputPanel class="ui-g">
+					<div class="ui-g-12">
+						<div class="ui-g-2">
+								<p:outputLabel for="stateCode" value="#{i18n['technicalManager.label.uf']}:" />
+								<p:inputText id="stateCode"
+									value="#{defaultMBean.entity.stateCode}"
+									disabled="true">
+								</p:inputText>
+						</div>
+						<div class="ui-g-2">
+								<p:outputLabel for="securityID" value="#{i18n['technicalManager.label.securityID']}:" />
+								<p:inputText id="securityID"
+									value="#{defaultMBean.entity.securityID}"
+									disabled="true">
+								</p:inputText>
+						</div>
+					</div>
+					<div class="ui-g-12">
+						<div class="ui-g-2">
+								<p:outputLabel for="cnpj" value="#{i18n['technicalManager.label.cnpj']}:" />
+								<p:inputText id="cnpj"
+									value="#{defaultMBean.entity.cnpj}"
+									disabled="true">
+								</p:inputText>
+						</div>
+						<div class="ui-g-2">
+								<p:outputLabel for="ownerName" value="#{i18n['technicalManager.label.ownerName']}:" />
+								<p:inputText id="ownerName"
+									value="#{defaultMBean.entity.ownerName}"
+									required="true" 
+									maxlength="128"
+									requiredMessage="#{i18n['technicalManager.input.required.ownerName']}">
+								</p:inputText>
+						</div>
+						<div class="ui-g-3">
+								<div class="ui-g-12 ui-g-nopad">
+						            <p:outputLabel for="securityCSRT" value="#{i18n['technicalManager.label.securityCSRT']}:" />
+						        </div>
+						        <p:outputPanel class="ui-g-11 ui-g-nopad" id="opSecurityCSRT">
+					                <p:inputText id="securityCSRT"
+										value="#{defaultMBean.entity.securityCSRT}"
+										required="#{defaultMBean.entity.generateSecurityCode}"
+										requiredMessage="#{i18n['technicalManager.input.required.securityCSRT']}">
+									</p:inputText>
+					            </p:outputPanel>    
+		   						<div class="ui-g-1 ui-g-nopad">
+									<ngComp:ngHelp messageHelp="#{i18n['technicalManager.msg.securityCode']}" style="margin: 1px -1px;"/>
+								</div>
+						</div>
+					</div>
+					<div class="ui-g-12">
+						<div class="ui-g-2">
+								<p:outputLabel for="managerName" value="#{i18n['technicalManager.label.managerName']}:" />
+								<p:inputText id="managerName"
+									value="#{defaultMBean.entity.managerName}"
+									required="true" 
+									maxlength="64"
+									requiredMessage="#{i18n['technicalManager.input.required.managerName']}">
+								</p:inputText>
+						</div>
+						<div class="ui-g-2">
+								<p:outputLabel for="emailDescription" value="#{i18n['technicalManager.label.emailDescription']}:" />
+								<p:inputText id="emailDescription"
+									value="#{defaultMBean.entity.emailDescription}"
+									required="true" 
+									maxlength="128"
+									requiredMessage="#{i18n['technicalManager.input.required.email']}">
+									<f:attribute name="inputName" value="#{i18n['technicalManager.msg.error.mail']}" />
+									<f:validator binding="#{mailValidator}" />
+								</p:inputText>
+						</div>
+						<div class="ui-g-3">
+								<p:outputLabel for="phoneDescription" value="#{i18n['technicalManager.label.phoneDescription']}:" />
+								<p:inputNumber id="phoneDescription"
+									value="#{defaultMBean.entity.phoneDescription}"
+									required="true"
+									decimalPlaces="0"  
+									thousandSeparator=""
+									maxValue="99999999999"
+									requiredMessage="#{i18n['technicalManager.input.required.phone']}">
+									<f:validateLength minimum="10"/>
+								</p:inputNumber>
+						</div>
+					</div>
+					<div class="ui-g-12" style="margin-bottom: 5px">
+			 			<ngComp:ngSubTitleView title="Gerar  Informações"></ngComp:ngSubTitleView>	 
+					</div>
+					<div class="ui-g-12" style="margin-left: 5%">
+						<div class="ui-g-12">
+							<p:selectBooleanCheckbox id="generateTechMngrInfo"
+								value="#{defaultMBean.entity.generateTechMngrInfo}">
+								<p:ajax event="change" update="opGenerateSecurityCode" listener="#{defaultMBean.changeGenerateTechMngrInfo()}"/>
+							</p:selectBooleanCheckbox>
+								#{i18n['technicalManager.label.generateTechMngrInfo']}:
+							<ngComp:ngHelp messageHelp="#{i18n['technicalManager.msg.generateTechInfo']}" />
+						</div>
+						<p:outputPanel styleClass="ui-g-12" id="opGenerateSecurityCode">
+							<p:selectBooleanCheckbox id="generateSecurityCode"
+								value="#{defaultMBean.entity.generateSecurityCode}"
+								disabled="#{!defaultMBean.entity.generateTechMngrInfo}">
+								<p:ajax event="change" update="opSecurityCSRT"/>
+							</p:selectBooleanCheckbox>
+							#{i18n['technicalManager.label.generateSecurityCode']}:
+							<ngComp:ngHelp messageHelp="#{i18n['technicalManager.msg.generateSecurityCode']}" />
+						</p:outputPanel>
+					</div>
+				</p:outputPanel>
+			</p:outputPanel>
+		</p:outputPanel>
+	</ng:ngFormEdit>
+</ui:composition>

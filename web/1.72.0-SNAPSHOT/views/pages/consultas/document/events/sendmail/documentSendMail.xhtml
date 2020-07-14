@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:p="http://primefaces.org/ui"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:utils="http://www.neogrid.com/functions/utils"
+xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/custom">
+<h:form id="form-send-email" prependId="false">
+	<p:importEnum type="com.neogrid.sped.enums.DocumentRecipientType" />
+		<p:outputPanel rendered="#{defaultMBean.stateSendEmail}">
+			<ng:ngFormEdit id="view-send-email"
+						titleView="#{i18n['document.sendmail.label.title.view']}"
+						titleViewBegin="#{i18n['document.sendmail.label.title.view.begin']}"
+						mbean="#{documentSendMailMB}" 
+						actionGoBack="goBackInvoiceList"
+						actionSubmit="sendMail" 
+						labelSubmit="#{i18n['btn_action_send']}"
+						icon="ng-button-icon icon-sendToEmail"
+						update=":ng-form :ng-panel-crud-dialog :messages :view-send-email:panel-send-email">
+						<p:outputPanel id="panel-send-email" styleClass="ng-containner ng-containner-details">
+							<div class="ui-fluid">
+								<div class="ui-g ui-g-nopad lb-resume-message">
+									<ngComp:ngContextMessages id="ng-context-messages" rendered="#{documentSendMailMB.hasContextMessage()}" message="#{documentSendMailMB.contextMessage}" />
+								</div>
+								<div class="ui-g">
+									<div class="ui-g-12 ui-g-nopad">
+										<p:outputLabel id="lb-resume-message" styleClass="lb-resume-message" value="#{documentSendMailMB.getResumeMessage()}" />
+									</div>
+									<ui:include src="documentSendMailAttachments.xhtml">
+										<ui:param name="documentSendMailMB" value="#{documentSendMailMB}" />
+									</ui:include>
+									<div class="ui-g-12 ui-g-nopad">
+										<ui:repeat id="listSendToConfigurationVO" var="sendToConfigurationVO" value="#{documentSendMailMB.getSendToConfiguration()}">
+											<ui:include src="documentSendMailTemplate.xhtml">
+												<ui:param name="sendToConfigurationVO" value="#{sendToConfigurationVO}" />
+											</ui:include>
+										</ui:repeat>
+									</div>
+								</div>
+							</div>
+						</p:outputPanel>
+			</ng:ngFormEdit>
+		</p:outputPanel>
+	</h:form>
+</ui:composition>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>com.neogrid.sped</groupId>
+  <artifactId>sped-mon-web</artifactId>
+  <versioning>
+    <versions>
+      <version>1.72.0-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20200520164809</lastUpdated>
+  </versioning>
+</metadata>

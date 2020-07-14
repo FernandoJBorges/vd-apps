@@ -1,0 +1,17 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ngDatePeriod="http://java.sun.com/jsf/composite/common/component/dateperiod">
+	<p:outputPanel styleClass="ui-g-2">
+		<p:outputLabel value="#{i18n['ng.label.date.final']}:" />
+		<ngDatePeriod:calendarFinal id="ngCalendarFinal"
+								label="#{i18n['ng.label.date.final']}"
+								selectorId="ng-form:ng-search-comp:ng-tabview-search:ng-tabview-basic:ngDatePeriodSelector"
+								value="#{defaultFilterMBean.filterVO.finalDate}"
+								mindate="#{defaultFilterMBean.filterVO.initialDate}">
+								<f:validator binding="#{periodValidator}" />
+								<f:validator binding="#{nonFutureDateValidator}" />
+		</ngDatePeriod:calendarFinal>
+	</p:outputPanel>
+</ui:fragment>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ngTab="http://java.sun.com/jsf/composite/common/component/view/tabview">
+	<f:facet name="last">
+		<h:outputStylesheet library="css" name="document.css" />
+	</f:facet>
+	<ngTab:ngTabView id="ng-tabview-search"
+		additionalUpdate="ng-form:ng-toolbar:toolbarContainer">
+		<p:outputPanel class="ui-fluid document-filter-panel">
+			<p:outputPanel class="ui-g">
+				<ngTab:ngTabViewBasic id="ng-tabview-basic">
+					<ui:include src="./documentFilters.xhtml" />
+				</ngTab:ngTabViewBasic>
+				<ngTab:ngTabViewAdvanced id="ng-tabview-advanced">
+					<ui:include src="./advancedFilters.xhtml" />
+				</ngTab:ngTabViewAdvanced>
+			</p:outputPanel>
+		</p:outputPanel>
+	</ngTab:ngTabView>
+</ui:composition>

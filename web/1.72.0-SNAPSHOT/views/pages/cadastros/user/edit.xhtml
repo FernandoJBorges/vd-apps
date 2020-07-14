@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/crud">
+	<ng:ngFormEdit id="ngFormEdit" titleView="#{i18n['usr.label.titleList']}" labelBtnCancel="#{i18n['btn_action_no']}" width="387">
+		<p:tabView id="ngTabview" widgetVar="ngTabWidgetVar">
+			<p:ajax event="tabChange" update="@(.dialog-estab)" global="false" />
+			<p:tab id="tabIdent" title="#{i18n['usr.label.identifier']}">
+				<ui:include src="tabs/ident.xhtml" />
+			</p:tab>
+ 			<p:tab id="tabEstab" title="#{defaultMBean.estabTabName}" disabled="#{usrCreateMB.tabEstabDisabled}">
+				<ui:include src="tabs/estab.xhtml" />
+			</p:tab>
+		</p:tabView>
+	</ng:ngFormEdit>
+</ui:composition>

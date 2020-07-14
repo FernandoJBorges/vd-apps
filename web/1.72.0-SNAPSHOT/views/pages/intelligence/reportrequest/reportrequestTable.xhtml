@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/crud"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component">
+
+	<ui:param name="defaultMBean" value="#{reportRequestMB}" />
+	
+	<p:column headerText="#{i18n['reportrequest.label.reporttype']}" style="padding-left: 20px">
+	    <h:outputText value="#{defaultMBean.getReportType(row.reportType).getDescription()}" />
+	</p:column>
+	<p:column headerText="#{i18n['reportrequest.label.requestfilename']}">
+	    <h:outputText value="#{row.requestFilename}" />
+	</p:column>
+	<p:column headerText="#{i18n['reportrequest.label.creationdate']}" sortBy="#{row.creationDate}">
+		<h:outputText value="#{row.creationDate}" >
+			<f:convertDateTime type="date" pattern="dd/MM/yyyy HH:mm:ss"/>
+		</h:outputText>
+	</p:column>
+	<p:column headerText="#{i18n['reportrequest.label.status']}">
+		<h:outputText value="#{defaultMBean.getReportStatusType(row.status).getDescription()}" />
+	</p:column>
+	<p:column headerText="#{i18n['reportrequest.label.resultfilesize']}">
+		<h:panelGroup rendered="#{row.resultFileSize != null}">
+			<h:outputText value="#{row.resultFileSize/1024}" >
+				<f:convertNumber minFractionDigits="1" maxFractionDigits="1" groupingUsed="true"/>
+			</h:outputText>
+			Kb
+		</h:panelGroup>
+		<h:panelGroup rendered="#{row.resultFileSize == null}">-</h:panelGroup>
+	</p:column>
+	<p:column exportable="false" toggleable="false" style="width:30px">        
+        <p:commandLink title="#{i18n['reportrequest.label.download.'.concat(defaultMBean.getReportStatusType(row.getStatus()).name())]}"
+                       disabled="#{!defaultMBean.isDownloadable(row)}" ajax="false" immediate="true" styleClass="ng-icon icon-download-alt">
+           <p:fileDownload value="#{defaultMBean.downloadResultFile(row)}" />
+        </p:commandLink>
+    </p:column>	
+</ui:composition>

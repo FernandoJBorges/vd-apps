@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:param name="defaultMBean" value="#{establishmentCSCMB}" />
+	
+		<!-- FORM -->
+		<p:outputPanel id="panelToken">
+			<div class="ng-dialgo-btn">
+				<p:commandButton id="btn-render-token" icon="fa fa-plus"  action="#{defaultMBean.enableAddTokenHandle}" value="#{i18n['establishmenttoken.label.btn.newtoken']}" styleClass="ng-ui-button" process="@this" update=":ng-form:ngFormEdit:ngTabview:panelToken :ng-form:ngFormEdit:ngTabview:panelTokenList" rendered="#{!defaultMBean.enableAddToken}" />
+			</div>
+			
+			<p:panelGrid id="panelGridToken" columns="4" columnClasses="column1,column2,column3,column4" rendered="#{defaultMBean.enableAddToken}">
+				<p:outputLabel for="dateIni" value="#{i18n['establishmenttoken.label.iniDate']}:" />
+				<p:calendar id="dateIni" value="#{defaultMBean.buToken.iniDate}" update=":ng-form:ngFormEdit:ngTabview:dateFim" locale="pt" showOn="button" pattern="dd/MM/yyyy HH:mm" mask="true">
+					<p:ajax event="dateSelect" update=":ng-form:ngFormEdit:ngTabview:tokenList :ng-form:ngFormEdit:ngTabview:dateFim" partialSubmit="true" />
+				</p:calendar>
+				<p:outputLabel for="dateFim" value="#{i18n['establishmenttoken.label.endDate']}:" />
+				<p:calendar id="dateFim"  value="#{defaultMBean.buToken.endDate}" mindate="#{defaultMBean.buToken.iniDate}" locale="pt" showOn="button" pattern="dd/MM/yyyy HH:mm"  mask="true"/>
+				<p:outputLabel for="token" value="#{i18n['establishmenttoken.label.Token']}:" />
+				<p:inputText id="token" value="#{defaultMBean.buToken.csc}" maxlength="36" />
+				
+				
+				<p:outputLabel for="cidtoken" value="#{i18n['establishmenttoken.label.cidtoken']}:" />
+				<p:inputText id="cidtoken" value="#{defaultMBean.buToken.cIdToken}" maxlength="6" />
+				
+				<p:outputLabel for="active" value="#{i18n['establishment.label.active']}:"  />
+				<p:selectBooleanCheckbox id="active" value="#{defaultMBean.buToken.active}" > 
+						<p:ajax event="change" immediate="true" />
+				</p:selectBooleanCheckbox>
+				<p:spacer />
+				<p:spacer />
+				<p:spacer />
+				<h:panelGroup>
+				<p:commandButton 	id="ng-btn-add-token" 
+									partialSubmit="true"  
+									icon="fa fa-plus" 
+									styleClass="ng-ui-button" 
+									action="#{defaultMBean.addToken}" 
+									value="#{i18n['btn_action_include']}"
+									process=":ng-form:ngFormEdit:ngTabview:panelGridToken" 
+									update=":ng-form:ngFormEdit:ngTabview:panelTokenList :ng-form:ngFormEdit:ngTabview:panelToken :ng-form:ngFormEdit:ngPanelBtn :messages" 
+									 />
+					<p:commandButton id="btn-close-token"
+									process="@this" 
+									icon="fa fa-power-off"  
+									styleClass="ng-ui-button" 
+									value="#{i18n['btn_action_cancel']}" 
+									action="#{defaultMBean.enableAddTokenHandle}" 
+									update=":ng-form:ngFormEdit:ngTabview:panelToken :messages"
+									 />
+				
+				</h:panelGroup>
+			</p:panelGrid>
+			<p:focus id="tabTokenFocus" context="panelGridToken" />
+		</p:outputPanel>
+		<!-- LIST -->
+		<p:outputPanel id="panelTokenList">
+			<p:outputPanel id="abaToken" styleClass="ng-emptyList clearfix" rendered="#{!defaultMBean.enableAddToken and empty defaultMBean.buTokens}">
+				<p:graphicImage library="common" name="img/icons/lbl-pageWarning.png" /> 
+				#{i18n['establishmenttoken.form.required']}
+			</p:outputPanel>
+			<p:dataTable id="tokenList" value="#{defaultMBean.buTokens}" var="row" editable="true" rendered="#{not empty defaultMBean.buTokens}">
+				<p:ajax event="rowEdit" update=":messages"/>
+		         <p:column  headerText="#{i18n['establishmenttoken.label.Token']}" >  
+		            <p:cellEditor>  
+		                <f:facet name="output">  
+		                    <h:outputText value="#{row.csc}" />  
+		                </f:facet>  
+		                <f:facet name="input">  
+		              		  <p:inputText id="token" value="#{row.csc}" maxlength="36" required="true" requiredMessage="#{i18n['establishmenttoken.msg.error.Token']}" />
+		                </f:facet>  
+		            </p:cellEditor>  
+		        </p:column>  
+		         <p:column  headerText="#{i18n['establishmenttoken.label.cidtoken']}" >  
+		            <p:cellEditor>  
+		                <f:facet name="output">  
+		                    <h:outputText value="#{row.cIdToken}" />  
+		                </f:facet>  
+		                <f:facet name="input">  
+			                <p:inputText  value="#{row.cIdToken}" maxlength="6" required="true" requiredMessage="#{i18n['establishmenttoken.msg.error.cidtoken']}" validatorMessage="#{i18n['establishmenttoken.msg.error.cidtoke.mindigitn']}" >
+								 <f:validateLength minimum="6"></f:validateLength>
+							</p:inputText>
+		                </f:facet>  
+		            </p:cellEditor>  
+		        </p:column>  
+		        
+		         <p:column  headerText="#{i18n['establishmenttoken.label.iniDate']}" >  
+		            <p:cellEditor id="beginDateList">  
+		                <f:facet name="output">  
+		                    <h:outputText value="#{row.iniDate}">
+									<f:convertDateTime type="date" pattern="dd/MM/yyyy HH:mm"/>
+				 			</h:outputText>
+		                </f:facet>  
+		                <f:facet name="input">  
+		                    <p:calendar value="#{row.iniDate}" locale="pt" showOn="button" pattern="dd/MM/yyyy HH:mm" maxdate="#{row.endDate}" required="true" requiredMessage="#{i18n['establishmenttoken.msg.error.dateIni']}">
+		                    	<p:ajax event="dateSelect" update=":ng-form:ngFormEdit:ngTabview:tokenList:endDateList" />
+		                    </p:calendar>  
+		                </f:facet>  
+		            </p:cellEditor>  
+		        </p:column>  
+		        
+		         <p:column  headerText="#{i18n['establishmenttoken.label.endDate']}" >  
+		            <p:cellEditor id="endDateList">  
+		                <f:facet name="output">  
+		                    <h:outputText  value="#{row.endDate}">
+									<f:convertDateTime type="date" pattern="dd/MM/yyyy HH:mm"/>
+				 			</h:outputText>
+		                </f:facet>  
+		                <f:facet name="input">  
+		                    <p:calendar value="#{row.endDate}" locale="pt" showOn="button" minDate="#{row.iniDate}" pattern="dd/MM/yyyy HH:mm" mindate="#{row.iniDate}">
+		                    	<p:autoUpdate />
+		                    	<p:ajax event="dateSelect" update=":ng-form:ngFormEdit:ngTabview:tokenList:beginDateList" />
+		                    </p:calendar>
+		                </f:facet>  
+		            </p:cellEditor>  
+		        </p:column>  
+		        
+		         <p:column  headerText="#{i18n['establishmenttoken.label.situation']}" >  
+		            <p:cellEditor>  
+		                <f:facet name="output">  
+		                    <h:outputText value="#{row.active == true ? i18n['eventConsumer.label.active'] :  i18n['eventConsumer.label.inactive']}" /> 
+		                </f:facet>  
+		                <f:facet name="input">  
+		                    <p:selectBooleanCheckbox id="active" value="#{row.active}" > 
+								<p:ajax event="change" immediate="true" />
+							</p:selectBooleanCheckbox>
+		                </f:facet>  
+		            </p:cellEditor>  
+		        </p:column>  
+		 		<p:column style="width:32px">
+    					  <p:rowEditor/>
+   				</p:column>
+			</p:dataTable>
+		</p:outputPanel>
+</ui:composition>

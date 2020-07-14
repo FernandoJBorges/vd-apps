@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<div class="ui-g-12">
+		<div class="ui-g-12 ui-g-nopad">
+			<div class="ui-g-2 ui-g-nopad">
+				<p:outputLabel for="host" value="#{i18n['signature.label.host']}:" />
+			</div>
+			<div class="ui-g-1" />
+			<div class="ui-g-4 ui-g-nopad">
+				<p:outputLabel for="port" value="#{i18n['signature.label.port']}:" />
+			</div>
+		</div>
+		<div class="ui-g-12 ui-g-nopad">
+			<div class="ui-g-2 ui-g-nopad">
+				<p:inputText id="host"
+					value="#{defaultMBean.certificateReposVO.hardwareHost}"
+					maxlength="128" required="true"
+					validatorMessage="#{i18n['signature.host.pattern.not.match']}">
+					<f:validateRegex pattern="[a-zA-Z0-9_\.\-]+" />
+				</p:inputText>
+			</div>
+			<div class="ui-g-1" />
+			<div class="ui-g-1 ui-g-nopad">
+				<p:inputNumber id="port"
+					value="#{defaultMBean.certificateReposVO.hardwarePort}"
+					decimalPlaces="0" thousandSeparator="" maxValue="99999"
+					minValue="0" required="true">
+					<f:validateLength minimum="2" />
+				</p:inputNumber>
+			</div>
+		</div>
+	</div>
+	<div class="ui-g-12">
+		<div class="ui-g-12 ui-g-nopad">
+			<p:outputLabel for="user" value="#{i18n['signature.label.user']}:" />
+		</div>
+		<div class="ui-g-2 ui-g-nopad">
+			<p:inputText id="user" value="#{defaultMBean.entity.user}"
+				maxlength="60" required="true" />
+		</div>
+	</div>
+	<div class="ui-g-12">
+		<div class="ui-g-12 ui-g-nopad">
+			<p:outputLabel for="hta" value="#{i18n['signature.label.password']}:" />
+		</div>
+		<ui:include src="passwordOrKeystore.xhtml">
+			<ui:param name="id" value="hta" />
+		</ui:include>
+	</div>
+</ui:composition>

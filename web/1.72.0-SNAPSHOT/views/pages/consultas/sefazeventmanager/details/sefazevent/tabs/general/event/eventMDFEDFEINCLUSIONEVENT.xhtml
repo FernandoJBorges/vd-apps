@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/table">
+
+	<p:outputLabel value="#{i18n['eventsefaz.mdfe.dfe.label']}:" />
+	<div class="ui-g-12 document-detail-column">
+		<ng:ngSimpleDataTable id="from-itens"		
+			value="#{defaultMBean.detailData.generalData.event.generalDFeInfo}"
+			emptyMessage="#{i18n['invoice.label.details.related.event.notfound']}">
+			<p:column headerText="#{i18n['eventsefaz.mdfe.dfe.general.from.city.code.label']}" styleClass="ui-g-3">
+				<h:outputText value="#{row.CMunCarrega}" />
+			</p:column>
+			<p:column headerText="#{i18n['eventsefaz.mdfe.dfe.general.from.city.name.label']}" styleClass="ui-g-3">
+				<h:outputText value="#{row.XMunCarrega}" />
+			</p:column>
+			<p:column headerText="#{i18n['eventsefaz.mdfe.dfe.general.protocol']}" styleClass="ui-g-6">
+				<h:outputText value="#{row.NProt}" />
+			</p:column>			
+		</ng:ngSimpleDataTable>
+	</div>
+	<div class="ui-g-12 document-detail-column">
+		<ng:ngSimpleDataTable id="to-itens"
+			value="#{defaultMBean.detailData.generalData.event.addedDFeInfDocs}"
+			emptyMessage="#{i18n['invoice.label.details.related.event.notfound']}">   
+			<p:column headerText="#{i18n['eventsefaz.mdfe.dfe.docs.to.city.code.label']}" styleClass="ui-g-3">
+				<h:outputText value="#{row.CMunDescarga}" />
+			</p:column>
+			<p:column headerText="#{i18n['eventsefaz.mdfe.dfe.docs.to.city.name.label']}"  styleClass="ui-g-3">
+				<h:outputText value="#{row.XMunDescarga}" />
+			</p:column>
+			<p:column headerText="#{i18n['eventsefaz.mdfe.dfe.docs.accesskey']}"  styleClass="ui-g-6">
+				<h:outputText value="#{row.chNFe}" />
+			</p:column>
+		</ng:ngSimpleDataTable>
+	</div>
+</ui:composition>

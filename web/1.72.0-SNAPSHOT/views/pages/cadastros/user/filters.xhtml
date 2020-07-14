@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+	<div class="ui-g ui-fluid">
+		<div class="ui-g-12">
+			<div class="ui-g-3">
+				<p:outputLabel for="name" value="#{i18n['usr.label.nome']}:" />
+				<p:inputText id="name" value="#{defaultMBean.filterVO.name}" maxlength="60" />
+			</div>
+			<div class="ui-g-3">
+				<p:outputLabel for="lastName" value="#{i18n['usr.label.lastName']}:" />
+				<p:inputText id="lastName" value="#{defaultMBean.filterVO.lastName}" maxlength="80"/>
+			</div>
+			<div class="ui-g-3">
+				<p:outputLabel for="login" value="#{i18n['usr.label.login']}:" />
+				<p:inputText id="login" value="#{defaultMBean.filterVO.login}" maxlength="128" />
+			</div>
+			<div class="ui-g-3">
+				<p:outputLabel for="email" value="#{i18n['usr.label.email']}:" />
+				<p:inputText id="email" value="#{defaultMBean.filterVO.email}" maxlength="256" />
+			</div>
+		</div>
+		<div class="ui-g-12">
+			<div class="ui-g-3">
+					<div class="ui-g-12 ui-g-nopad">
+						<p:outputLabel for="cnpj" value="#{i18n['usr.label.cnpj']}:" />
+					</div>
+					<div class="ui-g-11 ui-g-nopad">
+						<p:inputMask id="cnpj"
+									value="#{defaultMBean.filterVO.establishmentID}"
+									label="#{i18n['usr.label.cnpj']}" 
+									maxlength="14"
+									mask="#{defaultMBean.layouts.CNPJ.searchMask}" 
+									tabIndex="1"
+									autoClear="false">
+									<f:validator binding="#{cnpjAndCPFAndForeignFilterValidator}" />
+						</p:inputMask>
+					</div>
+					<div class="ui-g-1 ui-g-nopad">
+						<ng:ngHelp messageHelp="#{i18n['usr.msg.cnpj.help']}" style="margin:1px;" />
+					</div>
+			</div>
+			<div class="ui-g-3">
+					<div class="ui-g-11 ui-g-nopad">
+						<p:outputLabel for="nameFantasy" value="#{i18n['usr.label.razaoSocial']}:" />
+						<p:inputText id="nameFantasy" value="#{defaultMBean.filterVO.nameFantasy}" maxlength="120" />
+					</div>
+					<div class="ui-g-1 ui-g-nopad">
+						<ng:ngHelp messageHelp="#{i18n['usr.msg.nameFantasy.help']}" style="margin-top:15px;" />
+					</div>
+			</div>
+			<p:outputPanel id="nameRolePanel" styleClass="ui-g-3 nameRolePanel">
+				<div class="ui-g-11 ui-g-nopad">
+					<p:outputLabel for="nameRole" value="#{i18n['usr.label.title.dialog']}:" />
+					<p:inputText id="nameRole" value="#{defaultMBean.filterVO.roleName}" readonly="true" placeholder="#{i18n['lbl_all']}"/>
+				</div>
+				<div class="ui-g-1 ui-g-nopad">
+					<p:spacer></p:spacer>
+					<p:commandButton icon="ui-icon-search"
+								immediate="true"
+								update=":dialogRoles:dialogForm:ng-datatable :dialogRoles:dialogForm:PanelGrid"
+								resetValues="true"
+								actionListener="#{roleDialog.init}"
+								onclick="PF('dialogRoles').show()" />
+				</div>
+			</p:outputPanel>
+			<div class="ui-g-2">
+				<p:outputLabel for="usrStatusType" value="#{i18n['usr.label.status']}:" />
+				<p:selectOneMenu id="usrStatusType" value="#{defaultMBean.filterVO.usrStatusType}">
+					<f:selectItems value="#{defaultFilterMBean.usrStatusType}" var="usrStatusType" itemValue="#{usrStatusType}" itemLabel="#{i18n[utils:getEnumQualifiedName(usrStatusType)]}" />
+				</p:selectOneMenu>
+			</div>
+		</div>
+	</div>
+</ui:composition>
+

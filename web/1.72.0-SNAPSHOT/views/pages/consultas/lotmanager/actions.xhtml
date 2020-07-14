@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+			<p:menuitem id="closeLot"  
+					icon="fa fa-cube" 
+					update=":messages"
+					styleClass="ng-context-menu-item"
+					rendered="#{lotCloseMB.hasPermissionCloseLot()}"
+					action="#{lotCloseMB.prepareCloseLotManually('SELECTION')}"
+					value="#{i18n['lotmanager.label.action.closelotmanager']}"
+					disabled="#{defaultMBean.filters.disabledcloselot}" 
+					/>
+			<p:menuitem id="sendToSefaz" 
+					icon="icon-reenviarSEFAZ"
+					styleClass="ng-context-menu-item"
+					value="#{i18n['lotmanager.label.action.resendsefaz']}"
+					disabled="#{defaultMBean.filters.disabledresendsefaz}"
+					rendered="#{lotResendSefazMB.hasPermissionResendLot()}"
+					action="#{lotResendSefazMB.prepareResendLot('SELECTION')}"
+					update=":messages :ng-form:ng-detail-dataTable:ng-panel-datatable" 
+					/>
+</ui:composition>

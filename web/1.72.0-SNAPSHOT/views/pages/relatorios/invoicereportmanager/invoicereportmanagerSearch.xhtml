@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	template="/common/templates/search/ngSearchTemplate.xhtml">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{detailedInvoiceReportMB}" />
+	<!-- bloco de pesquisa -->
+	<ui:define name="searchlistBlock">
+	
+		<ng:ngViewSearch	id="ng-search-comp"  list="" titleView="#{i18n['submenu_label_relatorios_nfe_detalhada']}" 
+							btnEditDisabled="#{!defaultMBean.isSolrConfigured()}" >
+							<p:tabView id="ng-tabview-search">
+								<p:tab id="ng-tab-basic" title="#{i18n.ngTabBasic}">
+									<p:outputPanel  style="width: 100%;">
+										<ui:include src="filtersInvoiceReport.xhtml" />
+									</p:outputPanel> 
+								</p:tab>
+							</p:tabView>
+		</ng:ngViewSearch>
+		
+		<!-- componente de ações para multipla selecoes -->
+		<ng:ngSelectedActions id="ng-selected-actions" renderedBtnExportXls="false" renderedBtnExportPdf="false">
+			<p:menuitem value="#{i18n['label.title.exporter.excel']}" 
+						icon="ng-btn-actions-select fa fa-file-excel-o"
+						styleClass="ng-context-menu-item"
+						ajax="false" 
+						immediate="true" 
+						update=":messages"
+						action="#{defaultMBean.dataExporterXLS}"
+						>
+			</p:menuitem>
+		</ng:ngSelectedActions>		
+
+		<ng:ngDataTable id="ng-detail-dataTable" btnRenderSelection="false" customAction="false">
+				<ui:include src="tableInvoiceReport.xhtml" />
+		</ng:ngDataTable>
+	</ui:define>
+
+</ui:composition>

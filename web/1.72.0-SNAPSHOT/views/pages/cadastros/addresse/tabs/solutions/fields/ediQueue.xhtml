@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:p="http://primefaces.org/ui">
+	<div class="ui-g-12">
+		<div class="ui-g-2 edit-addresse-field">
+				<p:outputLabel for="queue-name-#{tabDoctype}" value="#{i18n['addresse.title.edi-queue-disponibilize']}" />
+				<p:inputText id="queue-name-#{tabDoctype}" value="#{addresseQueueName}" disabled="#{useDadConfig}" maxlength="60" >
+					<f:attribute name="prefixMessage" value="#{defaultMBean.getTabMessagePrefix(tabDoctype)}" /> 
+					<f:validator binding="#{queueValidator}" />
+				</p:inputText>
+		</div>
+		<div class="ui-g-1 edit-fa-question queue-edit-fa-question">
+			<ngComp:ngHelp messageHelp="#{i18n['addresse.edit.edi-queue.helper']}" />
+		</div>
+	</div>
+</ui:composition>

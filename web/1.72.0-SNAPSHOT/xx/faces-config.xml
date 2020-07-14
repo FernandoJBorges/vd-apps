@@ -1,0 +1,83 @@
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee   http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+	<application>
+		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+	    <el-resolver>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerELResolver</el-resolver>
+		<resource-bundle>
+			<base-name>message</base-name>
+			<var>i18n</var>
+		</resource-bundle>
+		<locale-config>
+			<default-locale>pt</default-locale>
+			<supported-locale>pt_BR</supported-locale>
+		</locale-config>
+		 <message-bundle>
+		  	Messages
+		 </message-bundle>
+		
+		<system-event-listener>
+            <system-event-listener-class>com.neogrid.monitor.view.ViewScopeCallbackRegistrar</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostConstructViewMapEvent</system-event-class>
+            <source-class>javax.faces.component.UIViewRoot</source-class>
+        </system-event-listener>
+
+        <system-event-listener>
+            <system-event-listener-class>com.neogrid.monitor.view.ViewScopeCallbackRegistrar</system-event-listener-class>
+            <system-event-class>javax.faces.event.PreDestroyViewMapEvent</system-event-class>
+            <source-class>javax.faces.component.UIViewRoot</source-class>
+        </system-event-listener>
+
+        <resource-handler>com.neogrid.sped.config.FiscalResourceHandler</resource-handler>
+
+        <action-listener>
+            org.primefaces.application.DialogActionListener
+        </action-listener>
+        <navigation-handler>
+            org.primefaces.application.DialogNavigationHandler
+        </navigation-handler>
+        <view-handler>
+            org.primefaces.application.DialogViewHandler
+        </view-handler>
+
+	</application>
+	<render-kit>
+		<renderer>
+			<component-family>org.primefaces.component</component-family>
+			<renderer-type>org.primefaces.component.DataTableRenderer</renderer-type>
+			<renderer-class>com.neogrid.sped.component.LazyDataTableRenderer</renderer-class>
+		</renderer>
+	</render-kit>
+	<lifecycle>
+		<phase-listener>com.neogrid.sped.utils.MultiPageMessagesSupport</phase-listener>
+	</lifecycle>
+	<converter>
+		<description>MaskConverter - conveter responsavel por remover formatacao de maskara</description>
+		<converter-id>maskConverter</converter-id>
+		<converter-class>com.neogrid.monitor.converter.MaskConverter</converter-class>
+	</converter>
+	<converter>
+     	<converter-id>CnpjCpfConverter</converter-id>
+     	<converter-class>com.neogrid.monitor.converter.CnpjCpfConverter</converter-class>
+	</converter>
+	<converter>
+     	<converter-id>dateTimeFormatteWithGMT</converter-id>
+     	<converter-class>com.neogrid.monitor.converter.DateTimeFormatteWithGMT</converter-class>
+	</converter>
+	<component>
+		<component-type>components.dateperiod.calendar</component-type>
+		<component-class>com.neogrid.monitor.component.dateperiod.DatePeriodCalendar</component-class>
+	</component>
+	<component>
+		<component-type>components.dateperiod.selector</component-type>
+		<component-class>com.neogrid.monitor.component.dateperiod.DatePeriodSelector</component-class>
+	</component>
+  <factory>
+    <exception-handler-factory>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerFactory</exception-handler-factory>
+  </factory>
+  <managed-bean>
+    <managed-bean-name>currentDate</managed-bean-name>
+    <managed-bean-class>java.util.Date</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+</managed-bean>
+</faces-config>

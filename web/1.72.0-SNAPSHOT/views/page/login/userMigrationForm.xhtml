@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:ng="http://java.sun.com/jsf/composite/common/component">
+<ui:composition template="/common/templates/blank/blank.xhtml">
+    <ui:param name="disableRecoveryPassword" value="true"/>
+    <ui:param name="enableDefaultMessages" value="false"/>
+    <ui:define name="content">
+    <h:outputScript library="js" name="userMigrationForm.js"></h:outputScript>        
+        <f:facet name="last">
+            <h:outputStylesheet library="css" name="loginmigrate.css"/>
+        </f:facet>
+        <h:form  prependId="false">
+            <p:outputPanel class="ui-fluid">
+                <p:outputPanel class="ui-g" style="padding: 0px 30%">
+                    <div class="ui-g ng-migration-form body-message-dialog container-migration-form">
+                        <div class="ui-g-12">
+                            <h3>#{i18n['user.login.migrate.form.title']}</h3>
+                        </div>
+                        <div class="container-migration-central">
+                            <p:messages id="message-migrate" showDetail="#{userMigrationFormMB.showDetail}" autoUpdate="true"
+                                        closable="message" escape="false"/>
+                            <div class="ui-g-12 login-message">
+                                <p>
+                                    <h:outputText value="#{i18n['user.login.migrate.form.message1']}"/>
+                                </p>
+                                <p>
+                                    <h:outputText value="#{i18n['user.login.migrate.form.message2']}"/>
+                                </p>
+                                <p>
+                                    <h:outputText value="#{i18n['user.login.migrate.form.message4']}"/>
+                                </p>
+                            </div>
+                            <div class="ui-g-12">
+	                            <div class="ui-g-12">
+	                                    <p:outputLabel value="#{i18n['login.label.loginatual']}*: #{userMigrationFormMB.usrBO.login}"/>
+	                            </div>
+                            </div>
+                            <div class="ui-g-12">
+                                <div class="ui-g-6">
+                                    <p:outputLabel value="#{i18n['usr.label.nome']}*:"/>
+                                    <p:inputText id="name" value="#{userMigrationFormMB.name}" maxlength="60"/>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:outputLabel value="#{i18n['usr.label.lastName']}*:"/>
+                                    <p:inputText id="lastname" value="#{userMigrationFormMB.lastname}" maxlength="60"/>
+                                </div>
+                            </div>
+                            <div class="ui-g-12">
+                                <div class="ui-g-6">
+                                    <p:outputLabel
+                                            value="Novo #{i18n['usr.label.login']}/#{i18n['usr.label.email']}*:"/>
+                                    <p:inputText id="login" value="#{userMigrationFormMB.login}" maxlength="128"/>
+                                </div>
+                            </div>
+                            <div class="ui-g-12">
+                                <div class="ui-g-6">
+                                    <div class="ui-g-5 ui-g-nopad">
+                                        <p:outputLabel value="#{i18n['usr.label.activationcode']}*:"/>
+                                        <p:inputText id="activationcode" value="#{userMigrationFormMB.code}"
+                                                     maxlength="6"/>
+                                    </div>
+                                    <div class="ui-g-1 ui-g-nopad">
+                                        <ng:ngHelp messageHelp="#{i18n['user.login.migrate.form.code.tooltip']}"
+                                                   style="margin: 17px 2px"/>
+                                    </div>
+                                    <div class="ui-g-3">
+                                        <p:commandButton id="ng-btn-send-activation_code"
+                                                         value="Enviar" type="submit" ajax="true"
+                                                         title="Enviar código de ativação"
+                                                         styleClass="ng-ui-button" style="margin: 1px;"
+                                                         action="#{userMigrationFormMB.sendActivationCode()}"
+                                                         update="login" colspan="4"/>
+                                    </div>
+                                    <div class="ui-g-3">
+                                        <p:commandButton id="ng-btn-residual-code"
+                                                         value="--:--" type="submit" ajax="true"
+                                                         title="Tempo Residual"
+                                                         styleClass="ng-ui-button" style="margin: 1px;"
+                                                         enable="false"
+                                                         action="#{userMigrationFormMB.messageResidualTime()}"
+                                                         update="login" colspan="4"/>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-g-nopad" style="float: left">
+                            <div class="ui-g-6 ui-g-nopad">
+                                <p:spacer/>
+                            </div>
+                            <div class="ui-g-3 ui-g-nopad" style="padding-right:5px; ">
+                                <p:commandButton id="ng-btn-save" value="Salvar" type="submit" styleClass="ng-ui-button"
+                                                 action="#{userMigrationFormMB.migrate}" update="@form"/>
+                            </div>
+                            <div class="ui-g-3 ui-g-nopad">
+                                <p:commandButton id="ng-btn-leave" value="#{userMigrationFormMB.btnLeaveLabel}"
+                                                 styleClass="ng-ui-button" immediate="true"
+                                                 action="#{userMigrationFormMB.closeForm}"/>
+                            </div>
+                        </div>
+                    </div>
+                </p:outputPanel>
+                <p:remoteCommand name="cancel" immediate="true" action="#{userMigrationFormMB.cancel}"/>
+                <p:remoteCommand name="proceedLogin" immediate="true" action="#{userMigrationFormMB.proceedLogin}"/>
+                <p:remoteCommand name="logout" immediate="true" action="#{userMigrationFormMB.logout}"/>
+                <p:inputText id="residualTime"  type="hidden" value="#{userMigrationFormMB.residualTime}"/>
+            </p:outputPanel>
+            |
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

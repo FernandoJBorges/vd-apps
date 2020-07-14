@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:column id="columnIssueDate" 
+			sortBy="#{row.issueDate}"
+			styleClass="document-issue-date-column"
+			headerText="#{i18n['document.label.issuedate']}">
+			<h:outputText id="issueDate" value="#{row.issueDate}">
+				<f:convertDateTime type="date" pattern="#{defaultMBean.layouts.DATE_SHORT.format}" />
+			</h:outputText>
+	</p:column>
+</ui:composition>

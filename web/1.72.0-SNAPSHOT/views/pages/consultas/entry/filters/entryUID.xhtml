@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<p:outputPanel styleClass="ui-g-6" style="padding-top:0px; padding-left:0px">
+		<p:outputLabel for="entryUID" value="#{i18n['entry.label.entry.uid']}:" />
+		<p:inputMask id="entryUID" value="#{defaultMBean.filterVO.entryUID}" mask="9?99999999" />
+	</p:outputPanel>
+</ui:composition>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/table"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ng:ngSimpleDataTable value="#{items}" emptyMessage="Nenhum item encontrado">
+		<p:column headerText="#{i18n['nfse.label.details.service.itens.item']}">
+			<h:outputText value="#{items.indexOf(row) + 1}" />
+		</p:column>
+		<p:column headerText="#{i18n['nfse.label.details.service.itens.code']}" style="min-width:160px">
+			<h:outputText value="#{row.codigoItemListaServico}" />
+		</p:column>
+		<p:column headerText="#{i18n['nfse.label.details.service.itens.descricao']}">
+			<h:outputText value="#{row.disServ}" />
+		</p:column>
+		<p:column headerText="#{i18n['nfse.label.details.service.itens.qtde']}">
+			<h:outputText value="#{row.qtde}" />
+		</p:column>
+		<p:column headerText="#{i18n['nfse.label.details.service.itens.unitValue']}">
+			<h:outputText value="#{row.vlUnit}" />
+		</p:column>
+		<p:column headerText="#{i18n['nfse.label.details.service.itens.totalValue']}">
+			<h:outputText value="#{row.vlItem}" />
+		</p:column>
+	</ng:ngSimpleDataTable>
+</ui:composition>

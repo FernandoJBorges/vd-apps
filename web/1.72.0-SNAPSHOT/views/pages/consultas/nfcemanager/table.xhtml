@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+	<ui:param name="defaultMBean" value="#{nfceMB}" />
+	<ui:param name="documentListMBean" value="#{nfceListMB}" />
+	<ui:param name="icon" value=".icon" />
+	<ui:param name="tooltip" value=".tooltip" />
+	<ui:include src="../document/columns/emissionType.xhtml" />
+	<ui:include src="../document/columns/serialNumber.xhtml" />
+	<ui:include src="../document/columns/documentNumber.xhtml" />
+	<ui:include src="../document/columns/issueDate.xhtml" />
+	<ui:include src="../document/columns/processingDate.xhtml" />
+	<ui:include src="../document/columns/statusDescription.xhtml" />
+	<ui:include src="../document/columns/drawerState.xhtml" />
+	<ui:include src="../document/columns/drawer.xhtml" />
+	<ui:include src="../document/columns/addresse.xhtml">
+		<ui:param name="headerAddresse" value="#{i18n['invoice.label.addresse']}" />
+		<ui:param name="addresseName" value="#{row.addresse.name}" />
+		<ui:param name="addresseID" value="#{row.addresse.establishmentID}" />
+	</ui:include>
+	<p:column id="columnDetails" 
+			styleClass="ng-column-action"
+			exportable="false" 
+			toggleable="false">
+			<p:commandLink id="docDetails"
+						update="@(.ng-containner-dialog)"
+						action="#{defaultMBean.actionEvent('openDocumentDetail', row)}"
+						global="false">
+						<span title="#{i18n['tooltip.commandLink.view.details.doc']}" class="icon-viewDetails ng-icon"></span>
+			</p:commandLink>
+	</p:column>	
+	<p:column id="columnDANFE" 
+		styleClass="ng-column-action" 
+		exportable="false" 
+		toggleable="false" 
+		rendered="#{defaultMBean.actionDownloadDANFE.isRendered(defaultMBean.getFilterMB().getDocumentFlowType())}">
+		<p:commandLink id="auxiliaryDocument"
+				action="#{defaultMBean.actionEvent('downloadDA', row)}" 
+				global="false" 
+				ajax="false"
+				disabled="#{defaultMBean.actionDownloadDANFE.isDisabled(utils:singletonList(row))}"
+				immediate="true">
+				<span title="#{i18n['nfce.label.create.danfe']}" class="icon-print ng-icon"></span>
+				<f:setPropertyActionListener target="#{defaultMBean.entity}" value="#{row}" />
+		</p:commandLink>
+	</p:column>
+	<p:column id="columnXML" 
+			styleClass="ng-column-action"
+			exportable="false" 
+			toggleable="false"
+			rendered="#{defaultMBean.actionDownloadXml.isRendered(defaultMBean.getFilterMB().getDocumentFlowType())}">
+			<p:commandLink id="XML" ajax="false" immediate="true"
+					action="#{defaultMBean.actionEvent('dowloadXML', row)}"
+					onclick="updateMessages()"
+					update=":messages :ng-form:ng-detail-dataTable:ng-data-table :ng-form :ng-panel-crud-dialog">
+					<span title="#{i18n['document.tooltip.download.xml']}" class="icon-download-file ng-icon"></span>
+			</p:commandLink>
+	</p:column>
+	
+	<h:outputScript library="js" name="ondemand-loaddata.js"></h:outputScript>
+</ui:composition>

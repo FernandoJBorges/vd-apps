@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:outputPanel styleClass="ui-g-12 document-detail-column">
+		<!-- Número do RPS Substituído -->
+		<p:outputPanel styleClass="ui-g-2">
+			<p:outputLabel value="#{i18n['nfse.label.details.rps.section.number']}:" />
+			<p:outputPanel>
+				<h:outputText id="substRpsNumber" value="#{rpsSubstituted.NRPSSubst}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Série do RPS Substituído -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.rps.section.serie']}:" />
+			<p:outputPanel>
+				<h:outputText id="substSerie" value="#{rpsSubstituted.NSerieSubst}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Tipo do RPS-->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.rps.section.type']}:" />
+			<p:outputPanel>
+				<h:outputText id="substTypeRps" value="#{rpsSubstituted.substitutedRPS}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Número da NFS-e Substituída -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.rps.section.nfse.number']}:"/>
+			<p:outputPanel>
+				<h:outputText id="substNfseNumber" value="#{rpsSubstituted.NNFSe}" />
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<!-- Data de Emissão  -->
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel value="#{i18n['nfse.label.details.emissionDate']}:" />
+			<p:outputPanel>
+				<h:outputText id="emissionDate" value="#{rpsSubstituted.emissionDate}" />
+			</p:outputPanel>
+		</p:outputPanel>
+	</p:outputPanel>
+
+</ui:composition>

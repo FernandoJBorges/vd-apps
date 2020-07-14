@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+			<p:menuitem id="dowloadXmlAction" 
+						global="false"
+						action="#{defaultMBean.actionEvent('downloadZIP')}"
+						ajax="false"
+						immediate="true"
+						onclick="updateMessages()"
+						icon="icon-download-alt"
+						styleClass="ng-context-menu-item" 
+						value="#{i18n['document.label.action.downloads']}" 
+						rendered="#{defaultMBean.actionDownloadXml.isRendered(defaultMBean.getFilterMB().getDocumentFlowType())}"
+						disabled="#{defaultMBean.actionDownloadXml.isDisabled(defaultMBean.lazyModelSelection)}">
+			</p:menuitem>
+			<p:menuitem id="sendEmailAction"
+						value="#{i18n['document.label.action.emails']}"
+						icon="icon-sendToEmail"
+						action="#{defaultMBean.actionEvent('sendEmail')}"
+						styleClass="ng-linkEvent ng-link-invoice-erp"
+						rendered="#{defaultMBean.actionSendEmail.isRendered(defaultMBean.getFilterMB().getDocumentFlowType())}"
+						update=":ng-form :ng-panel-crud-dialog :ng-form:ng-panel-crud :messages"
+						immediate="true" >
+				<p:resetInput target=":view-send-email:panel-send-email" />
+			</p:menuitem>
+			<p:menuitem id="resendErpAction"
+						value="#{i18n['document.label.action.doctoerp']}"
+						icon="icon-sendERP"
+						action="#{defaultMBean.actionEvent('sendDocToERP')}"
+						update=":messages"
+						disabled="#{defaultMBean.actionSendToErp.isDisabled(defaultMBean.lazyModelSelection)}"
+						rendered="#{defaultMBean.actionSendToErp.isRendered(defaultMBean.getFilterMB().getDocumentFlowType())}"
+						immediate="true" >
+			</p:menuitem>
+			<p:menuitem id="resendDAToERPAction"
+						value="#{i18n['nfce.label.action.danfetoerp']}"
+						icon="icon-resendDanfeToERP"
+						action="#{defaultMBean.actionEvent('resendSefaz')}"
+						update=":messages"
+						disabled="#{defaultMBean.actionResendSefaz.isDisabled(defaultMBean.lazyModelSelection)}"
+						rendered="#{defaultMBean.actionResendSefaz.rendered}"
+						immediate="true" >
+			</p:menuitem>
+			<p:menuitem id="createContingencyAction"
+ 						immediate="true" 
+						value="#{i18n['document.label.action.contingency']}"
+						icon="icon-fire-extinguisher"
+						action="#{defaultMBean.nfceContingencyMB.prepareSendContingency()}"
+						disabled="#{defaultMBean.actionContingency.isDisabled(defaultMBean.lazyModelSelection)}"
+						styleClass="ng-context-menu-item"
+						rendered="#{defaultMBean.actionContingency.rendered}"
+						update=":ng-form :ng-panel-crud-dialog :ng-form:ng-panel-crud :messages">
+			</p:menuitem>
+</ui:composition>

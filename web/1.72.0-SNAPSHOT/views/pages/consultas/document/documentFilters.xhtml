@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+	<p:outputPanel styleClass="ui-g-12 document-column">
+		<ui:include src="filters/calendarInitial.xhtml" />
+		<ui:include src="filters/calendarFinal.xhtml" />
+		<ui:include src="filters/accesskeys.xhtml" />
+		<ui:include src="filters/cnpjdrawer.xhtml" />
+		<ui:include src="filters/processtype.xhtml" />
+		<p:outputPanel styleClass="ui-g-2">
+			<p:outputPanel styleClass="received-for-panel">
+				<p:outputPanel rendered="#{defaultFilterMBean.renderedReceivedFor()}">
+					<p:outputLabel for="receivedFor" value="#{labelTextReceivedFor}:" />
+					<p:selectOneMenu id="receivedFor" value="#{receivedForType}">
+						<f:selectItems value="#{defaultFilterMBean.receivedForTypes}"
+							var="flowType" itemValue="#{flowType}"
+							itemLabel="#{i18n[utils:getEnumQualifiedName(flowType)]}" />
+						<p:ajax listener="#{defaultFilterMBean.changeReceivedFor}"
+							event="change" update="documentstatus @(.update-component)"
+							global="false" />
+					</p:selectOneMenu>
+				</p:outputPanel>
+			</p:outputPanel>
+		</p:outputPanel>
+	</p:outputPanel>
+	<p:outputPanel styleClass="ui-g-12 document-column">
+		<ui:include src="filters/dateOf.xhtml" />
+		<ui:include src="filters/datePeriodSelector.xhtml" />
+		<ui:include src="filters/serieAndNumber.xhtml" />
+		<ui:include src="filters/cnpjcpfadressee.xhtml" />
+		<p:outputPanel styleClass="ui-g-2">
+			<h:outputLabel
+				value="#{i18n['document.label.uf']}" />
+			<p:selectOneMenu id="uf" value="#{defaultFilterMBean.filterVO.uf}">
+				<f:selectItem itemLabel="#{i18n['lbl_all_states']}" />
+				<f:selectItems value="#{defaultFilterMBean.states}" var="state"
+					itemLabel="#{state}" itemValue="#{state}" />
+			</p:selectOneMenu>
+		</p:outputPanel>
+		<ui:include src="filters/status.xhtml" />
+	</p:outputPanel>
+</ui:composition>

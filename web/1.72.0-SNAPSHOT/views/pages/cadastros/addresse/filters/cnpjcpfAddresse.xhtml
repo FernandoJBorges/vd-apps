@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<p:outputPanel styleClass="ui-g-5 addresse-cnpj-cpf-panel">
+		<p:outputLabel for="cnpjcpfadressee" value="#{i18n['addresse.label.cnpj-cpf-id']}:" />
+			<p:inputMask id="cnpjcpfadressee"
+						value="#{defaultMBean.filterVO.addresseID}"
+						label="#{i18n['addresse.label.cnpj-cpf-id']}"
+						tabIndex="1"
+						mask="#{defaultMBean.layouts.FOREING_CNPJ.searchMask}" 
+						slotChar=" "
+						autoClear="false">
+						<f:validator binding="#{cnpjAndCPFAndForeignFilterValidator}" />
+						<f:attribute name="foreingMessage" value="true" />
+			</p:inputMask>
+	</p:outputPanel>
+</ui:composition>

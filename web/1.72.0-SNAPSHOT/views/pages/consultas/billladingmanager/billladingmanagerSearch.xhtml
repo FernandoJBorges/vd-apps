@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:dialog="http://java.sun.com/jsf/composite/dialog"
+	xmlns:ngTab="http://java.sun.com/jsf/composite/common/component/view/tabview"
+	template="/common/templates/search/ngSearchTemplate.xhtml"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{cteMB}" />
+	<ui:param name="documentListMBean" value="#{cteListMB}" />
+	<ui:param name="defaultFilterMBean" value="#{defaultMBean.cteFilterMB}" />
+	<ui:define name="searchlistBlock">
+		<ngTab:ngViewSearch id="ng-search-comp" titleView="#{i18n['cte.label.title']}">
+			<!-- filtro tela cte -->
+			<ui:include src="../document/filterTabView.xhtml">
+				<ui:param name="includeFilterAdvanced" value="../billladingmanager/advancedFilters.xhtml" />
+				<ui:param name="labelTextCNPJAndCPFAdressee" value="#{i18n['cte.label.cnpjcpfforeignadressee']}" />
+				<ui:param name="labelTextCNPJAndCPFRem" value="#{i18n['cte.label.cnpj.remetente']}" />
+				<ui:param name="labelTextCNPJAndCPFDest" value="#{i18n['cte.label.cnpj.destinatario']}" />
+				<ui:param name="labelTextCNPJAndCPFExp" value="#{i18n['cte.label.cnpj.expedidor']}" />
+				<ui:param name="labelTextCNPJAndCPFRec" value="#{i18n['cte.label.cnpj.recebedor']}" />
+				<ui:param name="labelTextCNPJAndCPFTerc" value="#{i18n['cte.label.cnpj.terceiro']}" />
+				<ui:param name="labelTextReceivedFor" value="#{i18n['cte.label.received.for']}" />
+				<ui:param name="labelTextHelpFindCTeReceiver" value="#{i18n['cte.label.find.receiver.help']}" />
+				<ui:param name="maxlengthCNPJAndCPF" value="14" />
+				<ui:param name="maskValueCNPJAndCPFAdressee" value="#{defaultMBean.layouts.CNPJ.searchMask}"></ui:param>
+				<ui:param name="validatorCNPJAndCPFAdresseeDisabled" value="false" />
+				<ui:param name="docType" value="CTE" />
+				<ui:param name="receivedForType" value="#{cteMB.filterVO.cteProcessType}" />
+			</ui:include>
+		</ngTab:ngViewSearch>
+		<!-- listagem cte -->
+		<ng:ngSelectedActions id="ng-selected-actions" showLegend="true" showActionsButton="false" />
+		<ngComp:fileDownloadStatus />
+		<ngComp:ngToolbar id="ng-toolbar" hasExport="true">
+			<ui:include src="actions.xhtml" />
+		</ngComp:ngToolbar>
+		<ng:ngDataTable id="ng-detail-dataTable" btnRenderSelection="true" customAction="true">
+			<ui:include src="table.xhtml" />
+		</ng:ngDataTable>
+		<p:outputPanel rendered="#{releaseNoteMB.isCTE()}">
+			<ui:include src="../../releaseNotes.xhtml"></ui:include>
+		</p:outputPanel>
+	</ui:define>
+	<ui:define name="addDialogBlock">
+		<dialog:dialogDocumentLegend width="600" />
+		<h:form prependId="false">
+			<dialog:dialogResendErp id="resend-to-erp" defaultMBean="#{defaultMBean}" />
+		</h:form>
+		<ui:include src="../document/dialog/emissionType.xhtml" />
+		<ui:include src="../document/events/sendmail/documentSendMail.xhtml">
+			<ui:param name="documentSendMailMB" value="#{defaultMBean.getDocumentSendMailMB()}" />
+		</ui:include>
+		<!-- Comprovante de Entrega -->
+		<ui:include src="events/detailDeliveryReceipt.xhtml" />
+		<!-- Carta de Correção -->
+		<ui:include src="events/createCCe.xhtml" />
+		<ui:include src="events/createDisagreementService.xhtml" />
+
+		<ui:include src="../document/events/sendContingency.xhtml">
+			<ui:param name="documentContingencyMB" value="#{defaultMBean.cteContingencyMB}" />
+		</ui:include>
+	</ui:define>
+</ui:composition>

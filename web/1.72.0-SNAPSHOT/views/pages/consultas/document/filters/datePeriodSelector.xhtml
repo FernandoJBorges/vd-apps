@@ -1,0 +1,14 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ngDatePeriod="http://java.sun.com/jsf/composite/common/component/dateperiod">
+	<p:outputPanel styleClass="ui-g-2" style="min-width:135px;">
+		<p:outputLabel value="#{i18n['ng.label.date.period']}:" />
+		<ngDatePeriod:selector id="ngDatePeriodSelector" 
+							style="width:100%"
+							periods="#{defaultFilterMBean.dateRangeTypes}"
+							initialCalendarId="ng-form:ng-search-comp:ng-tabview-search:ng-tabview-basic:ngCalendarInitial"
+							finalCalendarId="ng-form:ng-search-comp:ng-tabview-search:ng-tabview-basic:ngCalendarFinal"
+							rangeValue="#{defaultFilterMBean.dateRangeValue}" />
+	</p:outputPanel>
+</ui:fragment>

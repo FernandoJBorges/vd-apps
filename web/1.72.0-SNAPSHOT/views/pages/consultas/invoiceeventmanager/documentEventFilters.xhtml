@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:p="http://primefaces.org/ui"
+    >
+                        <!-- passa parâmetro para o template -->
+                        <ui:param name="defaultMBean" value="#{documentEventMBean}" />
+<style type="text/css">
+.ng-invoice-uf {
+	float: right;
+	width: 65px;
+	margin-right:2px;
+}
+
+.ng-invoice-uf-lb {
+	float: right;
+	margin-right:5px;
+	margin-top: 5px;
+}
+
+.ng-document-ini-lb {
+	margin-right: 10px;
+	margin-left: 14px;
+}
+
+@media ( max-width : 1024px) {
+	.ng-document-ini-lb {
+		margin-right: 10px;
+		margin-left: 30px;
+	}
+}
+</style>	
+                        <!-- bloco de pesquisa -->
+                        <p:panelGrid id="ng-panel-search" columns="4" columnClasses="column1,column2,column3,column4,column5,column6">
+                            <p:outputLabel for="processamento" value="#{i18n['ocorrencia.label.processamento']}:" />
+                            <h:panelGroup>
+                            <p:calendar id="processamento"
+                                        value="#{defaultMBean.filters.dateBegin}"
+                                        locale="pt" 
+                                        showOn="button" 
+                                        pattern="dd/MM/yyyy HH:mm"
+                                        styleClass="dateTimeField"
+                                        />
+                            <h:outputLabel style="margin:10px">a</h:outputLabel>
+                            <p:calendar id="processamentoFim" 
+                                        showOn="button"
+                                        pattern="dd/MM/yyyy HH:mm" 
+                                        converter="dateConverter"
+                                        value="#{defaultMBean.filters.dateFinal}" styleClass="dateTimeField"
+                                        />
+                            </h:panelGroup>
+                            
+                            <p:outputLabel for="projeto" value="#{i18n['ocorrencia.label.projeto']}:" />
+                            <h:panelGroup>
+                            <p:selectOneMenu id="projeto" value="#{defaultMBean.filters.projectType}" style="width:120px">
+                            <f:selectItems value="#{defaultMBean.projects}"
+                                                var="events" 
+                                                itemValue="#{events.id}"
+                                                itemLabel="#{events.desc}" 
+                                                />
+                                                <p:ajax listener="#{defaultMBean.loadTypeEventSefazListener}" update="tipoeventosefaz" />
+                            </p:selectOneMenu>
+                            <p:selectOneMenu id="uf" value="#{defaultMBean.filters.ufSigla}" styleClass="ng-invoice-uf">
+                                <f:selectItem itemLabel="#{i18n['lbl_all']}" />
+                                <f:selectItems value="#{defaultMBean.states}"
+                                                var="state"
+                                                itemLabel="#{state}" 
+                                                itemValue="#{state}"
+                                                />
+                            </p:selectOneMenu>
+                            <p:outputLabel for="uf" value="#{i18n['ocorrencia.label.uf']}:" styleClass="ng-invoice-uf-lb" />
+                            </h:panelGroup>
+                            
+                            <p:outputLabel for="cnpj" value="#{i18n['ocorrencia.label.cnpj']}:" />
+                            <p:inputMask id="cnpj" mask="99.999.999/9999-99" 
+                                            value="#{defaultMBean.filters.drawerID}"
+                                            maxlength="14"/>
+                            
+                            <p:outputLabel for="tipodedocumento"
+                                value="#{i18n['ocorrencia.label.tipodedocumento']}:" />
+                            <p:selectOneMenu id="tipodedocumento" value="#{defaultMBean.filters.docType}" style="min-width:260px;" disabled="#{defaultMBean.filters.disabledProcessTypes}">
+                                <f:selectItems value="#{defaultMBean.listNFeTypes}" 
+                                                var="nfe"
+                                                itemValue="#{nfe.id}"
+                                                itemLabel="#{nfe.desc}"
+                                                />
+                            </p:selectOneMenu>
+                            
+                            <p:outputLabel for="nomeEmitente" value="#{i18n['ocorrencia.label.nome']}:" />
+                            <p:inputText id="nomeEmitente" value="#{defaultMBean.filters.drawerName}" maxlength="60" style="width:345px"/>
+                            <p:outputLabel for="tipoeventosefaz" value="#{i18n['ocorrencia.label.tipoeventosefaz']}:" />
+                            <p:selectOneMenu id="tipoeventosefaz" value="#{defaultMBean.filters.sefazEventType}" style="min-width:260px;">
+                                <f:selectItems value="#{defaultMBean.typeEventSefaz}"
+                                                var="events" 
+                                                itemValue="#{events.id}"
+                                                itemLabel="#{events.desc}" 
+                                                />
+                            </p:selectOneMenu>
+                            
+                            <p:outputLabel for="serie" value="#{i18n['ocorrencia.label.serie']}:" />
+                            <h:panelGroup>
+                            <p:inputText id="serie" value="#{defaultMBean.filters.invoiceSerial}" maxlength="3" style="width: 50px;" > 
+                                <f:convertNumber integerOnly="true" type="number" />
+                            </p:inputText>
+                            <h:panelGroup>
+                                    <p:inputText id="documentoFim" 
+                                                value="#{defaultMBean.filters.finalInvoiceNumber}" style="width: 75px;float:right" maxlength="9">
+                                                    <f:convertNumber integerOnly="true" type="number" />
+                                    </p:inputText>
+                                    <h:outputLabel style="margin:5px;float:right">à</h:outputLabel>
+                                    <p:inputText id="documentoIni"
+                                                value="#{defaultMBean.filters.initialInvoiceNumber}" style="width: 75px;float:right" maxlength="9">
+                                                    <f:convertNumber integerOnly="true" type="number" />
+                                    </p:inputText>
+                            </h:panelGroup>
+                            <p:outputLabel for="documentoIni" value="#{i18n['ocorrencia.label.documento']}:"  style="margin-right: 10px;float:right;margin-top: 5px;"/>
+                            </h:panelGroup>
+                            
+                            <p:outputLabel for="idmsgorigem" value="#{i18n['ocorrencia.label.idmsgorigem']}:" />
+                            <p:inputText id="idmsgorigem" value="#{defaultMBean.filters.appMsgId}" maxlength="60" style="width:240px" />
+                            <p:outputLabel for="ocorrencia" value="#{i18n['ocorrencia.label.ocorrencia']}:" />
+                            <p:selectOneMenu id="ocorrencia" value="#{defaultMBean.filters.event}" style="width:100%">
+                                <f:selectItem itemLabel="Todos" itemValue="" />
+                                <f:selectItems value="#{defaultMBean.invoiceEvents}"
+                                                var="events" 
+                                                itemValue="#{events.id}"
+                                                itemLabel="#{events.desc}" 
+                                                />
+                            </p:selectOneMenu>
+                            <!-- seta os campos como numerico -->
+                            <p:keyFilter for="documentoIni" mask="num"/>
+                            <p:keyFilter for="documentoFim" mask="num"/>
+                            <p:keyFilter for="serie" mask="num"/>
+                        </p:panelGrid>
+                        <p:focus context="ng-panel-search" />
+</ui:composition>

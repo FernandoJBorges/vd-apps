@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:param name="defaultMBean" value="#{notifyEventMB}" />
+	<p:column id="columnName" headerText="#{i18n['establishment.notifyevent.event']}" styleClass="column-name">
+			<h:outputText id="name" value="#{row.name}" styleClass="ng-truncate-output" title="#{row.name}" />
+			<ngComp:ngHelp messageHelp="#{row.description}" escape="true" style="margin-left:2px;" />
+	</p:column>
+	<p:column  id="columnType" headerText="#{i18n['document.label.processtype']}" styleClass="column-type">
+			<h:outputText id="type" value="#{row.type}">
+				<f:converter converterId="notificationProcessTypeConverter" />
+ 				<f:attribute name="docType" value="#{row.docType}"/>
+			</h:outputText>
+	</p:column>
+	<p:column  id="columnMailTo" headerText="#{i18n['establishment.notifyevent.to']}" styleClass="ng-truncate-column column-mail-to">
+			<h:outputText id="mailTo" value="#{row.mailTo}" title="#{row.mailTo}" styleClass="ng-truncate-output" />
+	</p:column>
+	<p:column id="columnMailCC" headerText="#{i18n['establishment.notifyevent.cc']}" styleClass="ng-truncate-column column-mail-cc">
+			<h:outputText id="mailCC" value="#{row.mailCc}" title="#{row.mailCc}" styleClass="ng-truncate-output" />
+	</p:column>
+	<p:column id="columnHeader" headerText="#{i18n['establishment.notifyevent.header']}" styleClass="ng-truncate-column column-header">
+			<h:outputText id="header" value="#{row.header}" title="#{row.header}" styleClass="ng-truncate-output" />
+	</p:column>
+	<p:column id="columnFooter" headerText="#{i18n['establishment.notifyevent.foorter']}" styleClass="ng-truncate-column column-footer">
+			<h:outputText id="footer" value="#{row.footer}" title="#{row.footer}" styleClass="ng-truncate-output" />
+	</p:column>
+	<p:column id="columnEdit" styleClass="column-edit">
+			<p:commandLink id="edit" action="#{defaultMBean.loadCreateView()}" disabled="#{establishmentMB.entity.dadNotify}" update=":messages">
+					<span title="#{i18n['tooltip.commandLink.edit']}" class="icon-pencil ng-icon" />
+					<f:setPropertyActionListener value="#{row}" target="#{defaultMBean.notificationProjection}" /> 
+			</p:commandLink>
+	</p:column>	
+	<p:column id="columnRemove" styleClass="column-remove">
+			<p:commandLink id="remove" 
+							disabled="#{establishmentMB.entity.dadNotify or empty row.mailTo}" 
+							onclick="PF('confirmDeleteNotifyEventValue').show();"
+							update=":messages">
+							<span title="#{i18n['tooltip.commandLink.delete']}" class="icon-trash ng-icon" />
+							<f:setPropertyActionListener value="#{row}" target="#{defaultMBean.notificationProjection}" /> 
+			</p:commandLink>
+	</p:column>	
+</ui:composition>

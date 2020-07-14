@@ -1,0 +1,16 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+	<div class="ui-g-2">
+		<p:outputLabel for="#{field.fieldId}" value="#{i18n['dataexportation.layout.filters.label.'.concat(field.fieldId)]}:" />
+		
+		<p:selectCheckboxMenu id="#{field.fieldId}" label="#{defaultMBean.dataExportationMB.selectedStatusGlobalLabel}" 
+			filter="true" filterMatchMode="startsWith"
+			value="#{defaultMBean.dataExportationMB.selectedDocumentStatus}">
+			<f:selectItems var="statusType" itemValue="#{statusType.id}" value="#{fieldValueOptions}"
+				itemLabel="#{i18n['dataexportation.layout.filters.label.'.concat(utils:getEnumQualifiedName(statusType))]}" />
+		</p:selectCheckboxMenu>
+	</div>
+</ui:fragment>

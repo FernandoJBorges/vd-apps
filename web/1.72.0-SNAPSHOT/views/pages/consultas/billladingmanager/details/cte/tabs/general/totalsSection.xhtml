@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/table"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div class="ui-g-12 document-detail-column">
+		<!-- Valor da Prestação de Serviço -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['cte.label.valor.prestacao.servico']}:" /><br/>
+			<h:outputText value="#{totals.valorPrestacaoService}" />
+		</div>
+
+		<!-- Valor a Receber -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['cte.label.valor.receber']}:" /><br/>
+			<h:outputText value="#{totals.valorReceber}" />
+		</div>
+
+		<!-- Situação Tributária -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['cte.label.situacao.tributaria']}:" /><br/>
+			<h:outputText value="#{totals.situacaoTributaria}" />
+		</div>
+
+		<!-- Base de Cálculo -->
+		<div class="ui-g-1">
+			<p:outputLabel value="#{i18n['cte.label.base.calculo']}:" /><br/>
+			<h:outputText value="#{totals.baseCalculo}" />
+		</div>
+
+		<!-- Redução da Base de Cálculo -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['cte.label.reducao.base.calculo']}:" /><br/>
+			<h:outputText value="#{totals.reducaoBaseCalculo}" />
+		</div>
+
+		<!-- Alíquota do ICMS -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['cte.label.aliquota.icms']}:" /><br/>
+			<h:outputText value="#{totals.aliquotaICMS}" />
+		</div>
+
+		<!-- Valor do ICMS -->
+		<div class="ui-g-1">
+			<p:outputLabel value="#{i18n['cte.label.valor.icms']}:" /><br/>
+			<h:outputText value="#{totals.valorICMS}" />
+		</div>
+	</div>
+
+	<p:outputPanel styleClass="ui-g-12" rendered="#{not empty totals.componentesValorPrestacao}">
+		<ng:ngSimpleDataTable value="#{totals.componentesValorPrestacao}" emptyMessage="Nenhum item encontrado">
+			<p:column headerText="#{i18n['cte.label.details.component.name']}">
+				<h:outputText value="#{row.name}" />
+			</p:column>
+			<p:column headerText="#{i18n['cte.label.details.component.value']}" width="250px">
+				<h:outputText value="#{row.value}" />
+			</p:column>
+		</ng:ngSimpleDataTable>
+	</p:outputPanel>
+
+</ui:composition>

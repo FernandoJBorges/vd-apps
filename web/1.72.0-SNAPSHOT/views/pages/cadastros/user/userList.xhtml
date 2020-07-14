@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ngCommon="http://java.sun.com/jsf/composite/common/component/view/search"
+	xmlns:ngDialog="http://java.sun.com/jsf/composite/common/component/dialog"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/crud"
+	xmlns:dialog="http://java.sun.com/jsf/composite/dialog"
+	template="/common/templates/crud/ngCrudTemplate.xhtml">
+	<ui:param name="defaultMBean" value="#{usrMB}" />
+	<ui:param name="usrEnableMBean" value="#{usrEnableMB}" />
+	<ui:param name="usrEditMBean" value="#{usrEditMB}" />
+	<ui:param name="defaultFilterMBean" value="#{usrMB.filterMB}" />
+	<ui:param name="usrChangePasswordMBean" value="#{usrChangePasswordMB}" />
+	
+	<ui:define name="searchlistBlock">
+		<h:outputStylesheet library="css" name="usr.css" />
+		<ng:ngCrudSearch id="ng-search-comp" titleView="#{i18n['usr.label.titleList']}">
+			<ui:include src="filters.xhtml" />
+		</ng:ngCrudSearch>
+		<ngCommon:ngSelectedActions id="ng-selected-actions" />
+		<ng:ngDetailDataTable id="ng-detail-dataTable" btnRenderRemove="false" btnRenderEdit="false">
+			<ui:include src="table.xhtml" />
+		</ng:ngDetailDataTable>
+	</ui:define>
+	
+	<ui:define name="addUpdateBlock">
+		<ui:include src="edit.xhtml" />
+	</ui:define>
+	
+	<ui:define name="addDialogBlock">
+		<!-- DIALOG REGRAS - Tela de Pesuisa -->
+		<dialog:dialogRoles id="dialogRoles" 
+							rows="8" 
+							targetUID="#{defaultMBean.filterVO.roleUID}" 
+							targetName="#{defaultMBean.filterVO.roleName}" 
+							listener="#{defaultMBean.init()}"
+							/>
+		<!-- DIALOG REGRAS - Tela Criacao/Edicao -->
+		<dialog:dialogRoles id="dialogRolesEdit" 
+							rows="8" 
+							targetUID="#{defaultMBean.entity.roleUID}" 
+							targetName="#{defaultMBean.entity.role.name}"
+							targetType="#{defaultMBean.entity.roleType}" 
+							renderSelectAll="false"
+							listener="#{usrCreateMB.changeRoleListener()}" 
+							viewCreate="true"
+							/>
+		<!-- DIALOG ESTABELECIMENTOS -->
+		<p:outputPanel styleClass="dialog-estab">
+			<dialog:dialogEstablishment id="zoomEstUser"
+											width="700"
+											defaultMBs="#{establishmentDialog}"
+											enabledSelectionMode="true"
+											renderBtnSelectAll="#{!usrCreateMB.isRenderUserSuperCheck() and not empty establishmentDialog.estabLazyModel}"
+											updateField=":zoomEstUser:zoomEstUserForm:zoomEstUsertbStabelecimento :zoomEstUser:zoomEstUserForm:zoomEstUserPanelGrid @(.ng-estab) @(.ng-dialgo-btn)" />
+		</p:outputPanel>
+		
+		<h:form id="form-enable-disable-user">
+			<ngDialog:ngDialogConfirm id="confirmEnableUser"
+									enableBtnAction="true"
+									header="#{i18n['popup.msg.warn']}"
+									widgetVar="confirmEnableUser"
+									messageGlobal="true"
+									updateGrid=":ng-form:ng-panel-crud"
+									titleBtn="#{i18n['btn_action_yes']}"
+									titleBtnCancel="#{i18n['btn_action_no']}"
+									btnActionConfirm="#{usrEnableMBean.enableUser}"> 
+									<p:outputLabel value="#{i18n['usr.label.msg.popup.enable']}" />
+			</ngDialog:ngDialogConfirm>
+			
+			<ngDialog:ngDialogConfirm id="confirmDisableUser"
+									header="#{i18n['popup.msg.warn']}"
+									widgetVar="confirmDisableUser"
+									messageGlobal="true"
+									enableBtnAction="true"
+									updateGrid=":ng-form:ng-panel-crud"
+									titleBtn="#{i18n['btn_action_yes']}"
+									titleBtnCancel="#{i18n['btn_action_no']}"
+									btnActionConfirm="#{usrDisableMB.disableUser}">
+									<p:outputLabel value="#{i18n['usr.label.msg.popup.disable']}" />
+			</ngDialog:ngDialogConfirm>
+			<ngDialog:ngDialogConfirm id="confirmChangePassword"
+									header="#{i18n['ngLoginRecuperarSenha']}"
+									widgetVar="confirmChangePassword"
+									messageGlobal="true"
+									enableBtnAction="true"
+									updateGrid=":ng-form:ng-panel-crud"
+									titleBtn="#{i18n['btn_action_yes']}"
+									titleBtnCancel="#{i18n['btn_action_no']}"
+									btnActionConfirm="#{usrChangePasswordMBean.changePassword}"
+									btnActionCancel="#{usrChangePasswordMBean.disableDialog('confirmChangePassword')}" >
+									<p:outputLabel value="#{i18n['usr.label.question.changePassword']}" />
+			</ngDialog:ngDialogConfirm>
+		</h:form>
+	</ui:define>
+</ui:composition>

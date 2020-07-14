@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component">
+	
+	<ui:param name="defaultMBean" value="#{dataExportationRequestMB}" />
+	<div class="ui-g ui-fluid">
+		<div class="ui-g-4">
+			<p:selectBooleanCheckbox id="notify-by-email"
+							itemLabel="#{i18n['dataexportation.commons.label.notification']}"
+							rendered="#{defaultMBean.layout.layoutUsesNotification}"
+							value="#{defaultMBean.layout.notify}" />
+		
+			<span class="data-exportation-help">
+				<ng:ngHelp id="notify-by-email-help" rendered="#{defaultMBean.layout.layoutUsesNotification}" messageHelp="#{i18n['dataexportation.commons.help.notification']}"/>
+			</span>
+		</div>
+	</div>
+</ui:composition>

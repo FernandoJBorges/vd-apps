@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:dialog="http://java.sun.com/jsf/composite/common/component/dialog"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/custom">
+	<p:importEnum type="com.neogrid.sped.enums.DocType"/>
+	<ui:param name="defaultMBean" value="#{ruleMB}" />
+	<ui:param name="ruleTreeTableMBean" value="#{ruleTreeTableMB}" />
+	<h:outputStylesheet name="rules.css" library="css" />
+	<h:form id="ng-form-est-rules" prependId="false">
+	<p:outputPanel id="ng-create-edit-rules" rendered="#{defaultMBean.stateRules}" styleClass="ng-panel-class">
+		<ng:ngFormSearch id="ng-form-search-rules" 
+						 idView="ng-form-search-rules" 
+						 update=":ng-form-est-rules :ng-create-edit-rules"
+						 titleView="#{i18n['establishment.rules.title']}">
+			     
+				<div class="tabcontainner">
+					<p:outputPanel rendered="#{establishmentMB.entity.dadNotify}">
+						<ngComp:ngContextMessages id="ng-context-messages" message="#{i18n['establishment.rules.warn.dad']}" />
+					</p:outputPanel>
+					<p:panelGrid id="ng-panel-sea" columns="2" columnClasses="column1,column2">
+						<p:outputLabel for="cnpjnotify" value="#{i18n['establishment.label.cnpj']}/#{i18n['establishment.label.personType.cpf']}:" />
+						<h:outputFormat id="cnpjnotify" value="#{establishmentMB.entity.establishmentID}">
+							<f:converter converterId="CnpjCpfConverter" />
+						</h:outputFormat>
+						<p:outputLabel for="namenotify" value="#{i18n['establishment.label.name']}:" />
+						<h:outputFormat id="namenotify" value="#{establishmentMB.entity.name}" />
+					</p:panelGrid>
+				</div>
+				<p:tabView id="ng-tabview-rules-doctype" widgetVar="widgetVarTabrules">
+				
+					<p:ajax event="tabChange" listener="#{defaultMBean.onTabChange}" update="@(.tab-content)" />
+					
+					<!-- TAB GENERIC -->
+					<p:tab id="tab-generic-rules" title="#{i18n['establishment.notifyevent.generic']}">
+						<p:outputPanel styleClass="tab-content">
+							<ui:include src="ruleTreeTable.xhtml">
+								<ui:param name="tabDoctype" value="#{DocType.GENERIC}" />
+							</ui:include>
+						</p:outputPanel>
+					</p:tab>
+					
+					<!-- TAB NFE -->
+					<p:tab id="tab-nfe-rules" title="#{i18n['docType.label.NFE']}" disabled="#{!defaultMBean.enablePopupSoluctions('NFE')}">
+						<p:outputPanel styleClass="tab-content">
+							<p:outputPanel rendered="#{ruleTreeTableMB.docTypeToTreeNode[DocType.NFE] != null}">
+								<ui:include src="ruleTreeTable.xhtml">
+									<ui:param name="tabDoctype" value="#{DocType.NFE}" />
+								</ui:include>
+							</p:outputPanel>
+						</p:outputPanel>
+					</p:tab>
+					
+					<!-- TAB CTE -->
+					<p:tab id="tab-cte-rules" title="#{i18n['docType.label.CTE']}" disabled="#{!defaultMBean.enablePopupSoluctions('CTE')}">
+						<p:outputPanel styleClass="tab-content">
+							<p:outputPanel rendered="#{ruleTreeTableMB.docTypeToTreeNode[DocType.CTE] != null}">
+								<ui:include src="ruleTreeTable.xhtml">
+									<ui:param name="tabDoctype" value="#{DocType.CTE}" />
+								</ui:include>
+							</p:outputPanel>
+						</p:outputPanel>
+					</p:tab>
+					
+					<!-- TAB MDFE -->
+					<p:tab id="tab-mdfe-rules" title="#{i18n['docType.label.MDFE']}" disabled="#{!defaultMBean.enablePopupSoluctions('MDFE')}">
+						<p:outputPanel styleClass="tab-content">
+							<p:outputPanel rendered="#{ruleTreeTableMB.docTypeToTreeNode[DocType.MDFE] != null}">
+								<ui:include src="ruleTreeTable.xhtml">
+									<ui:param name="tabDoctype" value="#{DocType.MDFE}" />
+								</ui:include>
+							</p:outputPanel>
+						</p:outputPanel>
+					</p:tab>
+					
+					<!-- TAB NFCE -->
+					<p:tab id="tab-nfce-rules" title="#{i18n['docType.label.NFCE']}" disabled="#{!defaultMBean.enablePopupSoluctions('NFCE')}">
+						<p:outputPanel styleClass="tab-content">
+							<p:outputPanel rendered="#{ruleTreeTableMB.docTypeToTreeNode[DocType.NFCE] != null}">
+								<ui:include src="ruleTreeTable.xhtml">
+									<ui:param name="tabDoctype" value="#{DocType.NFCE}" />
+								</ui:include>
+							</p:outputPanel>
+						</p:outputPanel>
+					</p:tab>
+					
+			</p:tabView>
+			</ng:ngFormSearch>
+	</p:outputPanel>
+</h:form>
+</ui:composition>

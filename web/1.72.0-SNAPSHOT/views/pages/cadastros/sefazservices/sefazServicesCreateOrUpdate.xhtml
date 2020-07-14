@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"	
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/crud">
+	<ng:ngFormEdit id="ngFormEdit" titleView="#{i18n['sefaz.label.title']}">
+		<p:tabView id="ngTabview" style="min-width: 1000px;padding:0px">
+			<p:tab id="ngBasic" title="#{i18n.ngTabBasic}">
+				<p:outputPanel style="min-width: 900px;">
+					<p:panelGrid id="panelGridForm" columns="10"  columnClasses="column1,column2,column3,column4,column5,column6,column7,column9,column10,column11">
+						<p:outputLabel for="state" value="#{i18n['sefaz.label.uf']}:" />
+						<p:selectOneMenu id="state" required="true" value="#{defaultMBean.entity.state}" disabled="#{defaultMBean.stateUpdate}" style="min-width:90px" >
+							<f:selectItem itemLabel="#{i18n['label.title.select']}" ItemValue="0" />
+							<f:selectItems value="#{defaultMBean.states}" />
+						</p:selectOneMenu>
+						<p:outputLabel for="identifier" value="#{i18n['sefaz.label.identifier']}:" />
+						<p:inputText id="identifier" value="#{defaultMBean.entity.sefazID}" maxlength="20" size="40" required="true" disabled="#{defaultMBean.stateUpdate}">
+						</p:inputText>
+						<p:outputLabel for="gmt" value="#{i18n['sefaz.label.gmt']}:" />
+						<p:selectOneMenu id="gmt" value="#{defaultMBean.entity.timezone}" style="width:100px" required="true">
+							<f:selectItem itemLabel="#{i18n['label.title.select']}" ItemValue="" />
+							<f:selectItems value="#{defaultMBean.timezones}" var="timezone" itemValue="#{timezone.idTime}" itemLabel="#{timezone.descGmt}" />
+						</p:selectOneMenu>
+						<p:outputLabel for="docType" value="#{i18n['sefaz.label.project']}:" />
+						<p:selectOneMenu id="docType" required="true" value="#{defaultMBean.entity.docType}" valueChangeListener="#{defaultMBean.docTypeChanged}" disabled="#{defaultMBean.stateUpdate}" >
+							<f:selectItem itemLabel="#{i18n['label.title.select']}" ItemValue="" />
+							<f:selectItems value="#{defaultMBean.docTypes}" var="docType" itemValue="#{docType.id}" itemLabel="#{docType.desc}" />
+							<p:ajax event="change" oncomplete="updateNoSelectionVersionSchema()" partialSubmit="false" update="ngTabViewSefazService :ng-form:ngFormEdit:ngTabview:ngTabViewSefazService:panelFocusServiceHomo :ng-form:ngFormEdit:ngTabview:ngTabViewSefazService:panelFocusServiceProd :ng-form:ngFormEdit:ngTabview:schemaVersion :ng-form:ngFormEdit:ngTabview:lblSchemaVersion " />
+						</p:selectOneMenu>
+						<p:outputLabel id="lblSchemaVersion" for="schemaVersion" value="#{i18n['sefaz.label.schemaversion']}:">
+							<h:panelGroup class="ui-outputlabel-rfi" rendered="#{defaultMBean.entity.getDocType() == 0}">*</h:panelGroup> 
+						</p:outputLabel>
+						<p:selectOneMenu id="schemaVersion" required="#{defaultMBean.entity.getDocType() != 0}" value="#{defaultMBean.entity.schemaVersion}" disabled="#{defaultMBean.stateUpdate}" >
+							<f:selectItem itemLabel="#{i18n['label.title.select']}" ItemValue="" />
+							<f:selectItems value="#{defaultMBean.getSchemaVersions()}" var="schemaVersion" itemValue="#{schemaVersion.version}" itemLabel="#{schemaVersion.version}" />
+						</p:selectOneMenu>
+					</p:panelGrid>
+					<p:focus context="panelGridForm" />
+					<p:tabView id="ngTabViewSefazService" widgetVar="ngTabWidgetVar">
+					<p:ajax event="tabChange" update=":ng-form:ngFormEdit:ngTabview:ngTabViewSefazService:homoFocus :ng-form:ngFormEdit:ngTabview:ngTabViewSefazService:prodFocus  :ng-form:ngFormEdit:ngTabview:ngTabViewSefazService:simuFocus @(.type-operation)" />
+						<p:tab id="production" title="#{i18n['sefaz.tab.name.production']}">
+						<p:outputPanel id="panelFocusServiceProd">
+							<p:panelGrid id="panelGridFormProd" columnClasses="column1,column2,column3,column4">
+								<ui:include src="columnHeader.xhtml"></ui:include>
+								<ui:repeat value="#{defaultMBean.entity.sefazServiceList}" var="data" varStatus="service">
+									<p:row>
+										<p:column style="text-align: right;">
+											<p:outputLabel for="typeServiceProd" value="#{defaultMBean.getLineLabel(service.index)}:" />
+										</p:column>
+										<p:column>
+											<p:inputText id="typeServiceProd" for="typeOperationProd" value="#{data.productionUrl}"	maxlength="256" size="70" required="true" requiredMessage="#{i18n['sefaz.input.required.tab.prod']} #{defaultMBean.getLineLabel(service.index)}: #{i18n['sefaz.input.required.tab.service']}" >
+											</p:inputText>
+										</p:column>
+										<p:column>
+											<p:inputText id="typeOperationProd" value="#{data.operation}" maxlength="256" size="20" required="true" requiredMessage="#{i18n['sefaz.input.required.tab.prod']} #{defaultMBean.getLineLabel(service.index)}: #{i18n['sefaz.input.required.tab.method']}" >
+												<p:ajax event="keyup" listener="#{defaultMBean.handleChangeMethod(service.index,data.operation)}" global="false"></p:ajax>
+											</p:inputText>
+										</p:column>
+										<p:column>
+											<p:selectOneMenu id="soapProd" value="#{data.prodCommunication}" disabled="true" style="width:85px">
+												<f:selectItems value="#{defaultMBean.soap}" var="soap" itemValue="#{soap.idSoap}" itemLabel="#{soap.descSoap}" />
+											</p:selectOneMenu>
+										</p:column>
+										<p:column>
+												<p:inputNumber id="maxTriesProd" value="#{data.maxTries}" decimalPlaces="0" thousandSeparator="" maxValue="999999999" minValue="0" >
+												<p:ajax event="keyup" listener="#{defaultMBean.handleChangeMaxTriesMethod(service.index,data.maxTries)}" global="false" update="@(.type-operation)"></p:ajax>
+												</p:inputNumber>
+										</p:column>
+										<p:column>
+											<p:outputPanel id="helpProd" rendered="#{defaultMBean.isVisible(service.index)}">
+												<ngComp:ngHelp messageHelp="#{defaultMBean.getMessageHelp(service.index)}"/>
+											</p:outputPanel>
+										</p:column>
+									</p:row>
+								</ui:repeat>
+							</p:panelGrid>
+							<p:focus id="prodFocus" context="panelGridFormProd" />
+						</p:outputPanel>
+						</p:tab>
+						<p:tab id="homolog" title="#{i18n['sefaz.tab.name.homolog']}">
+							<p:outputPanel id="panelFocusServiceHomo">
+									<p:panelGrid id="panelGridFormHomo">
+										<ui:include src="columnHeader.xhtml"></ui:include>
+										<ui:repeat  id="panelHomo" value="#{defaultMBean.entity.sefazServiceList}" var="data" varStatus="service">
+											<p:row>
+												<p:column style="text-align: right;">
+													<p:outputLabel for="typeServiceHomolog" value="#{defaultMBean.getLineLabel(service.index)}:" />
+												</p:column>
+												<p:column>
+													<p:inputText id="typeServiceHomolog" for="typeOperationHomolog" value="#{data.testUrl}"	maxlength="256" size="70" required="true" requiredMessage="#{i18n['sefaz.input.required.tab.homo']} #{defaultMBean.getLineLabel(service.index)}: #{i18n['sefaz.input.required.tab.service']}" >
+													</p:inputText>
+												</p:column>
+												<p:column>
+													<p:inputText id="typeOperationHomolog" styleClass="type-operation" value="#{data.operation}" maxlength="256" size="20" disabled="true" requiredMessage="#{i18n['sefaz.input.required.tab.homo']} #{defaultMBean.getLineLabel(service.index)}: #{i18n['sefaz.input.required.tab.method']}">
+													</p:inputText>
+												</p:column>
+													
+												<p:column>
+													<p:selectOneMenu id="soapHomolog" value="#{data.testCommunication}" disabled="true" style="width:85px">
+														<f:selectItems value="#{defaultMBean.soap}" var="soap" itemValue="#{soap.idSoap}" itemLabel="#{soap.descSoap}" />
+													</p:selectOneMenu>
+												</p:column>
+												<p:column>
+													<p:inputText id="maxTriesHomolog" value="#{data.maxTries}" styleClass="type-operation" maxlength="256" size="20" disabled="true" />
+												</p:column>
+												<p:column>
+													<p:outputPanel id="helpHomolog" rendered="#{defaultMBean.isVisible(service.index)}">
+														<ngComp:ngHelp messageHelp="#{defaultMBean.getMessageHelp(service.index)}"/>
+													</p:outputPanel>
+												</p:column>
+											</p:row>
+										</ui:repeat>
+									</p:panelGrid>
+									<p:focus id="homoFocus" context="panelGridFormHomo" />
+							</p:outputPanel>
+						</p:tab>
+						<p:tab id="simulation" title="#{i18n['sefaz.tab.name.simulation']}">
+							<p:outputPanel id="panelFocusServiceSimu">
+									<p:panelGrid id="panelGridFormSimu">
+									<ui:include src="columnHeader.xhtml"></ui:include>
+										<ui:repeat id="panelSimu" value="#{defaultMBean.entity.sefazServiceList}" var="data" varStatus="service">
+											<p:row>
+												<p:column style="text-align: right;">
+													<p:outputLabel for="typeServiceTest" value="#{defaultMBean.getLineLabel(service.index)}:"   />
+												</p:column>
+												<p:column>
+													<p:inputText id="typeServiceTest" for="typeOperationTest" value="#{data.simulatorUrl}" maxlength="256" size="70" required="true" requiredMessage="#{i18n['sefaz.input.required.tab.simu']} #{defaultMBean.getLineLabel(service.index)}: #{i18n['sefaz.input.required.tab.service']}">
+													</p:inputText>
+												</p:column>
+												<p:column>
+														<p:inputText id="typeOperationTest" styleClass="type-operation" value="#{data.operation}" maxlength="256" size="20" disabled="true" requiredMessage="#{i18n['sefaz.input.required.tab.simu']} #{defaultMBean.getLineLabel(service.index)}: #{i18n['sefaz.input.required.tab.method']}">
+														</p:inputText>
+												</p:column>
+												<p:column>
+													<p:selectOneMenu id="soapSimu" value="#{data.simulatorCommunication}" disabled="true" style="width:85px">
+														<f:selectItems value="#{defaultMBean.soap}" var="soap" itemValue="#{soap.idSoap}" itemLabel="#{soap.descSoap}" />
+													</p:selectOneMenu>
+												</p:column>
+												<p:column>
+													<p:inputText id="maxTriesSimu" value="#{data.maxTries}" styleClass="type-operation" maxlength="256" size="20" disabled="true" />
+												</p:column>
+												<p:column>
+													<p:outputPanel id="helpSimu" rendered="#{defaultMBean.isVisible(service.index)}">
+														<ngComp:ngHelp messageHelp="#{defaultMBean.getMessageHelp(service.index)}"/>
+													</p:outputPanel>
+												</p:column>
+											</p:row>
+										</ui:repeat>
+									</p:panelGrid>
+									<p:focus id="simuFocus" context="panelGridFormSimu" />
+							</p:outputPanel>
+						</p:tab>
+					</p:tabView>
+					
+				</p:outputPanel>
+			</p:tab>
+		</p:tabView>
+		<script type="text/javascript">
+			function updateNoSelectionVersionSchema() {
+				var value = $("#ng-form\\:ngFormEdit\\:ngTabview\\:docType_input").val();
+				if(value == "") {
+					setTimeout(() => {
+						$("#ng-form\\:ngFormEdit\\:ngTabview\\:schemaVersion_input").find("option").not(":first").remove();
+						$("#ng-form\\:ngFormEdit\\:ngTabview\\:schemaVersion_items").find("li").not(":first").remove();
+						$("#ng-form\\:ngFormEdit\\:ngTabview\\:schemaVersion_input option[value=''").attr("selected", "selected");
+						$("#ng-form\\:ngFormEdit\\:ngTabview\\:schemaVersion_label").html($("#ng-form\\:ngFormEdit\\:ngTabview\\:schemaVersion_input option:selected").text());
+					}, 200);
+				}
+			}
+		</script>
+	</ng:ngFormEdit>
+</ui:composition>

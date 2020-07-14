@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:dialog="http://java.sun.com/jsf/composite/common/component/dialog"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/custom">
+	<!-- passa parâmetro para o template -->
+	<ui:param name="defaultMBean" value="#{queueMB}" />
+	<!-- bloco de criacao edicao -->
+<h:form id="ng-form-est-queuevalue" prependId="false">
+	<p:outputPanel id="ng-create-edit-queuevalue" rendered="#{defaultMBean.stateQueueValue}" styleClass="ng-panel-class">
+		<ng:ngFormEdit 	id="ng-form-edit-queuevalue" 
+						titleView="#{i18n['establishment.queue.title']}"
+						mbean="#{queueMB}"
+						actionSubmit="saveQueueValues"
+						actionGoBack="goBackQueue"
+						update=":ng-form-est-queuevalue :ng-form-est-queue :messages" 
+						stateUpdate="#{defaultMBean.projectionVO.queueName != null}">
+			<p:tabView id="ng-tabview-queuevalue">
+				<p:tab 	id="ng-tab-queuevalue"
+						title="#{defaultMBean.projectionVO.docTypeEnum.getDesc()}">
+						<div class="ui-fluid ui-g">
+							<div class="ui-g-12">
+								<div class="ui-g-12">
+									<p:outputLabel id="lb-config" styleClass="ng-subtitle" value="#{i18n['establishment.queue.config.title']}" />
+								</div>
+							</div>	
+		 					<ui:include src="fields/queue.xhtml" />
+							<div class="ui-g-12">
+								<div class="ui-g-4">
+								<div class="ui-g-10">
+									<p:outputLabel value="#{i18n['establishment.queue.typereturn']}" />
+									<p:selectOneMenu id="queuereturntype" value="#{defaultMBean.queueValue.returnType}"  disabled="#{!defaultMBean.enabledReturnType}">
+												<p:ajax update=":ng-create-edit-queuevalue :ng-form-est-queuevalue" event="change" listener="#{defaultMBean.listenerReturnType}" />  
+												<f:selectItems value="#{defaultMBean.queueReturnType}" var="returnType" itemLabel="#{i18n[returnType.i18n]}" itemValue="#{returnType.key}" />
+									</p:selectOneMenu>
+								</div>
+								</div>
+								<div class="ui-g-4">
+								<div class="ui-g-10">
+											<p:outputLabel value="#{i18n[defaultMBean.labelLayout]}" rendered="#{defaultMBean.renderedLayout}"  />
+											<p:selectOneMenu id="Layout" value="#{defaultMBean.queueValue.layout}" disabled="#{!defaultMBean.enabledLayout}" rendered="#{defaultMBean.renderedLayout}" >
+												 			<p:ajax update=":ng-create-edit-queuevalue :ng-form-est-queuevalue" event="change" listener="#{defaultMBean.handleLayout}" />  
+															<f:selectItems value="#{defaultMBean.NFeLayoutTypes}" var="Layout" itemLabel="#{i18n[Layout.i18n]}" itemValue="#{Layout.key}" />
+											</p:selectOneMenu>
+										</div>
+										<div class="ui-g-1">
+												<ngComp:ngHelp messageHelp="#{i18n['establishment.queue.help.layout']}" style="margin-left: -13px;margin-top: 15px;"/>
+										</div>
+								</div>
+							</div>
+							<div class="ui-g-12">
+								<div class="ui-g-4">
+								    <p:outputPanel rendered="#{defaultMBean.enabledEdiDocumentType}">
+									<div class="ui-g-10">
+											<p:outputLabel value="#{i18n['establishment.queue.typeDocGeneral']}" />
+											<p:selectOneMenu id="ediDocType" value="#{defaultMBean.ediDocTypeValue}" disabled="#{defaultMBean.disabledEdiDocumentType}">
+														<f:selectItems value="#{defaultMBean.ediDocType}" var="ediDocType" itemLabel="#{i18n[ediDocType.i18n]}" itemValue="#{ediDocType.ediCode}" />
+											</p:selectOneMenu>
+									</div>
+									<div class="ui-g-1">
+											<ngComp:ngHelp messageHelp="#{i18n['establishment.queue.help.doctype']}" style="margin-left: -13px;margin-top: 15px;" rendered="#{defaultMBean.projectionVO.queueUID ne 70}"/>
+											<ngComp:ngHelp messageHelp="#{i18n['establishment.queue.help.doctype.procnfedistdfe']}" style="margin-left: -13px;margin-top: 15px;" rendered="#{defaultMBean.projectionVO.queueUID eq 70}"/>
+									</div>
+								    </p:outputPanel>
+								</div>
+							</div>
+							<div class="ui-g-12">
+								<div class="ui-g-12">
+									<p:outputLabel id="lb-layout" styleClass="ng-subtitle" value="#{i18n['establishment.queue.layout.title']}" />
+								</div>
+							</div>
+							<div class="ui-g-12">
+								<div class="ui-g-4">
+									<div class="ui-g-10">
+											<p:outputLabel value="#{i18n['establishment.queue.typetransform']}"  />
+											<p:selectOneMenu id="transformType" value="#{defaultMBean.queueValue.transformationType}" disabled="#{!defaultMBean.enabledTypeTranform}" >
+														<p:ajax update=":ng-create-edit-queuevalue :ng-form-est-queuevalue" event="change" />  
+														<f:selectItems value="#{defaultMBean.queueTransformType}" 
+																		var="transformType" 
+																		itemLabel="#{i18n[transformType.i18n]}" 
+																		itemValue="#{transformType.ordinal()}" />
+											</p:selectOneMenu>
+									</div>
+									<div class="ui-g-1">
+											<ngComp:ngHelp messageHelp="#{i18n['establishment.queue.help.downloadxls']}" style="margin-left: -13px;margin-top: 15px;" />
+									</div>
+								</div>
+							</div>
+							<div class="ui-g-12">
+								<div class="ui-g-4">
+										<p:outputLabel for="xsl" value="#{i18n['establishment.queue.xls']}:" />
+										<h:outputText id="XSLFileNameID" value="#{defaultMBean.xslName}" />
+										<p:fileUpload id="xsl" widgetVar="uploadXls"
+												process="@this"
+												update=":ng-create-edit-queuevalue :ng-form-est-queuevalue :messages"
+												label="#{i18n['uploadDocument.label.chooseFile']}"
+												fileUploadListener="#{defaultMBean.handleFileUploadXSL}"
+												uploadLabel="Upload" multiple="false" mode="advanced"
+												showButtons="false" auto="true"
+												allowTypes="/(\.|\/)(xsl)$/"
+												dragDropSupport="true"
+												disabled="#{!defaultMBean.hasPermissionFileUpload('XSL')}"
+												title="#{i18n['uploadDocument.label.selectUploadFile.toolTip']}"
+												invalidFileMessage="Formato permitido: .xsl"
+												invalidSizeMessage="#{i18n['uploadDocument.msg.error.maxfileSize']}.">
+										</p:fileUpload>
+								</div>
+								<div class="ui-g-4">
+										<p:outputLabel for="tcl" value="#{i18n['establishment.queue.tcl']}:" />
+										<h:outputText id="TCLFileNameID" value="#{defaultMBean.tclName}" />
+										<p:fileUpload id="tcl" widgetVar="uploadTcl" 
+												process="@this"
+												update=":ng-create-edit-queuevalue :ng-form-est-queuevalue :messages"
+												label="#{i18n['uploadDocument.label.chooseFile']}"
+												fileUploadListener="#{defaultMBean.handleFileUploadTCL}"
+												uploadLabel="Upload" multiple="false" mode="advanced"
+												showButtons="false" auto="true"
+												allowTypes="/(\.|\/)(tcl)$/"
+												dragDropSupport="true"
+												title="#{i18n['uploadDocument.label.selectUploadFile.toolTip']}"
+												disabled="#{!defaultMBean.hasPermissionFileUpload('TCL')}"
+												invalidFileMessage="Formato permitido: .tcl"
+												invalidSizeMessage="#{i18n['uploadDocument.msg.error.maxfileSize']}.">
+										</p:fileUpload>
+								</div>
+							</div>
+						</div>
+				</p:tab>
+			</p:tabView>
+
+			<!-- Dialog para alertar ao usuário de que já existe uma fila cadastrada com o mesmo nome -->
+			<dialog:ngDialogConfirm id="dlConfirmQueueName"
+					header="#{i18n['popup.msg.warn']}"
+					widgetVar="dlConfirmQueueName"
+					titleBtn="#{i18n['btn_action_yes']}"
+					messageGlobal="true"
+					btnActionConfirm="#{queueMB.confirmSameQueueName}"
+					updateGrid=":ng-form-est-queuevalue :ng-form-est-queue :messages @this">
+				<p:outputPanel id="queueWithSameNameMessage">
+					<p:autoUpdate />
+					<p:outputLabel value="#{queueMB.queueNameAlreadyExistsMessage}" />
+				</p:outputPanel>
+			</dialog:ngDialogConfirm>
+			<script>
+				function goBackAfterSaveQueue() {
+					$('#ng-form-edit-queuevalue\\:dlConfirmQueueName\\:dlConfirmQueueName_modal').hide()
+				}
+			</script>
+
+		</ng:ngFormEdit>
+
+	</p:outputPanel>
+</h:form>
+</ui:composition>

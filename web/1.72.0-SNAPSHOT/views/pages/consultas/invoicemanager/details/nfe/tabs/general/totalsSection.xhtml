@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<!-- Primeira Linha -->
+	<div class="ui-g-12 document-detail-column">
+		<!-- Base do Cálculo ICMS -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['invoice.label.detail.icms.base']}:" /><br/>
+			<h:outputText value="#{totals.valorBaseIcms}" />
+		</div>
+
+		<!-- Valor do ICMS -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['invoice.label.detail.icms.value']}:" /><br/>
+			<h:outputText value="#{totals.valorIcms}" />
+		</div>
+
+		<!-- Valor do ICMS Desordenado -->
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['invoice.label.detail.icms.unfounded']}:" /><br/>
+			<h:outputText value="#{totals.valorICMSDeson}" />
+		</div>
+
+		<!-- Base de Cálculo ICMS ST -->
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['invoice.label.detail.icms.st.base']}:" /><br/>
+			<h:outputText value="#{totals.valorBaseSt}" />
+		</div>
+
+		<!-- Valor ICMS Substituição -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['invoice.label.detail.icms.subs']}:" /><br/>
+			<h:outputText value="#{totals.valorIcmsSubst}" />
+		</div>
+	</div>
+
+	<!-- Segunda Linha -->
+	<div class="ui-g-12 document-detail-column">
+		<!-- Valor Total dos Produtos -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['invoice.label.detail.products.total.value']}:" /><br/>
+			<h:outputText value="#{totals.totalProdutos}" />
+		</div>
+
+		<!-- Valor do Frete -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['invoice.label.detail.freight']}:" /><br/>
+			<h:outputText value="#{totals.valorFrete}" />
+		</div>
+
+		<!-- Valor do Seguro -->
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['invoice.label.detail.insurence.value']}:" /><br/>
+			<h:outputText value="#{totals.valorSeguro}" />
+		</div>
+
+		<!-- Oustras Despesas Acessórias -->
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['invoice.label.detail.others.expenses']}:" /><br/>
+			<h:outputText value="#{totals.valorDespesasAcessorias}" />
+		</div>
+
+		<!-- Valor Total do IPI -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['invoice.label.detail.ipi.total.value']}:" /><br/>
+			<h:outputText value="#{totals.valorIpi}" />
+		</div>
+	</div>
+
+	<!-- Terceira Linha -->
+	<div class="ui-g-12 document-detail-column">
+		<!-- Valor Total da NF-e -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['invoice.label.detail.nfe.total.value']}:" /><br/>
+			<h:outputText value="#{totals.valorTotal}" />
+		</div>
+
+		<!-- Valor Total os Descontos -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['invoice.label.detail.discounts.total.value']}:" /><br/>
+			<h:outputText value="#{totals.valorDescontos}" />
+		</div>
+
+		<!-- Valor Total do II -->
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['invoice.label.detail.ii.total.value']}:" /><br/>
+			<h:outputText value="#{totals.valorIi}" />
+		</div>
+
+		<!-- Valor do PIS -->
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['invoice.label.detail.pis.value']}:" /><br/>
+			<h:outputText value="#{totals.valorPis}" />
+		</div>
+
+		<!-- Valor do COFINS -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['invoice.label.detail.cofins.value']}:" /><br/>
+			<h:outputText value="#{totals.valorCofins}" />
+		</div>
+	</div>
+
+	<!-- Quarta Linha -->
+	<div class="ui-g-12 document-detail-column">
+		<!-- Valor Aproximado dos Tributos -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['invoice.label.detail.taxs.total.value']}:" /><br/>
+			<h:outputText value="#{totals.valorTributos}" />
+		</div>
+
+		<!-- Valor Total ICMS FCP -->
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['invoice.label.detail.icms.fcp.value']}:" /><br/>
+			<h:outputText value="#{totals.valorIcmsFcp}" />
+		</div>
+
+		<!-- Valor Total ICMS Interestadual UF Destino -->
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['invoice.label.detail.icms.total.uf.dest']}:" /><br/>
+			<h:outputText value="#{totals.valorICMSUFDestino}" />
+		</div>
+
+		<!-- Valor Total ICMS Interestadual UF Remetente -->
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['invoice.label.detail.icms.total.uf.rem']}:" /><br/>
+			<h:outputText value="#{totals.valorICMSUFRemetente}" />
+		</div>
+	</div>
+
+</ui:composition>

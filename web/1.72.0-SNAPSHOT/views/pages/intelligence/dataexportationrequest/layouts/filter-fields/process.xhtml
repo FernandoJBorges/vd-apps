@@ -1,0 +1,13 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+	<div class="ui-g-2">
+		<p:outputLabel for="#{field.fieldId}" value="#{i18n['dataexportation.layout.filters.label.'.concat(field.fieldId)]}:" />
+		<p:selectOneMenu id="#{field.fieldId}" value="#{defaultMBean.dataExportationMB.selectedProcess}">
+			<f:selectItems var="processType" itemValue="#{processType.type}" value="#{fieldValueOptions}"
+				itemLabel="#{i18n[utils:getEnumQualifiedName(processType).concat('.processType')]}" />
+		</p:selectOneMenu>
+	</div>
+</ui:fragment>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="ui-g-12">
+		<div class="ui-g-12 ui-g-nopad">
+			<div class="ui-g-2 ui-g-nopad">
+				<p:outputLabel for="jce"
+					value="#{i18n['signature.label.keystorePassword']}:" />
+			</div>
+		</div>
+		<ui:include src="passwordOrKeystore.xhtml">
+			<ui:param name="id" value="jce" />
+		</ui:include>
+	</div>
+	<div class="ui-g-12">
+		<div class="ui-g-12 ui-g-nopad">
+			<div class="ui-g-1 ui-g-nopad">
+				<p:outputLabel for="keystoreType"
+					value="#{i18n['signature.label.keystoreType']}:" />
+			</div>
+		</div>
+		<div class="ui-g-2 ui-g-nopad">
+			<p:inputText id="keystoreType"
+				value="#{defaultMBean.entity.keyStoreType}" maxlength="60"
+				required="true" />
+		</div>
+	</div>
+
+</ui:composition>

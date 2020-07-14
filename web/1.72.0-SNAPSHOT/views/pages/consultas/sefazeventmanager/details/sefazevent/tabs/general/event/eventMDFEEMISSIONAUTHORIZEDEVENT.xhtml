@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<div class="ui-g-12 document-detail-column">
+		<div class="ui-g-4">
+			<p:outputLabel value="#{i18n['eventsefaz.mdfe.label.accesskey']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.accessKey}" />
+		</div>
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['eventsefaz.mdfe.label.modal']}:" />
+			<h:outputText value="#{i18n[utils:getEnumQualifiedName(defaultMBean.detailData.generalData.event.modalEnum)]}" />
+		</div>
+		<div class="ui-g-6">
+			<p:outputLabel value="#{i18n['eventsefaz.mdfe.label.date.begin']}:" />
+			<ngComp:ngDateTimeFormatteWithGMT id="eventDhEmiDet" value="#{defaultMBean.detailData.generalData.event.eventDhEmiDetAsString}" />
+		</div>
+		<div class="ui-g-4">
+			<p:outputLabel value="#{i18n['eventsefaz.mdfe.label.drawer']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.nomeCondutor}" />
+		</div>
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['eventsefaz.mdfe.label.cnpj']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.svcTakerID}" />
+		</div>
+		<div class="ui-g-6">
+			<p:outputLabel value="#{i18n['eventsefaz.mdfe.label.insc']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.eventIEDet}" />
+		</div>
+	</div>
+</ui:composition>

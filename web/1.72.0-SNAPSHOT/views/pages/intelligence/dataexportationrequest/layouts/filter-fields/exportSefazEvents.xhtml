@@ -1,0 +1,12 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component">
+	<div class="ui-g-2 data-exportation-filter-export-sefaz-event">				
+		<p:selectBooleanCheckbox id="#{field.fieldId}" value="#{field.value}" 
+			itemLabel="#{i18n['dataexportation.layout.filters.label.'.concat(field.fieldId)]}"/>
+		<span class="data-exportation-help">
+			<ng:ngHelp id="#{field.fieldId}-help" messageHelp="#{i18n['dataexportation.layout.filters.help.'.concat(field.fieldId)]}" />
+		</span>
+	</div>
+</ui:fragment>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/table">
+	<ui:param name="transportOperationsPayment" value="#{defaultMBean.detailData.generalData.event.transportOperationsPayment}" />
+	<p:outputLabel value="#{i18n['eventsefaz.mdfe.transportoperationspayment.label']}:" />
+	<div class="ui-g-12 document-detail-column">
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['eventsefaz.mdfe.transportoperationspayment.qtdViagens']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.transportOperationsPayment.qtdViagens}" />
+		</div>
+		<div class="ui-g-4">
+			<p:outputLabel value="#{i18n['eventsefaz.mdfe.transportoperationspayment.nroViagem']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.transportOperationsPayment.nroViagem}" />
+		</div>
+	</div>
+</ui:composition>

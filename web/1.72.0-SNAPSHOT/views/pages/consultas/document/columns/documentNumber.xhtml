@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+	<p:column id="columnDocumentNumber"
+			headerText="#{i18n['document.label.documentnumber']}"
+			sortBy="#{row.documentNumber}" 
+			styleClass="document-number-column">
+			<h:outputText id="documentNumber" value="#{row.documentNumber}" />
+	</p:column>
+</ui:composition>

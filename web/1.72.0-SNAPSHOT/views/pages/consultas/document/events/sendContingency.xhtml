@@ -1,0 +1,85 @@
+	<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/custom"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions" >
+	<ui:param name="i18nMessageTypeSuffix" value="#{i18nMessageTypeSuffix != null ? i18nMessageTypeSuffix : '.tooltip'}" />
+	<h:form id="document-contingency" prependId="true">
+		<p:outputPanel
+			rendered="#{documentContingencyMB.stateCreateContingency}">
+			<ng:ngFormEdit id="ngFormCreateContingency"
+				titleViewBegin="#{i18n['document.contingency.title.begin']}"
+				titleView="#{documentContingencyMB.titleView}"
+				mbean="#{documentContingencyMB}" actionSubmit="sendContingency"
+				actionGoBack="goBackInvoiceList"
+				update="#{extraUpdate} :ng-form :ng-panel-crud-dialog :messages">
+				<p:outputPanel id="panel-send-contingency">
+					<div class="ui-fluid ng-container">
+						<div class="ui-g">
+							<div class="ui-g-12 ui-g-nopad ng-container-title">
+								<p:outputLabel id="lb-title" value="#{documentContingencyMB.resumeMessage}" />
+							</div>
+							<div class="ui-g-12 ui-g-nopad ng-container-subtitle">
+								<p:outputLabel id="lb-subtitle" value="#{i18n['document.contingency.subtitle']}" />
+							</div>
+							<div class="ui-g-12 ui-g-nopad ng-container-content">
+								<div class="ui-g-12 ui-g-nopad">
+									<div class="ui-g-2">
+										<p:outputLabel for="emissiontype" value="#{i18n['document.contingency.type']}:" />
+										 <p:selectOneMenu id="emissiontype" value="#{documentContingencyMB.contingencyVO.emissionType}"
+																			disabled="#{documentContingencyMB.isEmissionTypeDisabled()}" >
+														<f:selectItems value="#{documentContingencyMB.loadEmissionType()}"
+																		var="emission"
+																		itemValue="#{emission}"
+																		itemLabel="#{i18n[utils:getEnumQualifiedName(emission).concat(i18nMessageTypeSuffix)]}" />
+										</p:selectOneMenu> 
+									</div>
+									<p:outputPanel styleClass="ui-g-2 emission-date-calendar" rendered="#{documentContingencyMB.isContingencyDateRendered()}">
+										<p:outputLabel value="#{i18n['document.contingency.date']}:" />
+										<p:calendar id="processing" locale="pt" required="true"
+													showOn="button" styleClass="dateTimeField"
+													maxdate="#{documentContingencyMB.dateNow}"
+													label="#{i18n['document.contingency.date']}:"
+													value="#{documentContingencyMB.contingencyVO.dateContingency}"
+													pattern="dd/MM/yyyy HH:mm:ss"
+													disabled="true">
+												<f:validator binding="#{maxDateValidator}" />
+										</p:calendar>
+									</p:outputPanel>
+									<p:outputPanel class="ui-g-1" rendered="#{documentContingencyMB.isContingencyDateRendered()}">
+										<div class="ui-g-12"></div>
+										<div class="ui-g-12">
+											<div class="ui-g-12">
+												<p:outputLabel value="#{i18n['document.contingency.gmt']}: " />
+												<h:outputText value="#{documentContingencyMB.contingencyVO.gmt}" />
+											</div>
+										</div>
+									</p:outputPanel>
+								</div>
+								<p:outputPanel styleClass="ui-g-12 ui-g-nopad" rendered="#{documentContingencyMB.isJustificationRequired()}">
+									<div class="ui-g-5">
+										<p:outputLabel value="#{i18n['document.contingency.justification']}:" for="justification" />
+										<p:inputTextarea id="justification"
+												rows="5" cols="88" maxlength="256"
+												value="#{documentContingencyMB.contingencyVO.justification}"
+												counter="lb-remainingCounter"
+												counterTemplate="#{i18n['label.input.text.counter.remaining']}"
+												autoResize="true" required="#{documentContingencyMB.isJustificationRequired()}">
+												<f:validateLength minimum="15" />
+										</p:inputTextarea><br />
+										<p:focus id="focusID" for="justification" />
+										<p:outputLabel id="lb-remainingCounter" />
+									</div>
+								</p:outputPanel>
+							</div>
+						</div>
+					</div>
+				</p:outputPanel>
+			</ng:ngFormEdit>
+		</p:outputPanel>
+	</h:form>
+</ui:composition>

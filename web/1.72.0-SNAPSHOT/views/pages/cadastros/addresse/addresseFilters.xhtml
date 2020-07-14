@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<p:outputPanel class="document-filter-panel">
+		<p:outputPanel class="ui-g-12">
+			<div class="ui-g-6 document-panel-filter-left">
+				<p:outputPanel styleClass="ui-g-12 document-column">
+					<ui:include src="filters/cnpjcpfAddresse.xhtml" />
+					<ui:include src="filters/addresseName.xhtml" />
+					<ui:include src="filters/uf.xhtml" />
+				</p:outputPanel>
+				<p:outputPanel styleClass="ui-g-12 document-column">
+					<ui:include src="filters/cnpjOwner.xhtml" />
+				</p:outputPanel>
+			</div>
+			<div class="ui-g-6 document-panel-filter-right">
+				<ui:include src="filters/nfeQueue.xhtml" />
+				<ui:include src="filters/nfceQueue.xhtml" />
+				<ui:include src="filters/cteQueue.xhtml" />
+			</div>
+		</p:outputPanel>
+	</p:outputPanel>
+</ui:composition>

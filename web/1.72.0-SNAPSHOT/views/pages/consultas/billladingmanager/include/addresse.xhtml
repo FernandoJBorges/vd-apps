@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+	<h:form>
+		<p:column id="columnAddresseNameEmission"  
+				rendered="#{!defaultMBean.getCteListMB().isToShowSvcTaker()}"
+				headerText="#{defaultMBean.getCteListMB().getHeaderAddresse()}" 
+				priority="5"
+				styleClass="ng-truncate-column document-addresse-column"
+				sortBy="#{row.owner.person.name}">
+				<h:outputText id="addresseName" value="#{row.owner.person.name}" title="#{row.owner.person.personIN.value}" styleClass="ng-truncate-output" />
+		</p:column>
+		<p:column id="columnAddresseNameReceiving" 
+				rendered="#{defaultMBean.getCteListMB().isToShowSvcTaker()}"
+				headerText="#{defaultMBean.getCteListMB().getHeaderAddresse()}"
+				priority="5"
+				styleClass="ng-truncate-column document-addresse-column"
+				sortBy="#{row.addresse.name}">
+				<h:outputText id="addresseNameRed" value="#{row.addresse.name}" title="#{row.addresse.establishmentID}" styleClass="ng-truncate-output" />
+		</p:column>
+	</h:form>
+</ui:composition>

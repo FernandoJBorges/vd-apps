@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/table"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+	<p:remoteCommand name="loadTabData" action="#{defaultMBean.loadTabData(defaultMBean.lotTab)}" update="lotPanel" />
+
+	<p:outputPanel id="lotPanel">
+		<ng:ngSimpleDataTable id="lotTable" value="#{defaultMBean.detailData.lots}"
+				emptyMessage="#{i18n['invoice.label.details.lot.empty']}">
+				<p:column headerText="#{i18n['lotmanager.label.ident']}" styleClass="lot-id-column">
+					<h:outputText value="#{row.lotID}" />
+				</p:column>
+				<p:column headerText="#{i18n['lotmanager.label.create']}" styleClass="lot-create-column">
+					<h:outputText value="#{row.creationDate}">
+						<f:convertDateTime type="date" pattern="#{defaultMBean.layouts.DATE.format}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="#{i18n['lotmanager.label.close']}" styleClass="lot-closed-column">
+					<h:outputText value="#{row.closeDate}">
+						<f:convertDateTime type="date" pattern="#{defaultMBean.layouts.DATE.format}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="#{i18n['lotmanager.label.closetype']}" styleClass="lot-type-close-column">
+					<h:outputText value="#{row.closeType}" converter="lotCloseTypeConverter" />
+				</p:column>
+				<p:column headerText="#{i18n['lotmanager.label.docs']}" styleClass="lot-docs-column">
+					<h:outputText value="#{row.numberOfDocuments}" />
+				</p:column>
+				<p:column headerText="#{i18n['lotmanager.label.size']}" styleClass="lot-size-column">
+					<h:outputText value="#{row.lotSize / 1024}">
+						<f:convertNumber pattern="#,##0.00" locale="pt_BR" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="#{i18n['lotmanager.label.situation']}" styleClass="lot-status-column">
+					<h:outputText value="#{row.statusDescription}" />
+				</p:column>
+				<p:column headerText="#{i18n['lotmanager.label.uf']}" styleClass="lot-uf-column">
+					<h:outputText value="#{row.state}" />
+				</p:column>
+				<p:column headerText="#{i18n['lotmanager.label.receipt']}" styleClass="lot-receipt-column">
+					<h:outputText value="#{row.receipt}" />
+				</p:column>
+				<p:column styleClass="ng-truncate-column lot-issuer-column" headerText="#{i18n['lotmanager.label.issuer']}" >
+						<h:outputText value="#{row.name}" title="#{row.name}" styleClass="ng-truncate-output" />
+				</p:column>
+		</ng:ngSimpleDataTable>
+	</p:outputPanel>
+
+	<div class="ui-g nfe-detail-lot">
+		<div class="ui-g-12">
+			<p:link id="ng-open-occurrence-details"
+					outcome="#{defaultMBean.lotManagerLink()}"
+					target="_blank"
+					styleClass="ng-float-right ng-link">
+				<span class="icon-external-link icon"></span>
+				<h:outputText value="#{i18n['invoice.label.details.lot.open.lot.page']}"/>
+			</p:link>
+		</div>
+	</div>
+
+	<h:outputScript library="js" name="ondemand-loaddata.js"></h:outputScript>
+
+</ui:composition>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui">
+				<p:menuitem id="dowloadXmlAction" 
+							global="false" 
+							action="#{defaultMBean.actionEvent('downloadZIP')}"
+							ajax="false"
+							immediate="true"
+							onclick="updateMessages()"
+							icon="icon-download-alt"
+							styleClass="ng-context-menu-item" 
+							value="#{i18n['document.label.action.downloads']}"
+							rendered="#{defaultMBean.downloadXML.isRendered(defaultFilterMBean.documentFlowType)}"
+							disabled="#{defaultMBean.getDownloadXML().isDisabled(defaultMBean.lazyModelSelection)}"
+							/>
+				<p:menuitem id="resendErpAction"
+						value="#{i18n['document.label.action.doctoerp']}"
+						icon="icon-sendERP"
+						action="#{defaultMBean.actionEvent('dialogResendDocsToERP')}"
+						update=":messages :resend-to-erp:dialogResendDocsToERP:ng-panel-status-approved"
+						disabled="#{defaultMBean.getSendToErp().isDisabled(defaultMBean.lazyModelSelection)}"
+						rendered="#{defaultMBean.sendToErp.isRendered(defaultFilterMBean.documentFlowType)}"
+						immediate="true" >
+				</p:menuitem>
+				<p:menuitem id="resendDAToERPAction"
+							immediate="true"
+							global="false" 
+							icon="icon-resendDanfeToERP"
+							update=":messages"
+							styleClass="ng-linkEvent ng-link-invoice-erp"
+							value="#{i18n['mdfe.label.action.resendDAMFE']}"
+							action="#{defaultMBean.actionEvent('resendDAToERP')}"
+							rendered="#{defaultMBean.resendDAMDFEToERP.rendered}"
+							disabled="#{defaultMBean.resendDAMDFEToERP.isDisabled(defaultMBean.lazyModelSelection)}"
+							/>
+				<p:menuitem id="createContingencyAction"
+	 						immediate="true" 
+	 						resetValues="true"
+							value="#{i18n['document.label.action.contingency']}"
+							icon="icon-fire-extinguisher"
+							styleClass="ng-context-menu-item"
+							action="#{defaultMBean.mdfeContingencyMB.prepareSendContingency()}"
+							rendered="#{defaultMBean.contingencyAction.isRendered(defaultFilterMBean.documentFlowType)}"
+							disabled="#{defaultMBean.contingencyAction.isDisabled(defaultMBean.lazyModelSelection)}"
+							update=":ng-form :ng-panel-crud-dialog :ng-form:ng-panel-crud :messages"
+				/>
+</ui:composition>

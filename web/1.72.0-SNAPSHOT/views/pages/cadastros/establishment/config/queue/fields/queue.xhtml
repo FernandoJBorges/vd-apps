@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:p="http://primefaces.org/ui">
+	<div class="ui-g-12">
+		<div class="ui-g-4">
+				<div class="ui-g-10">
+					<p:outputLabel value="#{i18n['establishment.queue.queue']}" />
+					<p:selectOneMenu id="notifyevent" value="#{defaultMBean.queueUID}">
+						<p:ajax update=":ng-create-edit-notifyvalue :ng-form-est-notify" listener="#{defaultMBean.handleLoadQueueValue}" global="false" />
+						<f:selectItems value="#{defaultMBean.notifications[defaultMBean.projectionVO.docTypeEnum]}" 
+									   var="queue" 
+									   itemLabel="#{queue.queue}" 
+									   itemValue="#{queue.queueUID}" 
+										/>
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-1">
+					<ngComp:ngHelp messageHelp="#{defaultMBean.projectionVO.queueDescription}"  style="margin-left: -13px;margin-top: 15px;" />
+				</div>
+		</div>
+		<div class="ui-g-4">
+			<div class="ui-g-10">
+								<p:outputLabel value="#{i18n['establishment.queue.name']}" rendered="#{!defaultMBean.enabledAncora}" />
+								<p:inputText id="queuename" value="#{defaultMBean.queueValue.queueName}" maxlength="255" label="#{i18n['establishment.queue.name']}:" rendered="#{!defaultMBean.enabledAncora}"/>
+								<p:outputLabel value="#{i18n['establishment.queue.ancora']}" rendered="#{defaultMBean.enabledAncora}" />
+								<p:inputText id="queueNameAncora" value="#{defaultMBean.queueNameAncora}" maxlength="100" label="#{i18n['establishment.queue.ancora']}:" rendered="#{defaultMBean.enabledAncora}" />
+			</div>
+			<div class="ui-g-1">
+								<h:panelGroup rendered="#{defaultMBean.enabledAncora}">
+									<ngComp:ngHelp messageHelp="#{i18n['establishment.queue.help.queuenameAncora']}" style="margin-left: -13px;margin-top: 15px;" />
+								</h:panelGroup>	
+								<h:panelGroup rendered="#{!defaultMBean.enabledCNPJEDI and !defaultMBean.enabledAncora or defaultMBean.enabledCNPJEDI}">
+									<ngComp:ngHelp messageHelp="#{i18n['establishment.queue.help.queuename']}" style="margin-left: -13px;margin-top: 15px;" />
+								</h:panelGroup>
+			</div>
+		</div>
+	</div>
+</ui:composition>

@@ -1,0 +1,28 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:p="http://primefaces.org/ui">
+	<p:outputPanel rendered="#{renderedCNPJs}">
+		<div class="#{classgrid == null ? 'ui-g-4' : classgrid}">
+			<div class="ui-g">
+				<div class="ui-g-12 ui-g-nopad">
+					<h:outputFormat value="#{outputLabel}:" styleClass="fontBold"/>	
+				</div>
+				<div class="ui-g-6 ui-g-nopad">
+				    <p:inputMask id="#{idLabelForField}" 
+				        		value="#{cnpjID}" 
+								label="#{labelText}"
+				        		maxlength="#{maxlength}"
+				        		mask="#{maskValue}"
+				        		tabIndex="1"
+								autoClear="false">
+								<f:validator binding="#{validator}" />
+					</p:inputMask>
+				</div>
+				<ngComp:ngHelp messageHelp="#{labelForHelp}" style="margin: 1px -1px;" />
+			</div>
+		</div>
+	</p:outputPanel>
+</ui:fragment>

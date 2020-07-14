@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ng="http://java.sun.com/jsf/composite/common/component/view/table"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ng:ngSimpleDataTable value="#{items}" emptyMessage="Nenhum item encontrado">
+		<p:column headerText="#{i18n['invoice.label.details.product.item.code']}">
+			<h:outputText value="#{row.code}" />
+		</p:column>
+		<p:column headerText="#{i18n['docFiscalValid.label.item']}">
+			<h:outputText value="#{row.number}" />
+		</p:column>
+		<p:column headerText="#{i18n['lbl_description']}">
+			<h:outputText value="#{row.description}" />
+		</p:column>
+		<p:column headerText="#{i18n['invoice.label.details.quantity']}">
+			<h:outputText value="#{row.quantity}" />
+		</p:column>
+		<p:column headerText="#{i18n['invoice.label.details.product.unit']}">
+			<h:outputText value="#{row.unit}" />
+		</p:column>
+		<p:column headerText="#{i18n['invoice.label.details.product.value']}">
+			<h:outputText value="#{row.value}" />
+		</p:column>
+		<p:column headerText="#{i18n['invoice.label.details.product.total.value']}">
+			<h:outputText value="#{row.totalValue}" />
+		</p:column>
+		<p:column headerText="#{i18n['invoice.label.details.product.icms']}">
+			<h:outputText value="#{row.icmsValue}" />
+		</p:column>
+		<p:column headerText="#{i18n['invoice.label.details.product.ipi']}">
+			<h:outputText value="#{row.ipiValue}" />
+		</p:column>
+		<p:column headerText="#{i18n['invoice.label.details.product.pis']}">
+			<h:outputText value="#{row.pisValue}" />
+		</p:column>
+		<p:column headerText="#{i18n['invoice.label.details.product.cofins']}">
+			<h:outputText value="#{row.cofinsValue}" />
+		</p:column>
+	</ng:ngSimpleDataTable>
+
+</ui:composition>

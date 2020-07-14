@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:utils="http://www.neogrid.com/functions/utils">
+	<p:outputPanel styleClass="ui-g-2">
+		<p:outputLabel for="documentstatus" value="#{i18n['document.label.status']}:" />
+		<p:selectOneMenu id="documentstatus" value="#{defaultFilterMBean.filterVO.status}" disabled="#{defaultFilterMBean.filterVO.showOnlyEntryStoppedMoreFiveMinutes}">
+			<f:selectItems var="status" 
+						value="#{defaultFilterMBean.statusTypes}"
+						itemValue="#{status}"
+						itemLabel="#{i18n[utils:getEnumQualifiedName(status)]}" 
+						/>
+		</p:selectOneMenu>
+	</p:outputPanel>
+</ui:composition>

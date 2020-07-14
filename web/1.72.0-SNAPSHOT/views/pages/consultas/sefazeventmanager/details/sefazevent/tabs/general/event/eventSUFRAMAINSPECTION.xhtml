@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<div class="ui-g-12 document-detail-column">
+		<div class="ui-g-3">
+			<p:outputLabel value="#{i18n['eventsefaz.suframa.label.number.pin']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.suframaPIN}" />
+		</div>
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['eventsefaz.suframa.label.inspection.date']}:" />
+			<ngComp:ngDateTimeFormatteWithGMT id="suframaDVistoria" value="#{defaultMBean.detailData.generalData.event.suframaDVistoria}" />
+		</div>
+		<div class="ui-g-2">
+			<p:outputLabel value="#{i18n['eventsefaz.suframa.label.locale.date']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.suframaLocVistoria}" />
+		</div>
+		<div class="ui-g-5">
+			<p:outputLabel value="#{i18n['eventsefaz.suframa.label.station']}:" />
+			<h:outputText value="#{defaultMBean.detailData.generalData.event.suframaPostoVistoria}" />
+		</div>
+
+		<div class="ui-g-12 document-additional-information">
+			<p:outputLabel value="#{i18n['eventsefaz.suframa.label.history']}:" />
+			<h:inputTextarea rows="7" readonly="true" value="#{defaultMBean.detailData.generalData.event.suframaXHistorico}" />
+		</div>
+	</div>
+</ui:composition>

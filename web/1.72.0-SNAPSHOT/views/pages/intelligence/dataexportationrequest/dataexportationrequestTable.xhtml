@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:param name="defaultMBean" value="#{dataExportationRequestMB}" />
+	<p:column id="id-data-exportation-column" headerText="#{i18n['dataexportation.label.requestid']}" sortBy="#{row.dataExportationId}">
+		<h:outputText value="#{row.dataExportationId}" />
+	</p:column>
+
+	<p:column id="exportation-type-column" headerText="#{i18n['dataexportation.label.exportationtype']}">
+		<h:outputText value="#{i18n[utils:getEnumQualifiedName(row.exportationType)]}" />
+	</p:column>
+	
+	<p:column id="request-datetime-column" headerText="#{i18n['dataexportation.label.requestdatetime']}" sortBy="#{row.requestDate}">
+		<h:outputText value="#{row.requestDate}" >
+			<f:convertDateTime type="date" pattern="dd/MM/yyyy HH:mm:ss"/>
+		</h:outputText>
+	</p:column>
+	
+	<p:column id="status-column" headerText="#{i18n['ng.label.status']}">
+		<h:outputText value="#{i18n[utils:getEnumQualifiedName(row.status)]}"/>
+	</p:column>
+	<p:column id="occurrences-column" exportable="false" toggleable="false" styleClass="data-exportation-action-colunm">
+		<p:commandLink id="btn-occurrences" title="#{i18n['dataexportation.label.occurrences']}" global="false" immediate="true" 
+			action="#{defaultMBean.showOccurrencesAction(row.dataExportationId)}"
+			styleClass="ng-icon icon-viewDetails" 
+			update="@widgetVar(data-exportation-occurrences-view)" />
+	</p:column>
+	<p:column id="download-files-colunm" exportable="false" toggleable="false" styleClass="data-exportation-action-colunm">
+	<p:commandLink id="btn-download-files" title="#{i18n['dataexportation.label.downloads']}" ajax="#{!defaultMBean.isSingleFileDownload(row)}" global="false" immediate="true" 
+			action="#{defaultMBean.showDownloadAction(row)}"
+			styleClass="ng-icon icon-download-alt"
+			disabled="#{defaultMBean.isDownloadDisabled(row)}" 
+			update="messages @widgetVar(data-exportation-download-view)" />
+	</p:column>
+</ui:composition>

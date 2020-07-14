@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<p:column id="columnDetails" 
+			styleClass="ng-column-action"
+			exportable="false" 
+			toggleable="false">
+			<p:commandLink id="docDetails"
+						update="@(.ng-containner-dialog)"
+						action="#{defaultMBean.actionEvent('openDocumentDetail')}"
+						disabled="#{!documentListMBean.isDetailsEnabled()}"
+						global="false">
+						<f:setPropertyActionListener target="#{defaultMBean.entity}" value="#{row}" />
+						<span title="#{i18n['tooltip.commandLink.view.details.doc']}" class="icon-viewDetails ng-icon"></span>
+			</p:commandLink>
+	</p:column>
+</ui:composition>

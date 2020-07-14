@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:utils="http://www.neogrid.com/functions/utils"
+	xmlns:ngComp="http://java.sun.com/jsf/composite/common/component"
+	xmlns:ngDatePeriod="http://java.sun.com/jsf/composite/common/component/dateperiod">
+	<ui:param name="defaultFilterMBean" value="#{defaultMBean.trackingFilterMB}" />
+	<f:facet name="last">
+		<h:outputStylesheet library="css" name="document.css" />
+	</f:facet>
+	
+		<p:outputPanel styleClass="ui-g-12 document-column">
+			<ui:include src="../document/filters/calendarInitial.xhtml" />
+			<ui:include src="../document/filters/calendarFinal.xhtml" />
+			<div class="ui-g-4 document-identifier">
+				<p:outputLabel for="docidentifier" value="#{i18n['tracking.label.docidentifier']}:" />
+								<p:inputText id="docidentifier" 
+												value="#{defaultFilterMBean.filterVO.docIdentifier}" 
+												tabIndex="0"
+												maxlength="53"/>
+			</div>
+			<div class="ui-g-3 ui-g-nopad establishment-select">
+					<div class="ui-g-10">
+						<p:outputLabel for="establishment" value="#{i18n['tracking.label.estabelecimento']}:"  />
+						<p:inputText id="establishment" value="#{defaultFilterMBean.businessUnitName}" disabled="#{defaultFilterMBean.isEstablishmentSelected()}" 
+									styleClass="data-exportation-establishment-filter" readonly="true" >
+							<p:ajax listener="#{defaultFilterMBean.changeProcessType()}" update="checkedOcurrences"/>
+							<p:tooltip id="toolTipEstab" for="establishment" value="#{defaultFilterMBean.businessUnitName}" position="bottom" />
+						</p:inputText>
+					</div>
+					<div class="ui-g-1 ui-g-nopad" style="padding-top:5px">
+						<p:spacer />
+						<p:commandButton icon="ui-icon-search" 
+								id="ng-btn-matrix-search"
+								resetValues="true"
+								global="false"
+								onclick="PF('zoomEstab').show();"
+								update="zoomEstab:zoomEstabForm:zoomEstabtbStabelecimento"
+								immediate="true"
+								disabled="#{defaultFilterMBean.isEstablishmentSelected()}">
+						<p:ajax listener="#{defaultFilterMBean.changeProcessType()}" global="false" update="checkedOcurrences"/>
+						</p:commandButton>
+					</div>
+			</div>
+		</p:outputPanel>
+		
+		<p:outputPanel styleClass="ui-g-12 document-column">
+			<ui:include src="../document/filters/dateOf.xhtml" />
+			<ui:include src="../document/filters/datePeriodSelector.xhtml" />
+
+			<div class="ui-g-4 ui-g-nopad">
+				<div class="ui-g-6">
+					<p:outputPanel id="processTypePanel">
+						<p:outputLabel for="processType" value="#{i18n['tracking.label.processing.type']}:" />
+						<p:selectOneMenu id="processType"
+										value="#{defaultFilterMBean.filterVO.processType}"
+										disabled="#{defaultFilterMBean.isManualReprocessChecked()}">
+										<f:selectItems value="#{defaultFilterMBean.processTypes}"
+													var="processType"
+													itemValue="#{processType}"
+													itemLabel="#{i18n[utils:getEnumQualifiedName(processType)]}" />
+						</p:selectOneMenu>
+					</p:outputPanel>
+				</div>
+				<div class="ui-g-6">
+					<p:outputLabel for="messageType" value="#{i18n['tracking.label.document.type']}:" />
+					<p:selectCheckboxMenu id="messageType"
+									label="#{defaultFilterMBean.label}"
+									filter="true"
+									filterMatchMode="contains" widgetVar="operationVar"
+									value="#{defaultFilterMBean.filterVO.documentMessageType}">
+									<f:selectItems value="#{defaultFilterMBean.messageTypes}"
+										var="entryType"
+										itemValue="#{entryType}"
+										itemLabel="#{i18n[utils:getEnumQualifiedName(entryType)]}" />
+									<p:ajax listener="#{defaultFilterMBean.fillMessageTypeLabel()}"
+											global="false" />
+									<p:ajax event="toggleSelect"
+											listener="#{defaultFilterMBean.fillMessageTypeLabel()}"
+											global="false" />
+					</p:selectCheckboxMenu>
+				</div>
+			</div>
+			<div class="ui-g-2 consult-type">
+					<div class="ui-g-12 ui-g-nopad">
+						<p:outputLabel for="consultType" value="#{i18n['tracking.label.consult.type']}:" />
+					</div>
+					<div class="ui-g-11 ui-g-nopad">
+							<p:selectOneMenu id="consultType" value="#{defaultFilterMBean.filterVO.consultType}" style="min-width:0px">
+								<f:selectItems	value="#{defaultFilterMBean.consultTypes}"
+												var="consultType"
+												itemValue="#{consultType}"
+												itemLabel="#{i18n[utils:getEnumQualifiedName(consultType)]}" />
+												<p:ajax listener="#{defaultFilterMBean.changeConsultType()}" global="false" update="checkedOcurrences processTypePanel"  />
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-1 ui-g-nopad">
+							<ngComp:ngHelp messageHelp="#{i18n['tracking.label.consult.type.helper']}" style="margin:1px -1px" />
+						</div>
+				</div>
+		</p:outputPanel>
+				
+		<p:outputPanel id="checkedOcurrences" class="ui-g-12">
+			<p:outputPanel rendered="#{defaultFilterMBean.renderedEstabsOccurrences or defaultFilterMBean.renderedManualReprocessOccurrences}">
+				<p:separator styleClass="line-separator" />
+				<div class="ui-g-6 document-column-adv-5 document-check">
+					<p:outputPanel styleClass="update-component document-check-panel">
+						<h:panelGrid columns="1">
+							<p:selectBooleanCheckbox id="listOccurrencesFromAllEstabs"
+														itemLabel="#{i18n['tracking.label.list.all.establishment.occurrences']}"
+														rendered="#{defaultFilterMBean.isRenderedEstabsOccurrences()}"
+														value="#{defaultFilterMBean.filterVO.occurrencesFromAllEstablishments}">
+								</p:selectBooleanCheckbox>
+								<p:selectBooleanCheckbox id="listOccurrencesManualReprocess"
+														itemLabel="#{i18n['tracking.label.list.manual.occurrences']}"
+														rendered="#{defaultFilterMBean.renderedManualReprocessOccurrences}"
+														value="#{defaultFilterMBean.filterVO.occurrencesManualReprocess}">
+														<p:ajax global="false" listener="#{defaultFilterMBean.changeProcessType()}" update="processTypePanel"/>
+								</p:selectBooleanCheckbox>
+						</h:panelGrid>
+					</p:outputPanel>
+				</div>
+			</p:outputPanel>
+		</p:outputPanel>
+</ui:composition>
